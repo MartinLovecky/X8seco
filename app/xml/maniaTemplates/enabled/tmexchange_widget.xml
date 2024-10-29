@@ -1,0 +1,8 @@
+<manialink id="49">
+	<frame posn="59.05 -6 0">
+		<format textsize="1"/>
+		<quad posn="0.7 -0.1 0.002" sizen="3.2 3.2" image="http://maniacdn.net/undef.de/xaseco1/records-eyepiece/logo-tmx-normal.png" imagefocus="http://maniacdn.net/undef.de/xaseco1/records-eyepiece/logo-tmx-focus.png"/>
+		<label posn="2.3 -3.4 0.1" sizen="3.65 2" halign="center" text="%offline_record%"/>
+		<label posn="2.3 -4.9 0.1" sizen="6.35 2" halign="center" textcolor="FC0F" scale="0.6" text="%text%"/>
+	</frame>
+</manialink>

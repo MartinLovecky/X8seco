@@ -1,0 +1,10 @@
+<manialink id="09">
+	<frame posn="-59.05 40.5 0">
+		<format textsize="1"/>
+		<quad posn="0 0 0.001" sizen="4.6 6.5" action="20" style="BgsPlayerCard" substyle="ProgressBar"/>
+		<quad posn="-0.18 -4.6 0.002" sizen="2.1 2.1" image="http://maniacdn.net/undef.de/xaseco1/records-eyepiece/edge-open-ld-light.png"/>
+		<quad posn="0.4 0 0.002" sizen="3.8 3.8" style="Icons128x128_1" substyle="LoadTrack"/>
+		<label posn="2.3 -3.4 0.1" sizen="3.65 2" halign="center" text="%trackcount%"/>
+		<label posn="2.3 -4.9 0.1" sizen="6.35 2" halign="center" textcolor="FC0F" scale="0.6" text="TRACKS"/>
+	</frame>
+</manialink>

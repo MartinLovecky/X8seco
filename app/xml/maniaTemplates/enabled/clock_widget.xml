@@ -1,0 +1,11 @@
+<manialink id="06">
+	<frame posn="-63.85 40.5 0">
+		<format textsize="1"/>
+		<quad posn="0 0 0.001" sizen="4.6 6.5" action="03" style="BgsPlayerCard" substyle="ProgressBar"/>
+		<label posn="2.3 -0.6 0.1" sizen="3.65 2" halign="center" text="H:i"/>
+		<label posn="2.3 -2.1 0.1" sizen="6.35 2" halign="center" textcolor="FC0F" scale="0.6" text="Europe/Berlin"/>
+		<label posn="2.3 -3.4 0.1" sizen="3.65 2" halign="center" text="354"/>
+		<label posn="2.3 -4.9 0.1" sizen="6.35 2" halign="center" textcolor="FC0F" scale="0.6" text="BEAT"/>
+		<quad posn="0 100 0" sizen="7.2 4.34" image="http://maniacdn.net/undef.de/xaseco1/records-eyepiece/worldmap-pure.png"/>
+	</frame>
+</manialink> 

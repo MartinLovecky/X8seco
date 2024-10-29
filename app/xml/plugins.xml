@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<aseco_plugins>
+  <plugin>LocalDatabase</plugin>
+  <plugin>Panels</plugin>
+  <plugin>Style</plugin>
+  <plugin>MsgLog</plugin>
+  <plugin>Rasp</plugin>
+  <!--	<plugin>plugin.rasp_karma.php</plugin> -->
+</aseco_plugins>

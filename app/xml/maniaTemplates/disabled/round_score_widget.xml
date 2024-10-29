@@ -1,0 +1,12 @@
+<manialink id="%manialinkid%">
+	<frame posn="%posx% %posy% 0">
+		<quad posn="0 0 0.001" sizen="%widgetwidth% %widgetheight%" style="Bgs1InRace" substyle="NavButton"/>
+		<quad posn="0.4 -2.6 0.002" sizen="2 %column_height%" bgcolor="AAA5"/>
+		<quad posn="2.4 -2.6 0.002" sizen="3.65 %column_height%" bgcolor="AAA3"/>
+		<quad posn="6.05 -2.6 0.002" sizen="%column_width_name% %column_height%" bgcolor="AAA1"/>
+		<quad posn="0.4 -0.36 0.002" sizen="%title_background_width% 2" style="BgsPlayerCard" substyle="BgRacePlayerName"/>
+		<quad posn="%posx_icon% %posy_icon% 0.004" sizen="2.5 2.5" style="%icon_style%" substyle="%icon_substyle%"/>
+		<label posn="%posx_title% %posy_title% 0.004" sizen="10.2 0" halign="%halign%" textsize="1" text="%title%"/>
+		<format textsize="1" textcolor="FFFF"/>
+	</frame>
+</manialink>

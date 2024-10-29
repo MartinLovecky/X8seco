@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS `rs_times` (
+    `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `challengeID` INT NOT NULL,
+    `playerID`VARCHAR(255) NOT NULL,
+    `score` INT NOT NULL,
+    `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `checkpoints` TEXT NOT NULL,
+    INDEX (`playerID`, `challengeID`),
+    INDEX (`challengeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

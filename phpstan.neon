@@ -1,0 +1,13 @@
+parameters:
+    level: 5 # Set the analysis level (0 to 8, with 8 being the strictest)
+    paths:
+        - src # Specify the directories to analyze
+    treatPhpDocTypesAsCertain: false # Allows flexibility for PHPDoc types
+    excludePaths:
+        - %rootDir%/../tests/? # Exclude test directories; append `?` to mark as optional
+        - %rootDir%/../vendor/? # Exclude vendor directory; append `?` to mark as optional
+    ignoreErrors:
+        - '#Some specific error message to ignore#'
+
+services:
+    # You can define additional services or rules here

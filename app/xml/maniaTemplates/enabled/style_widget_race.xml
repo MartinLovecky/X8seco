@@ -1,0 +1,17 @@
+<manialink id="%manialinkid%">
+	<frame posn="%posx% %posy% 0">
+		<format textsize="1" textcolor="FFFF"/>
+		<quad posn="0 0 0.01" sizen="15.5 8.65" action="%actionid%" style="Bgs1InRace" substyle="NavButton"/>
+		<quad posn="%image_open_pos_x% %image_open_pos_y% 0.03" sizen="3.5 3.5" image="%image_open%"/>
+		<quad posn="0.4 -0.36 0.02" sizen="14.7 2" style="BgsPlayerCard" substyle="BgRacePlayerName"/>
+		<quad posn="%posx_icon% %posy_icon% 0.04" sizen="2.5 2.5" style="Icons128x128_1" substyle="Challenge"/>
+		<label posn="%posx_title% %posy_title% 0.04" sizen="10.2 0" halign="%halign%" textsize="1" text="Current Track"/>
+		<label posn="1 -2.7 0.04" sizen="13.55 2" scale="1" text="%trackname%"/>
+		<label posn="1 -4.5 0.04" sizen="14.85 2" scale="0.9" text="by %author%"/>
+		<quad posn="0.7 -6.25 0.04" sizen="1.7 1.7" style="BgRaceScore2" substyle="ScoreReplay"/>
+		<label posn="2.7 -6.55 0.04" sizen="6 2" scale="0.75" text="%authortime%"/>
+		<quad posn="0 100 0" sizen="11 5.5" image="http://maniacdn.net/undef.de/xaseco1/records-eyepiece/logo-tmx-normal.png"/>
+		<quad posn="0 100 0" sizen="11 5.5" image="http://maniacdn.net/undef.de/xaseco1/records-eyepiece/logo-tmx-focus.png"/>
+		<quad posn="0 100 0.05" sizen="3.5 3.5" image="http://maniacdn.net/undef.de/xaseco1/records-eyepiece/edge-close-lu-dark.png"/>
+	</frame>
+</manialink>

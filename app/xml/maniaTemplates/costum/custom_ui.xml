@@ -1,0 +1,10 @@
+<custom_ui>
+    <notice visible="%notice%"/>
+    <challenge_info visible="%challenge_info%"/>
+    <net_infos visible="%net_infos%"/>
+    <chat visible="%chat%"/>
+    <checkpoint_list visible="%checkpoint_list%"/>
+    <round_scores visible="%round_scores%"/>
+    <scoretable visible="%scoretable%"/>
+    <global visible="%global%"/>
+</custom_ui>
