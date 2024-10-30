@@ -1,8 +1,8 @@
-# Aseco - Advanced Server Controller for TrackMania Nations Forever
+# X8seco - Advanced Server Controller for TrackMania Nations Forever
 
 > **Status**: In Development
 
-Aseco is an upgraded and modified version of the original Xaseco, originally developed by Xymph. This project has undergone extensive modifications, making significant improvements and changes for enhanced performance, modern compatibility, and added features.
+X8seco is an upgraded and modified version of the original Xaseco, originally developed by Xymph. This project has undergone extensive modifications, making significant improvements and changes for enhanced performance, modern compatibility, and added features.
 
 > **Note**: This project is maintained by Yuhzel. Documentation will be generated soon using [Doctum](https://doctum.github.io/)
 
@@ -17,9 +17,9 @@ Aseco is an upgraded and modified version of the original Xaseco, originally dev
 - [TrackMania Nations Forever Dedicated Server](https://trackmaniaforever.com/download/)
 - [PHP 8.3+](https://www.php.net/downloads) 
 - Required PHP Extensions (ensure the following extensions are enabled):
-- `curl`
-- `openssl`
-- `pdo_mysql`
+   - `curl`
+   - `openssl`
+   - `pdo_mysql`
 
 ## Installation
 
@@ -29,15 +29,20 @@ You can download the entire folder from Google Drive (link will be provided).
 ### Option 2: Clone the Repository
 Install the dependencies using [Composer](https://getcomposer.org/). To do this, follow these steps:
 ```bash
-   git clone [repository-url]
-   cd [Aseco8]
+   git clone https://github.com/MartinLovecky/X8seco
+   cd X8seco
+   composer install
+```
+
+### Setup
+You need move from folder public file .env to root and oprovide infomation for Database , Karma, Dedimania in the .env file
 
 ### Code Style
 Please follow [PSR-12 coding standards](https://www.php-fig.org/psr/psr-12/) and run tests before submitting.
 
 ### License
-Aseco is released under the [MIT License](https://opensource.org/licenses/MIT).
+X8seco  is released under the [MIT License](https://opensource.org/licenses/MIT).
 
 ### Credits
-Original Author: Xymph for Xaseco
+Original Author: Xymph for X8seco
 Current Maintainer: Yuhzel

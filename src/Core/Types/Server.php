@@ -52,9 +52,9 @@ class Server
         $this->gamePath = Basic::path(3);
         $this->gamedir = "{$this->gamePath}GameData/";
         $this->trackdir = "{$this->gamePath}GameData/Tracks/";
-        $this->login = $_ENV['adminLogin'];
-        $this->pass = $_ENV['adminPassword'];
-        $this->serverLogin = $_ENV['serverLogin'];
+        $this->login = $_ENV['admin_login'];
+        $this->pass = $_ENV['admin_password'];
+        $this->serverLogin = $_ENV['server_login'];
     }
 
     public function __get(string $name): mixed

@@ -27,7 +27,7 @@ class ManiaKarma
         $this->config->manialinkId = 911;
         $this->config->retryTime = 0;
         $this->config->retryWait = 600;
-        $this->config->login = $_ENV['serverLogin'];
+        $this->config->login = $_ENV['server_login'];
 
         Basic::console('************************(ManiaKarma)*************************');
         Basic::console('plugin.mania_karma.php/ 2.11.26 for XAseco');
@@ -39,7 +39,7 @@ class ManiaKarma
         $response = $this->httpClient->get("tmforever-trackmania-v4.php", [
             'Action' => 'Auth',
             'login'  => urlencode($this->config->login),
-            'name'   => base64_encode($_ENV['serverName']),
+            'name'   => base64_encode($_ENV['server_name']),
             'game'   => urlencode('TMF'),
             'zone'   => urlencode('World'),
             'nation' => urlencode($this->config->nation)

@@ -47,8 +47,10 @@ class Fluent
     public function __construct()
     {
         $this->dir = Basic::path();
+        $charset = !empty($_ENV['db_charset']) ? ";charset={$_ENV['db_charset']}" : ';';
+        
         try {
-            $conn = "mysql:host={$_ENV['db_host']};port={$_ENV['db_port']};dbname={$_ENV['db_database']};sslmode=verify-ca;sslrootcert=ca.pem;charset={$_ENV['db_charset']}";
+            $conn = "mysql:host={$_ENV['db_host']};port={$_ENV['db_port']};dbname={$_ENV['db_database']};sslmode=verify-ca;sslrootcert=ca.pem{$charset}";
             $this->pdo = new PDO($conn, $_ENV['db_login'], $_ENV['db_password']);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);

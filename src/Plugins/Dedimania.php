@@ -55,9 +55,9 @@ class Dedimania
         $config = $this->xmlParser->parseXml('dedimania.xml');
         $this->dediDB = $config->database;
         $this->masterServer = $config->masterserver_account;
-        $this->masterServer->login = $_ENV['dediUsername'];
-        $this->masterServer->password = $_ENV['dediCode'];
-        $this->masterServer->nation = $_ENV['dediNation'];
+        $this->masterServer->login = $_ENV['dedi_username'];
+        $this->masterServer->password = $_ENV['dedi_code'];
+        $this->masterServer->nation = $_ENV['dedi_nation'];
         //$this->messages = $config->messages;
         if (
             $this->masterServer->login === '' ||
