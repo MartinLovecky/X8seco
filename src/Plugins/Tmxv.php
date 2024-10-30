@@ -17,8 +17,10 @@ class Tmxv
     private array $videos = [];
     private array $commands = [];
 
-    public function __construct(private Challenge $challenge)
-    {
+    public function __construct(
+        private HttpClient $httpClient,
+        private Challenge $challenge
+    ) {
         // $this->CERT_PATH = Basic::path() . 'app/cacert.pem';
         $this->commands = [
             ['videos',  [$this, 'videos'], 'Sets up the tmx videos command environment'],
@@ -38,15 +40,9 @@ class Tmxv
     }
 
 
-    public function videos()
-    {
-    }
-    public function video()
-    {
-    }
-    public function gps()
-    {
-    }
+    public function videos() {}
+    public function video() {}
+    public function gps() {}
 
 
     private function onNewTrack(): void
@@ -60,8 +56,8 @@ class Tmxv
     {
         Basic::console('Requesting videos for track with TMX ID ' . $tmxid);
 
-        $client = new HttpClient(self::API_URL);
-        $output = $client->get('videos', [
+        $this->httpClient->baseUrl = self::API_URL;
+        $output = $this->httpClient->get('videos', [
             'fields' => 'LinkId,Title,PublishedAt',
             'trackid' => $tmxid
         ]);
@@ -91,6 +87,6 @@ class Tmxv
 
     private function sortVideosByPublishedDate(array &$videos): void
     {
-        usort($videos, fn ($a, $b) => strtotime($b['PublishedAt']) - strtotime($a['PublishedAt']));
+        usort($videos, fn($a, $b) => strtotime($b['PublishedAt']) - strtotime($a['PublishedAt']));
     }
 }

@@ -16,7 +16,8 @@ class ManiaKarma
     //private array $karma = [];
 
     public function __construct(
-        private XmlParser $xmlParser
+        private XmlParser $xmlParser,
+        private HttpClient $httpClient,
     ) {
     }
 
@@ -34,8 +35,8 @@ class ManiaKarma
         Basic::console(" => Trying to authenticate with central database {$this->config->urls->api_auth}");
 
         // http://worldwide.mania-karma.com/api/tmforever-trackmania-v4.php?Action=Auth&login=%s&name=%s&game=%s&zone=%s&nation=%s
-        $client = new HttpClient("http://worldwide.mania-karma.com/api/");
-        $response = $client->get("tmforever-trackmania-v4.php", [
+        $this->httpClient->baseUrl = "http://worldwide.mania-karma.com/api/";
+        $response = $this->httpClient->get("tmforever-trackmania-v4.php", [
             'Action' => 'Auth',
             'login'  => urlencode($this->config->login),
             'name'   => base64_encode($_ENV['serverName']),
@@ -45,7 +46,7 @@ class ManiaKarma
         ]);
 
         //NOTE - We could modify XML RPC parser to handle this
-        $responseData = $client->xmlResponse($response);
+        $responseData = $this->httpClient->xmlResponse($response);
 
         if ($responseData) {
             $status = $responseData['status'];

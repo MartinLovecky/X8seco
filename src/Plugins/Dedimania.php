@@ -71,7 +71,7 @@ class Dedimania
         }
 
         Basic::console('************* (Dedimania) *************');
-        $this->dedimania_connect();
+        $this->dedimaniaLogin();
         Basic::console('------------- (Dedimania) -------------');
         $dedi_lastsent = time();
     }
@@ -86,22 +86,42 @@ class Dedimania
         // dd($this->dediDB);
     }
 
-    private function dedimania_connect()
+    private function dedimaniaLogin(): bool
     {
-        $time = time();
-        Basic::console('* Dataserver connection on ' . $this->dediDB['name'] . ' ...');
-        Basic::console('* Try connection on ' . $this->dediDB['url'] . ' ...');
-        //TODO establish Dedimania connection and login
-        //dd($this->dediDB);
-        $endpoint = 'http://dedimania.net/SITE/login.php';
+        Basic::console('* Dataserver connection on http://dedimania.net ...');
+        Basic::console('* Try connection on http://dedimania.net/tmstats/?do=auth ...');
+
+        $endpoint = 'http://dedimania.net/tmstats/?do=auth';
         $data = [
-            'action' => 'in',
-            'login' => $_ENV['dediUsername'],
-            'code' => $_ENV['dediCode'],
-            'game' => 'TMF',
+            'log_login' => $_ENV['dediUsername'],
+            'log_code' => $_ENV['dediCode'],
+            'connect' => 'Connect',
         ];
-        $response = $this->httpClient->post($endpoint, $data);
-        //dd($response);
+        $headers = [
+            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Encoding: gzip, deflate',
+            'Accept-Language: en-US,en;q=0.8',
+            'Cache-Control: no-cache',
+            'Connection: keep-alive',
+            'Content-Type: application/x-www-form-urlencoded',
+            'Origin: http://dedimania.net',
+            'Pragma: no-cache',
+            'Referer: http://dedimania.net/tmstats/?do=auth',
+            'Sec-GPC: 1',
+            'Upgrade-Insecure-Requests: 1',
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+            'Cookie: punbb_cookie=a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%2215074862%22%3Bi%3A1%3Bs%3A32%3A%22f4e62b1ce858d19f07f7f503fcd0fe3c%22%3B%7D; PHPSESSID=o2qkg4bs7sgfha5n8i81ed5880'
+        ];
+        //login 
+        $response = $this->httpClient->post($endpoint, $data, $headers);
+
+        if ($response === false) {
+            Basic::console("Login to Dedimania failed check your .env and set #Dediamania.");
+            return false;
+        }
+    
+        Basic::console("Login to Dedimania successful.");
+        return true;
     }
 
     private function dedimania_playerinfo(string $login): array

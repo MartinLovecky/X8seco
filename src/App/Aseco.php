@@ -55,7 +55,6 @@ class Aseco
         }
 
         $this->pluginManager->onStartup();
-
         $this->panels = $this->pluginManager->getPlugin('Panels')->panels;
 
         $this->serverSync();

@@ -4,27 +4,39 @@ declare(strict_types=1);
 
 namespace Yuhzel\Xaseco\Services;
 
-//use __IDE\LanguageLevelTypeAware;
+use CurlHandle;
 use Yuhzel\Xaseco\Services\Basic;
+use Yuhzel\Xaseco\Core\Xml\XmlRpcParser;
 
 class HttpClient
 {
-    private string $baseUrl = '';
-    //#[LanguageLevelTypeAware(['8.0' => 'CurlHandle|false'], default: 'resource|false')]
-    private $ch;
-    private $cert;
+    /**
+     * @var string Base URL for the HTTP client.
+     */
+    public string $baseUrl = '';
+    /**
+     * @var CurlHandle|null cURL handle.
+     */
+    private ?CurlHandle $ch = null;
+    /**
+     * @var string Path to the certificate file.
+     */
+    private string $cert = '';
+    /**
+     * @var string Path to the file where cookies are stored.
+     */
     private string $cookieFile = '';
 
-    public function __construct(string $baseUrl = '')
+    public function __construct(private XmlRpcParser $xmlRpcParser)
     {
         $this->cert = Basic::path() . 'app/cacert.pem';
-        $this->baseUrl = $baseUrl;
         $this->ch = curl_init();
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_CAINFO, $this->cert);
         curl_setopt($this->ch, CURLOPT_TIMEOUT, 5);
         curl_setopt($this->ch, CURLOPT_COOKIEJAR, $this->cookieFile); // Save cookies
         curl_setopt($this->ch, CURLOPT_COOKIEFILE, $this->cookieFile); // Reuse cookies
+        curl_setopt($this->ch, CURLOPT_ENCODING, ''); // Automatically handle all encodingsw
     }
 
     private function request(
@@ -98,6 +110,19 @@ class HttpClient
         array $headers = []
     ): string|bool {
         return $this->request('DELETE', $endpoint, $data, $headers);
+    }
+
+    public function xmlRequest(string $endpoint, string $method, array $params = []): string|bool
+    {
+        $payload = $this->xmlRpcParser->createXml($method, $params);
+        // Set cURL options for the request
+        curl_setopt($this->ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: text/xml',
+            'Content-Length: ' . strlen($payload),
+        ]);
+        curl_setopt($this->ch, CURLOPT_POSTFIELDS, $payload);
+
+        return $this->post($endpoint);
     }
 
     public function xmlResponse(string $response): ?array

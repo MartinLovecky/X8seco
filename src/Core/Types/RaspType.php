@@ -111,7 +111,6 @@ class RaspType
     public function start(): void
     {
         $this->messages = $this->xmlParser->parseXml('rasp.xml')->messages;
-        // $this->eventManager->raspMessages = $xml->messages->toArray();
         Basic::console('[RASP] Checking database structure...');
         $this->checkTables();
         Basic::console('[RASP] ...Structure OK!');

@@ -35,7 +35,7 @@ use Yuhzel\Xaseco\Plugins\{
     ManiaKarma,
     Nickname,
     RaspJukebox,
-    RaspVotes
+    RaspVotes,
 };
 
 class PluginManager
@@ -66,7 +66,7 @@ class PluginManager
     }
 
     /**
-     * Any plugin dependency will be resolvet automaticly
+     * Any plugin dependency will resolve automaticly
      *
      * @param string $pluginName exmp. LocalDatabase in this form
      * @return null|object class exmp. $this->localDatabase;

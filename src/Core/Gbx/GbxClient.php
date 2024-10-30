@@ -128,6 +128,7 @@ class GbxClient
         if ($result instanceof XmlArrayObject) {
             dd($result, 'todo');
         } else {
+            dd('even more todo');
         }
     }
 
