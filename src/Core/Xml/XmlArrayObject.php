@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Xml;
+namespace Yuhzel\X8seco\Core\Xml;
 
 use ArrayObject;
 use BadMethodCallException;
@@ -14,7 +14,7 @@ use InvalidArgumentException;
  * This class provides an object-oriented interface for accessing XML elements and their attributes,
  * and supports recursive conversion of the object to an array.
  *
- * @package Yuhzel\Xaseco\Core
+ * @package Yuhzel\X8seco\Core
  * @method bool array_key_exists(string $key) Check if the key exists in the array
  * These properites created with __set
  * @property null|object $config
@@ -59,7 +59,7 @@ class XmlArrayObject extends ArrayObject
     private int $flags = 0;
     private string $iterator_class = "ArrayIterator";
 
-    public function __construct() 
+    public function __construct()
     {
         parent::__construct($this->data, $this->flags, $this->iterator_class);
     }
@@ -162,7 +162,7 @@ class XmlArrayObject extends ArrayObject
             if ($value instanceof self) {
                 $result[$key] = $value->toArray();
             } elseif (is_array($value)) {
-                $result[$key] = array_map(fn ($item) => $item instanceof self ? $item->toArray() : $item, $value);
+                $result[$key] = array_map(fn($item) => $item instanceof self ? $item->toArray() : $item, $value);
             } else {
                 $result[$key] = $value;
             }

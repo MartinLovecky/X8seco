@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Types;
+namespace Yuhzel\X8seco\Core\Types;
 
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Core\Gbx\GbxClient as Client;
-use Yuhzel\Xaseco\Core\Types\{
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Core\Gbx\GbxClient as Client;
+use Yuhzel\X8seco\Core\Types\{
     Challenge,
     PlayerList,
     RecordList,
     GameInfo
 };
+
 /**
  * @property null|string $name
  */

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\App;
+namespace Yuhzel\X8seco\App;
 
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\App\PluginManager;
-use Yuhzel\Xaseco\Core\Types\Player;
-use Yuhzel\Xaseco\Core\Types\Server;
-use Yuhzel\Xaseco\Core\Xml\XmlParser;
-use Yuhzel\Xaseco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\App\PluginManager;
+use Yuhzel\X8seco\Core\Types\Player;
+use Yuhzel\X8seco\Core\Types\Server;
+use Yuhzel\X8seco\Core\Xml\XmlParser;
+use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
 class Aseco
 {
@@ -30,19 +30,18 @@ class Aseco
         private XmlParser $xmlParser,
         private PluginManager $pluginManager,
         private Player $player
-    ) {
-    }
+    ) {}
 
     public function run()
     {
         $config = Basic::path() . "app/xml/config.xml";
-        Basic::console('[XAseco] Load settings from [{1}]', $config);
+        Basic::console('[X8seco] Load settings from [{1}]', $config);
         $this->loadSettings();
 
-        Basic::console('[XAseco] Load admin/ops lists [{1}]', $this->settings->adminops_file);
+        Basic::console('[X8seco] Load admin/ops lists [{1}]', $this->settings->adminops_file);
         $this->readLists();
 
-        Basic::console('[XAseco] Load banned IPs list [{1}]', $this->settings->bannedips_file);
+        Basic::console('[X8seco] Load banned IPs list [{1}]', $this->settings->bannedips_file);
         $this->readIPs();
 
         if (!$this->connect()) {
@@ -51,7 +50,7 @@ class Aseco
         Basic::console('Connection established successfully!');
 
         if (!empty($this->settings->lock_password->storage)) {
-            Basic::console("[XAseco] Locked admin commands & features with password '{1}'", $this->settings->lock_password);
+            Basic::console("[X8seco] Locked admin commands & features with password '{1}'", $this->settings->lock_password);
         }
 
         $this->pluginManager->onStartup();

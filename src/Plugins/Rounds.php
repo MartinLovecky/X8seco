@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
 class Rounds
 {
@@ -10,8 +10,7 @@ class Rounds
         public int $roundsCount = 0,
         public array $roundTimes = [],
         public array $roundPbs = []
-    ) {
-    }
+    ) {}
 
     public function onSync(): void
     {

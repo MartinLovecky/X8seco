@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Core\Types\ChatCommand;
+use Yuhzel\X8seco\Core\Types\ChatCommand;
 
 class ChatDedimania
 {
@@ -37,49 +37,19 @@ class ChatDedimania
         ChatCommand::registerCommands($this->commands, self::PLUGIN_NAME);
     }
 
-    public function helpdedi()
-    {
-    }
-    public function dedihelp()
-    {
-    }
-    public function dedirecs()
-    {
-    }
-    public function dedinew()
-    {
-    }
-    public function dedilive()
-    {
-    }
-    public function dedipb()
-    {
-    }
-    public function dedifirst()
-    {
-    }
-    public function dedilast()
-    {
-    }
-    public function dedinext()
-    {
-    }
-    public function dedidiff()
-    {
-    }
-    public function dedirange()
-    {
-    }
-    public function dedicps()
-    {
-    }
-    public function dedistats()
-    {
-    }
-    public function dedicptms()
-    {
-    }
-    public function dedisectms()
-    {
-    }
+    public function helpdedi() {}
+    public function dedihelp() {}
+    public function dedirecs() {}
+    public function dedinew() {}
+    public function dedilive() {}
+    public function dedipb() {}
+    public function dedifirst() {}
+    public function dedilast() {}
+    public function dedinext() {}
+    public function dedidiff() {}
+    public function dedirange() {}
+    public function dedicps() {}
+    public function dedistats() {}
+    public function dedicptms() {}
+    public function dedisectms() {}
 }

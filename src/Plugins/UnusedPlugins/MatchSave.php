@@ -3,15 +3,15 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
 use Exception;
-use Yuhzel\Xaseco\Core\Gbx\GbxClient;
-use Yuhzel\Xaseco\Database\Fluent;
-use Yuhzel\Xaseco\Services\Log;
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Core\Xml\XmlParser;
-use Yuhzel\Xaseco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Core\Gbx\GbxClient;
+use Yuhzel\X8seco\Database\Fluent;
+use Yuhzel\X8seco\Services\Log;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Core\Xml\XmlParser;
+use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 // ffMod v1.4
 // Original version by Sloth, via tm-forum.com
 // Hack & Slash by AssemblerManiac

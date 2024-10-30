@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
 use Exception;
-use Yuhzel\Xaseco\Database\Fluent;
-use Yuhzel\Xaseco\Services\{Log, Basic};
-use Yuhzel\Xaseco\Core\Types\{Challenge, PlayerList};
+use Yuhzel\X8seco\Database\Fluent;
+use Yuhzel\X8seco\Services\{Log, Basic};
+use Yuhzel\X8seco\Core\Types\{Challenge, PlayerList};
 
 /**
  * This script saves record into a local database.
@@ -34,8 +34,7 @@ class LocalDatabase
         // private Player $player,
         private PlayerList $playerList,
         private Challenge $challenge,
-    ) {
-    }
+    ) {}
 
     public function onStartup(): void
     {
@@ -55,11 +54,11 @@ class LocalDatabase
             try {
                 // Create table if they dont exist
                 if ($this->fluent->execSQLFile($table)) {
-                    if(!$this->fluent->validStructure($table)) {
+                    if (!$this->fluent->validStructure($table)) {
                         Basic::console('ERROR 1 LocalDatabase');
                     }
                 } else {
-                    if(!$this->fluent->validStructure($table)) {
+                    if (!$this->fluent->validStructure($table)) {
                         Basic::console('ERROR 2 LocalDatabase');
                     }
                 }
@@ -69,9 +68,7 @@ class LocalDatabase
         }
     }
 
-    public function playerExist()
-    {
-    }
+    public function playerExist() {}
 
     //REVIEW - SUS
     public function onSync(): void
@@ -88,7 +85,7 @@ class LocalDatabase
     // NOTE: since we handle DB difrently id is string
     public function getPlayerId(string $login): string
     {
-        if(array_key_exists($login, $this->playerList->players)) {
+        if (array_key_exists($login, $this->playerList->players)) {
             return $this->playerList->players[$login]->login;
         }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
 /**
  * ManiaLive Integration
@@ -39,6 +39,4 @@ namespace Yuhzel\Xaseco\Plugins;
  *
  * updated by Yuhzel 2024
  */
-class ManiaLive
-{
-}
+class ManiaLive {}

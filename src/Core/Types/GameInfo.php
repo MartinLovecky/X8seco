@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Types;
+namespace Yuhzel\X8seco\Core\Types;
 
-use Yuhzel\Xaseco\Core\Gbx\GbxClient;
-use Yuhzel\Xaseco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Core\Gbx\GbxClient;
+use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
 class GameInfo
 {
@@ -15,8 +15,7 @@ class GameInfo
     public function __construct(
         private GbxClient $client,
         private ?XmlArrayObject $data = null
-    ) {
-    }
+    ) {}
 
     public function __get(string $name): mixed
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Xml;
+namespace Yuhzel\X8seco\Core\Xml;
 
 use DOMNode;
 use DateTime;
@@ -10,8 +10,8 @@ use Exception;
 use DOMElement;
 use DOMDocument;
 use DOMNodeList;
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
 /**
  * XmlParser class for parsing XML files into an XmlArrayObject.
@@ -20,7 +20,7 @@ use Yuhzel\Xaseco\Core\Xml\XmlArrayObject;
  * XmlArrayObject. It processes attributes and child nodes, converting data
  * types as necessary (e.g., booleans, numbers, DateTime).
  *
- * @package Yuhzel\Xaseco\Core
+ * @package Yuhzel\X8seco\Core
  * @author Yuhzel
  */
 class XmlParser

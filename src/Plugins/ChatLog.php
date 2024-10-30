@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-class ChatLog
-{
-}
+class ChatLog {}

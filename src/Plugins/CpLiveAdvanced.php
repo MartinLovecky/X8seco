@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Core\Types\Challenge;
-use Yuhzel\Xaseco\Core\Types\PlayerList;
+use Yuhzel\X8seco\Core\Types\Challenge;
+use Yuhzel\X8seco\Core\Types\PlayerList;
 
 class CpLiveAdvanced
 {
@@ -17,8 +17,7 @@ class CpLiveAdvanced
         // @phpstan-ignore-next-line
         private Challenge $challenge,
         private PlayerList $playerList
-    ) {
-    }
+    ) {}
 
     public function onSync(): void
     {
@@ -28,13 +27,12 @@ class CpLiveAdvanced
 
     public function onPlayerConnect(string $login)
     {
-        if(array_key_exists($login, $this->playerList->players)) {
+        if (array_key_exists($login, $this->playerList->players)) {
             $spectator = $this->playerList->players[$login]->isspectator;
-            if(!$spectator) {
+            if (!$spectator) {
                 $this->list = $this->playerList->players;
             }
-            if(empty($this->list)) {
-
+            if (empty($this->list)) {
             }
         }
     }
@@ -49,7 +47,5 @@ class CpLiveAdvanced
         return microtime(true) * 1000;
     }
     // @phpstan-ignore-next-line
-    private function managePlayerConnect()
-    {
-    }
+    private function managePlayerConnect() {}
 }

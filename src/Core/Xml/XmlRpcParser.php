@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Xml;
+namespace Yuhzel\X8seco\Core\Xml;
 
 use DOMNode;
 use Exception;
 use DOMElement;
 use DOMDocument;
 use UnexpectedValueException;
-use Yuhzel\Xaseco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
 /**
  * Class XmlRpcParser
@@ -20,9 +20,7 @@ use Yuhzel\Xaseco\Core\Xml\XmlArrayObject;
  */
 class XmlRpcParser
 {
-    public function __construct(private DOMDocument $doc)
-    {
-    }
+    public function __construct(private DOMDocument $doc) {}
 
     #region Request
     /**
@@ -82,7 +80,7 @@ class XmlRpcParser
                 $this->addParam($login, $params, $dom);
             }
             // Add manialink
-            if(isset($manialink)) {
+            if (isset($manialink)) {
                 $this->addParam($manialink, $params, $dom);
             }
             if (isset($duration)) {
@@ -104,7 +102,7 @@ class XmlRpcParser
                 $this->addParam($login, $params, $dom);
             }
             // Add manialink
-            if(isset($manialink)) {
+            if (isset($manialink)) {
                 $this->addParam($manialink, $params, $dom);
             }
             if (isset($duration)) {
@@ -339,7 +337,7 @@ class XmlRpcParser
         if ($element->nodeName === 'value' && $element->firstChild instanceof DOMElement) {
             $element = $element->firstChild; // Move to the actual type element inside <value>
         }
-        if($element instanceof DOMElement){
+        if ($element instanceof DOMElement) {
             return match ($element->tagName) {
                 'string' => (string)$element->nodeValue,
                 'boolean' => filter_var($element->nodeValue, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE),

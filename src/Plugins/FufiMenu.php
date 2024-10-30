@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Core\Xml\{XmlArrayObject, XmlParser};
+use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlParser};
 
 /**
  * Fufi Menu Plugin for XASECO by oorf-fuckfish
@@ -40,9 +40,7 @@ class FufiMenu
     // private string $caption = "   Menu";
     // private int $menutimeout = 13000;
 
-    public function __construct(private XmlParser $xmlParser)
-    {
-    }
+    public function __construct(private XmlParser $xmlParser) {}
 
     public function onStartup()
     {

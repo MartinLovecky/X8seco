@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Services;
+namespace Yuhzel\X8seco\Services;
 
 use Monolog\Level;
 use LogicException;

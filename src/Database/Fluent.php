@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Database;
+namespace Yuhzel\X8seco\Database;
 
 use PDO;
 use PDOException;
 use Envms\FluentPDO\Query;
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Services\Log;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Log;
 
 /**
  * Class Fluent
  *
  * This class handles database connections using PDO and FluentPDO query builder.
  * It includes methods for initializing tables, validating their structure, and executing SQL files.
- * @package Yuhzel\Xaseco\Database
+ * @package Yuhzel\X8seco\Database
  * @author Yuhzel
  */
 class Fluent
@@ -48,7 +48,7 @@ class Fluent
     {
         $this->dir = Basic::path();
         $charset = !empty($_ENV['db_charset']) ? ";charset={$_ENV['db_charset']}" : ';';
-        
+
         try {
             $conn = "mysql:host={$_ENV['db_host']};port={$_ENV['db_port']};dbname={$_ENV['db_database']};sslmode=verify-ca;sslrootcert=ca.pem{$charset}";
             $this->pdo = new PDO($conn, $_ENV['db_login'], $_ENV['db_password']);

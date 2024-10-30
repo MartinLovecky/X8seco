@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\App;
+namespace Yuhzel\X8seco\App;
 
-use Yuhzel\Xaseco\Core\Gbx\GbxClient as Client;
-use Yuhzel\Xaseco\Database\Fluent;
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Core\Types\PlayerList;
-use Yuhzel\Xaseco\Core\Types\Player;
+use Yuhzel\X8seco\Core\Gbx\GbxClient as Client;
+use Yuhzel\X8seco\Database\Fluent;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Core\Types\PlayerList;
+use Yuhzel\X8seco\Core\Types\Player;
 
 class ManiaLinks
 {
@@ -203,20 +203,20 @@ class ManiaLinks
         $head = 'TOP 100 Most Active Players:';
         $top = 100;
         $bgn = '{#black}';
-    
+
         // Fetch the top players from the database
         $res = $this->fluent->query->from('players')
             ->select(['NickName', 'TimePlayed'])
             ->orderBy('TimePlayed DESC')
             ->limit($top)
             ->fetchAll();
-    
+
         $active = [];
         $i = 1; // Initialize the index for player ranking
         $lines = 0; // Initialize line counter
         $player->msgs = []; // Initialize messages array
         $extra = 0.2; // Extra height for cells
-    
+
         // Add header message
         $player->msgs[0] = [
             1,
@@ -224,7 +224,7 @@ class ManiaLinks
             [0.8 + $extra, 0.1, 0.45 + $extra, 0.25],
             ['BgRaceScore2', 'LadderRank']
         ];
-    
+
         foreach ($res as $row) {
             $nick = $row['NickName'];
             $active[] = [
@@ -233,7 +233,7 @@ class ManiaLinks
                 Basic::formatTimeH($row['TimePlayed'] * 1000, false) // Formatted time played
             ];
             $i++; // Increment player ranking
-    
+
             // If the number of lines exceeds 14, store the current active list and reset
             if (++$lines >= 14) {
                 $player->msgs[] = $active; // Add active messages to player messages
@@ -241,12 +241,12 @@ class ManiaLinks
                 $active = []; // Reset active messages
             }
         }
-    
+
         // If there are any remaining active messages after the loop, add them
         if (!empty($active)) {
             $player->msgs[] = $active;
         }
-    
+
         // Display ManiaLink message
         $this->displayManialinkMulti($player);
     }

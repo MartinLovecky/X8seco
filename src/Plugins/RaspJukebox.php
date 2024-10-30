@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
 use RuntimeException;
-use Yuhzel\Xaseco\Core\Types\ChatCommand;
-use Yuhzel\Xaseco\Core\Types\RaspType;
+use Yuhzel\X8seco\Core\Types\ChatCommand;
+use Yuhzel\X8seco\Core\Types\RaspType;
 
 class RaspJukebox
 {
@@ -48,22 +48,10 @@ class RaspJukebox
     {
         $buffer = $this->buffer;
     }
-    public function jukebox()
-    {
-    }
-    public function autojuke()
-    {
-    }
-    public function add()
-    {
-    }
-    public function y()
-    {
-    }
-    public function history()
-    {
-    }
-    public function xlist()
-    {
-    }
+    public function jukebox() {}
+    public function autojuke() {}
+    public function add() {}
+    public function y() {}
+    public function history() {}
+    public function xlist() {}
 }

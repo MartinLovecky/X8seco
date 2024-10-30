@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Services\HttpClient;
-use Yuhzel\Xaseco\Core\Types\Challenge;
-use Yuhzel\Xaseco\Core\Types\ChatCommand;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\HttpClient;
+use Yuhzel\X8seco\Core\Types\Challenge;
+use Yuhzel\X8seco\Core\Types\ChatCommand;
 
 class Tmxv
 {

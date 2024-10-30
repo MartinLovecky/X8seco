@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
 use RuntimeException;
-use Yuhzel\Xaseco\Core\Gbx\GbxClient;
-use Yuhzel\Xaseco\Services\Basic;
+use Yuhzel\X8seco\Core\Gbx\GbxClient;
+use Yuhzel\X8seco\Services\Basic;
 
 class ManiaLinks
 {
@@ -29,9 +29,7 @@ class ManiaLinks
 
     public $auto_scorepanel;
 
-    public function __construct(private GbxClient $client)
-    {
-    }
+    public function __construct(private GbxClient $client) {}
 
     public function onNewChallenge(): void
     {

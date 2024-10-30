@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Services;
+namespace Yuhzel\X8seco\Services;
 
 use CurlHandle;
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Core\Xml\XmlRpcParser;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Core\Xml\XmlRpcParser;
 
 class HttpClient
 {

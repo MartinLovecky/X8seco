@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Types;
+namespace Yuhzel\X8seco\Core\Types;
 
-use Yuhzel\Xaseco\Core\Types\Player;
+use Yuhzel\X8seco\Core\Types\Player;
 
 class PlayerList
 {

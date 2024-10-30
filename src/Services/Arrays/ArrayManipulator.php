@@ -1,6 +1,6 @@
 <?php
 
-namespace Yuhzel\Xaseco\Services\Arrays;
+namespace Yuhzel\X8seco\Services\Arrays;
 
 class ArrayManipulator
 {

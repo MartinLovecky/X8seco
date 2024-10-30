@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Gbx;
+namespace Yuhzel\X8seco\Core\Gbx;
 
 use Exception;
 use XMLParser;

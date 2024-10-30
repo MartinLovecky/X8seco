@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Database\Fluent;
-use Yuhzel\Xaseco\Core\Types\ChatCommand;
-use Yuhzel\Xaseco\Core\Types\RaspType;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Database\Fluent;
+use Yuhzel\X8seco\Core\Types\ChatCommand;
+use Yuhzel\X8seco\Core\Types\RaspType;
 
 /**
  * RASP plugin.
@@ -58,19 +58,9 @@ class Rasp
         $this->typeRasp->event_onsync();
     }
 
-    public function rank()
-    {
-    }
-    public function top10()
-    {
-    }
-    public function top100()
-    {
-    }
-    public function topwins()
-    {
-    }
-    public function active()
-    {
-    }
+    public function rank() {}
+    public function top10() {}
+    public function top100() {}
+    public function topwins() {}
+    public function active() {}
 }

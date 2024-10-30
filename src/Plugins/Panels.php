@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Core\Types\ChatCommand;
-use Yuhzel\Xaseco\Services\Basic;
+use Yuhzel\X8seco\Core\Types\ChatCommand;
+use Yuhzel\X8seco\Services\Basic;
 
 /**
  * Panels plugin (TMF).
@@ -123,13 +123,7 @@ class Panels
     // }
 
 
-    public function donpanel()
-    {
-    }
-    public function recpanel()
-    {
-    }
-    public function votepanel()
-    {
-    }
+    public function donpanel() {}
+    public function recpanel() {}
+    public function votepanel() {}
 }

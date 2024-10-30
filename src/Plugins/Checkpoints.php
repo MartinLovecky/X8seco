@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Core\Types\{
+use Yuhzel\X8seco\Core\Types\{
     Challenge,
     RecordList,
     ChatCommand
@@ -94,16 +94,8 @@ class Checkpoints
         $this->laps_cpcount = $this->challenge->nbchecks ?? 0;
     }
 
-    public function cps()
-    {
-    }
-    public function cpsspec()
-    {
-    }
-    public function cptms()
-    {
-    }
-    public function sectms()
-    {
-    }
+    public function cps() {}
+    public function cpsspec() {}
+    public function cptms() {}
+    public function sectms() {}
 }

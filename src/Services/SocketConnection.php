@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Services;
+namespace Yuhzel\X8seco\Services;
 
 use Exception;
 use RuntimeException;
 use InvalidArgumentException;
-use Yuhzel\Xaseco\Services\Log;
+use Yuhzel\X8seco\Services\Log;
 
 /**
  * Class SocketConnection
  *
  * Handles socket communication with features such as blocking mode, stream timeout, and data transmission.
  *
- * @package Yuhzel\Xaseco\Services
+ * @package Yuhzel\X8seco\Services
  * @author Yuhzel
  */
 class SocketConnection

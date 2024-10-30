@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Types;
+namespace Yuhzel\X8seco\Core\Types;
 
 use Exception;
-use Yuhzel\Xaseco\Database\Fluent;
-use Yuhzel\Xaseco\Services\{Log, Basic};
-use Yuhzel\Xaseco\Core\Xml\{XmlParser, XmlArrayObject};
+use Yuhzel\X8seco\Database\Fluent;
+use Yuhzel\X8seco\Services\{Log, Basic};
+use Yuhzel\X8seco\Core\Xml\{XmlParser, XmlArrayObject};
 
 class RaspType
 {
@@ -146,7 +146,7 @@ class RaspType
     {
         $sepchar = substr($this->trackdir, -1, 1);
         $tmxdir = '';
-        
+
         if ($sepchar === '/') {
             $tmxdir = str_replace('/', $sepchar, $this->tmxdir);
         }

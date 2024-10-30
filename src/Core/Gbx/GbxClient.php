@@ -36,13 +36,13 @@ declare(strict_types=1);
     Note: Much of the code is still based on Xymph's version. Thanks for the reference.
 */
 
-namespace Yuhzel\Xaseco\Core\Gbx;
+namespace Yuhzel\X8seco\Core\Gbx;
 
 use Exception;
 use RuntimeException;
-use Yuhzel\Xaseco\Core\Gbx\ErrorHandlingTrait;
-use Yuhzel\Xaseco\Core\Xml\{XmlArrayObject, XmlRpcParser};
-use Yuhzel\Xaseco\Services\{SocketConnection, Basic, Log};
+use Yuhzel\X8seco\Core\Gbx\ErrorHandlingTrait;
+use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlRpcParser};
+use Yuhzel\X8seco\Services\{SocketConnection, Basic, Log};
 
 /**
  * IXR_Client_Gbx class for interacting with GBX remote services.
@@ -51,7 +51,7 @@ use Yuhzel\Xaseco\Services\{SocketConnection, Basic, Log};
  * remote services using the XML-RPC protocol. It supports different protocol versions
  * and handles request and response operations, including error management.
  *
- * @package Yuhzel\Xaseco\Core\Gbx
+ * @package Yuhzel\X8seco\Core\Gbx
  * @license MIT
  *
  */

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Gbx;
+namespace Yuhzel\X8seco\Core\Gbx;
 
 /**
  * Class IxrError
@@ -11,7 +11,7 @@ namespace Yuhzel\Xaseco\Core\Gbx;
  * supports dynamic property assignment via magic methods and can load error data
  * from an array.
  *
- * @package Yuhzel\Xaseco\Core\Gbx
+ * @package Yuhzel\X8seco\Core\Gbx
  * @author Yuhzel
  */
 class IxrError

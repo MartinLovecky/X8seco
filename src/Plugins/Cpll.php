@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Core\Gbx\GbxClient as Client;
-use Yuhzel\Xaseco\Core\Types\Challenge;
-use Yuhzel\Xaseco\Services\Basic;
+use Yuhzel\X8seco\Core\Gbx\GbxClient as Client;
+use Yuhzel\X8seco\Core\Types\Challenge;
+use Yuhzel\X8seco\Services\Basic;
 
 class Cpll
 {
@@ -18,8 +18,7 @@ class Cpll
     public function __construct(
         private Client $client,
         private Challenge $challenge
-    ) {
-    }
+    ) {}
 
     public function onNewChallenge(): void
     {

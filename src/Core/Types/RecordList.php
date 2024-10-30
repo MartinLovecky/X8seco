@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Types;
+namespace Yuhzel\X8seco\Core\Types;
 
 use OutOfBoundsException;
-use Yuhzel\Xaseco\Core\Types\RaspType;
-use Yuhzel\Xaseco\Core\Types\Record;
-use Yuhzel\Xaseco\Services\Arrays\ArrayManipulator;
+use Yuhzel\X8seco\Core\Types\RaspType;
+use Yuhzel\X8seco\Core\Types\Record;
+use Yuhzel\X8seco\Services\Arrays\ArrayManipulator;
 
 class RecordList
 {
@@ -16,8 +16,7 @@ class RecordList
         public ArrayManipulator $am,
         public int $limit = 0,
         public array $records = [],
-    ) {
-    }
+    ) {}
 
     /**
      * Set the limit for the number of records.

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Gbx;
+namespace Yuhzel\X8seco\Core\Gbx;
 
-use Yuhzel\Xaseco\Core\Gbx\IxrError;
+use Yuhzel\X8seco\Core\Gbx\IxrError;
 
 /**
  * Trait ErrorHandlingTrait
@@ -12,7 +12,7 @@ use Yuhzel\Xaseco\Core\Gbx\IxrError;
  * Provides error handling capabilities for classes that use this trait.
  * It allows setting, getting, checking, and displaying errors.
  *
- * @package Yuhzel\Xaseco\Core\Gbx
+ * @package Yuhzel\X8seco\Core\Gbx
  * @author Yuhzel
  */
 trait ErrorHandlingTrait

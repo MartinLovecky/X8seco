@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
 use RuntimeException;
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Services\HttpClient;
-use Yuhzel\Xaseco\Core\Xml\XmlParser;
-use Yuhzel\Xaseco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\HttpClient;
+use Yuhzel\X8seco\Core\Xml\XmlParser;
+use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
 class ManiaKarma
 {
@@ -18,8 +18,7 @@ class ManiaKarma
     public function __construct(
         private XmlParser $xmlParser,
         private HttpClient $httpClient,
-    ) {
-    }
+    ) {}
 
     public function onSync(): void
     {

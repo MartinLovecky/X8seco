@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Core\Types\PlayerList;
-use Yuhzel\Xaseco\Plugins\Checkpoints;
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Services\HttpClient;
-use Yuhzel\Xaseco\Core\Xml\{XmlArrayObject, XmlParser};
+use Yuhzel\X8seco\Core\Types\PlayerList;
+use Yuhzel\X8seco\Plugins\Checkpoints;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\HttpClient;
+use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlParser};
 
 class Dedimania
 {
@@ -47,8 +47,7 @@ class Dedimania
         private Checkpoints $checkpoints,
         private PlayerList $playerList,
         private HttpClient $httpClient,
-    ) {
-    }
+    ) {}
 
     public function onStartup(): void
     {
@@ -93,8 +92,8 @@ class Dedimania
 
         $endpoint = 'http://dedimania.net/tmstats/?do=auth';
         $data = [
-            'log_login' => $_ENV['dediUsername'],
-            'log_code' => $_ENV['dediCode'],
+            'log_login' => $this->masterServer->login,
+            'log_code' =>  $this->masterServer->password,
             'connect' => 'Connect',
         ];
         $headers = [
@@ -119,7 +118,7 @@ class Dedimania
             Basic::console("Login to Dedimania failed check your .env and set #Dediamania.");
             return false;
         }
-    
+
         Basic::console("Login to Dedimania successful.");
         return true;
     }

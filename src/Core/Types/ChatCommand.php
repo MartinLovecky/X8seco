@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Types;
+namespace Yuhzel\X8seco\Core\Types;
 
-use Yuhzel\Xaseco\Services\Basic;
+use Yuhzel\X8seco\Services\Basic;
 
 class ChatCommand
 {
@@ -32,7 +32,7 @@ class ChatCommand
 
     public static function getCommandsByPlugin(string $plugin): array
     {
-        return array_filter(self::$commands, fn ($command) => $command['plugin'] === $plugin);
+        return array_filter(self::$commands, fn($command) => $command['plugin'] === $plugin);
     }
 
     public static function getHelp(?string $plugin = null): array
@@ -41,7 +41,7 @@ class ChatCommand
             ? self::getCommandsByPlugin($plugin)
             : self::$commands;
 
-        $helpTexts = array_map(fn ($cmd) => $cmd['help'], $filteredCommands);
+        $helpTexts = array_map(fn($cmd) => $cmd['help'], $filteredCommands);
         $helpTexts['ptr'] = 1;
         $helpTexts['header'] = "Currently supported commands:";
         $helpTexts['width'] = [1.3, 0.3, 1.0];

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 use Doctum\Doctum;
 use Dotenv\Dotenv;
-use Yuhzel\Xaseco\Services\Log;
+use Yuhzel\X8seco\Services\Log;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -32,8 +32,8 @@ Log::init();
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
-$aseco = $container->get(\Yuhzel\Xaseco\App\Aseco::class);
-$fluent = $container->get(\Yuhzel\Xaseco\Database\Fluent::class);
+$aseco = $container->get(\Yuhzel\X8seco\App\Aseco::class);
+$fluent = $container->get(\Yuhzel\X8seco\Database\Fluent::class);
 
 echo $aseco->run();
 

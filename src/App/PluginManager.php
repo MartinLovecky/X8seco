@@ -3,18 +3,18 @@
 /**
  * This class replace old plugin system from aseco
  * IF you want inturduce new plugin or some that was not converted you need create
- * PluginName.php in /src/Plugins and then create namespace Yuhzel\Xaseco\Plugins;
+ * PluginName.php in /src/Plugins and then create namespace Yuhzel\X8seco\Plugins;
  * class PluginName ... your code
  * after that put PluginName into list of plugins
  */
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\App;
+namespace Yuhzel\X8seco\App;
 
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Services\Log;
-use Yuhzel\Xaseco\Plugins\{
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Log;
+use Yuhzel\X8seco\Plugins\{
     Tmxv,
     LocalDatabase,
     Panels,
@@ -62,8 +62,7 @@ class PluginManager
         public Nickname $nickname,
         public RaspJukebox $raspJukebox,
         public RaspVotes $raspVotes,
-    ) {
-    }
+    ) {}
 
     /**
      * Any plugin dependency will resolve automaticly

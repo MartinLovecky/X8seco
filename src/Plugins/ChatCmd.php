@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\App\ManiaLinks;
-use Yuhzel\Xaseco\Services\Basic;
-use Yuhzel\Xaseco\Core\Types\Challenge;
-use Yuhzel\Xaseco\Core\Types\ChatCommand;
-use Yuhzel\Xaseco\Core\Types\Player;
-use Yuhzel\Xaseco\Core\Types\PlayerList;
-use Yuhzel\Xaseco\Core\Types\RecordList;
-use Yuhzel\Xaseco\Core\Gbx\GbxClient as Client;
+use Yuhzel\X8seco\App\ManiaLinks;
+use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Core\Types\Challenge;
+use Yuhzel\X8seco\Core\Types\ChatCommand;
+use Yuhzel\X8seco\Core\Types\Player;
+use Yuhzel\X8seco\Core\Types\PlayerList;
+use Yuhzel\X8seco\Core\Types\RecordList;
+use Yuhzel\X8seco\Core\Gbx\GbxClient as Client;
 
 class ChatCmd
 {
@@ -73,57 +73,23 @@ class ChatCmd
         $this->maniaLinks->displayManialinkMulti($this->player);
     }
 
-    public function helpPall()
-    {
-    }
-    public function laston()
-    {
-    }
-    public function lastwin()
-    {
-    }
-    public function me()
-    {
-    }
-    public function wins()
-    {
-    }
-    public function song()
-    {
-    }
-    public function mod()
-    {
-    }
-    public function players()
-    {
-    }
-    public function ranks()
-    {
-    }
-    public function clans()
-    {
-    }
-    public function topclans()
-    {
-    }
-    public function recs()
-    {
-    }
-    public function best()
-    {
-    }
-    public function worst()
-    {
-    }
-    public function summary()
-    {
-    }
-    public function topsums()
-    {
-    }
-    public function toprecs()
-    {
-    }
+    public function helpPall() {}
+    public function laston() {}
+    public function lastwin() {}
+    public function me() {}
+    public function wins() {}
+    public function song() {}
+    public function mod() {}
+    public function players() {}
+    public function ranks() {}
+    public function clans() {}
+    public function topclans() {}
+    public function recs() {}
+    public function best() {}
+    public function worst() {}
+    public function summary() {}
+    public function topsums() {}
+    public function toprecs() {}
 
     public function trackrecs($login, int $mode)
     {
@@ -270,46 +236,18 @@ class ChatCmd
         );
     }
 
-    public function newrecs()
-    {
-    }
-    public function liverecs()
-    {
-    }
-    public function firstrec()
-    {
-    }
-    public function lastrec()
-    {
-    }
-    public function nextrec()
-    {
-    }
-    public function diffrec()
-    {
-    }
-    public function recrange()
-    {
-    }
-    public function server()
-    {
-    }
-    public function xaseco()
-    {
-    }
-    public function plugins()
-    {
-    }
-    public function nations()
-    {
-    }
-    public function stats()
-    {
-    }
-    public function statsall()
-    {
-    }
-    public function settings()
-    {
-    }
+    public function newrecs() {}
+    public function liverecs() {}
+    public function firstrec() {}
+    public function lastrec() {}
+    public function nextrec() {}
+    public function diffrec() {}
+    public function recrange() {}
+    public function server() {}
+    public function xaseco() {}
+    public function plugins() {}
+    public function nations() {}
+    public function stats() {}
+    public function statsall() {}
+    public function settings() {}
 }

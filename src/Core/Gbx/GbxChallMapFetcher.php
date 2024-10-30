@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Gbx;
+namespace Yuhzel\X8seco\Core\Gbx;
 
-use Yuhzel\Xaseco\Core\Gbx\{GbxBaseFetcher, TmxInfoFetcher};
+use Yuhzel\X8seco\Core\Gbx\{GbxBaseFetcher, TmxInfoFetcher};
 
 class GbxChallMapFetcher extends GbxBaseFetcher
 {

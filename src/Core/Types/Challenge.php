@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Types;
+namespace Yuhzel\X8seco\Core\Types;
 
-use Yuhzel\Xaseco\Core\Gbx\GbxClient;
-use Yuhzel\Xaseco\Core\Types\RaspType;
-use Yuhzel\Xaseco\Core\Gbx\TmxInfoFetcher;
-use Yuhzel\Xaseco\Core\Gbx\GbxChallMapFetcher;
+use Yuhzel\X8seco\Core\Gbx\GbxClient;
+use Yuhzel\X8seco\Core\Types\RaspType;
+use Yuhzel\X8seco\Core\Gbx\TmxInfoFetcher;
+use Yuhzel\X8seco\Core\Gbx\GbxChallMapFetcher;
 
 /**
  * Class Challenge
@@ -17,7 +17,7 @@ use Yuhzel\Xaseco\Core\Gbx\GbxChallMapFetcher;
  * @property null|int $nbCheckpoints
  * @property null|string $name
  * @property null|string $fileName
- * @package Yuhzel\Xaseco\Core\Types
+ * @package Yuhzel\X8seco\Core\Types
  */
 class Challenge
 {

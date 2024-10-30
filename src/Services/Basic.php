@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Services;
+namespace Yuhzel\X8seco\Services;
 
 use InvalidArgumentException;
-use Yuhzel\Xaseco\Services\Log;
+use Yuhzel\X8seco\Services\Log;
 
 class Basic
 {
@@ -117,7 +117,7 @@ class Basic
             return htmlspecialchars_decode(self::$message[$message]);
         }
 
-        self::console('[XAseco] Invalid message in getChatMessage [{1}]', $message);
+        self::console('[X8seco] Invalid message in getChatMessage [{1}]', $message);
         return null;
     }
 

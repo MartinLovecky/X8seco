@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Services\Basic;
+use Yuhzel\X8seco\Services\Basic;
 
 class MsgLog
 {
@@ -13,8 +13,7 @@ class MsgLog
         public int $msglen =  21,
         public int $linelen = 800,
         public int $winlen = 5
-    ) {
-    }
+    ) {}
 
     public function send_window_message(string $message, int $scoreboard): void
     {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Plugins;
+namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\Xaseco\Core\Xml\XmlArrayObject;
-use Yuhzel\Xaseco\Core\Xml\XmlParser;
+use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Core\Xml\XmlParser;
 
 class Eyepiece
 {
@@ -13,8 +13,7 @@ class Eyepiece
 
     public function __construct(
         private XmlParser $xmlParser
-    ) {
-    }
+    ) {}
 
     public function onSync()
     {

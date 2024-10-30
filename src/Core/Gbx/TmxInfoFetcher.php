@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yuhzel\Xaseco\Core\Gbx;
+namespace Yuhzel\X8seco\Core\Gbx;
 
 class TmxInfoFetcher
 {
@@ -117,10 +117,23 @@ class TmxInfoFetcher
     {
         if ($isUid) {
             [
-                $this->id, $this->name, $this->userid, $this->author, $this->uploaded,
-                $this->updated, $visible, $this->type, $this->envir, $this->mood,
-                $this->style, $this->routes, $this->length, $this->diffic, $this->lbrating,
-                $this->game, $comment
+                $this->id,
+                $this->name,
+                $this->userid,
+                $this->author,
+                $this->uploaded,
+                $this->updated,
+                $visible,
+                $this->type,
+                $this->envir,
+                $this->mood,
+                $this->style,
+                $this->routes,
+                $this->length,
+                $this->diffic,
+                $this->lbrating,
+                $this->game,
+                $comment
             ] = $fields;
 
             $this->id = $this->numeric($this->id);
