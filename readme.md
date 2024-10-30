@@ -9,7 +9,7 @@ X8seco is an upgraded and modified version of the original Xaseco, originally de
 ## Features
 - Modernized architecture, fully compatible with PHP 8.3.
 - New functionality and refactored code for streamlined performance.
-- Maintains essential features of Xaseco while adding support for advanced server control and customization.
+- Retains essential features of old Xaseco.
 
 ## Getting Started
 
@@ -20,6 +20,7 @@ X8seco is an upgraded and modified version of the original Xaseco, originally de
    - `curl`
    - `openssl`
    - `pdo_mysql`
+- MySQl database setup 
 
 ## Installation
 
@@ -35,13 +36,23 @@ Install the dependencies using [Composer](https://getcomposer.org/). To do this,
 ```
 
 ### Setup
-You need move from folder public file .env to root and oprovide infomation for Database , Karma, Dedimania in the .env file
+1. Create a MySQL database and user. If you are unsure how to do this, please refer to tutorials like [MySQL How-Tos](https://docs.digitalocean.com/products/databases/mysql/how-to/) or search for similar resources online.
+2. Move the .env file from the /public folder to the root directory. Edit the file to provide the required information for the Database, Karma, and Dedimania.
+3. Ensure the TrackMania Nations Forever Dedicated Server and MySQL are set up and running.
+4. From X8seco folder run
+```bash
+   php index.php
+```
+- You can also view result (unformatted) in browser
+```bash
+   php -S 127.0.0.1:1234
+```
 
 ### Code Style
 Please follow [PSR-12 coding standards](https://www.php-fig.org/psr/psr-12/) and run tests before submitting.
 
 ### License
-X8seco  is released under the [MIT License](https://opensource.org/licenses/MIT).
+  is released under the [MIT License](https://opensource.org/licenses/MIT).
 
 ### Credits
 Original Author: Xymph for X8seco
