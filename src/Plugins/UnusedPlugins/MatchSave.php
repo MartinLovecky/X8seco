@@ -1,5 +1,6 @@
 <?php
-// NOTE NOT USED 
+
+// NOTE NOT USED
 
 declare(strict_types=1);
 
@@ -12,6 +13,7 @@ use Yuhzel\X8seco\Services\Log;
 use Yuhzel\X8seco\Services\Basic;
 use Yuhzel\X8seco\Core\Xml\XmlParser;
 use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
+
 // ffMod v1.4
 // Original version by Sloth, via tm-forum.com
 // Hack & Slash by AssemblerManiac

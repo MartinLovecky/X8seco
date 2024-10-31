@@ -48,10 +48,22 @@ class RaspJukebox
     {
         $buffer = $this->buffer;
     }
-    public function jukebox() {}
-    public function autojuke() {}
-    public function add() {}
-    public function y() {}
-    public function history() {}
-    public function xlist() {}
+    public function jukebox()
+    {
+    }
+    public function autojuke()
+    {
+    }
+    public function add()
+    {
+    }
+    public function y()
+    {
+    }
+    public function history()
+    {
+    }
+    public function xlist()
+    {
+    }
 }

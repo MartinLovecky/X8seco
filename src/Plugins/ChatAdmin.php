@@ -153,115 +153,335 @@ class ChatAdmin
         }
     }
 
-    public function help() {}
+    public function help()
+    {
+    }
 
-    public function helpall() {}
-    public function setservername() {}
-    public function setcomment() {}
-    public function setpwd() {}
-    public function setspecpwd() {}
-    public function setrefpwd() {}
-    public function setmaxplayers() {}
-    public function setmaxspecs() {}
-    public function setgamemode() {}
-    public function setrefmode() {}
-    public function next() {}
-    public function skip() {}
-    public function prev() {}
-    public function nextenv() {}
-    public function res() {}
-    public function replay() {}
-    public function djb() {}
-    public function cjb() {}
-    public function clearhist() {}
-    public function add() {}
-    public function addthis() {}
-    public function addlocal() {}
-    public function warn() {}
-    public function kick() {}
-    public function kickghost() {}
-    public function ban() {}
-    public function unban() {}
-    public function banip() {}
-    public function unbanip() {}
-    public function black() {}
-    public function unblack() {}
-    public function addguest() {}
-    public function removeguest() {}
-    public function pass() {}
-    public function can() {}
-    public function er() {}
-    public function players() {}
-    public function listbans() {}
-    public function listips() {}
-    public function listblacks() {}
-    public function listguests() {}
-    public function writeiplist() {}
-    public function readiplist() {}
-    public function writeblacklist() {}
-    public function readblacklist() {}
-    public function writeguestlist() {}
-    public function readguestlist() {}
-    public function cleanbanlist() {}
-    public function cleaniplist() {}
-    public function cleanblacklist() {}
-    public function cleanguestlist() {}
-    public function mergegbl() {}
-    public function access() {}
-    public function writetracklist() {}
-    public function readtracklist() {}
-    public function shuffle() {}
-    public function listdupes() {}
-    public function remove() {}
-    public function erase() {}
-    public function removethis() {}
-    public function erasethis() {}
-    public function mute() {}
-    public function unmute() {}
-    public function mutelist() {}
-    public function ignorelist() {}
-    public function cleanmutes() {}
-    public function addadmin() {}
-    public function removeadmin() {}
-    public function addop() {}
-    public function removeop() {}
-    public function listmasters() {}
-    public function listadmins() {}
-    public function listops() {}
-    public function adminability() {}
-    public function opability() {}
-    public function listabilities() {}
-    public function writeabilities() {}
-    public function readabilities() {}
-    public function wall() {}
-    public function delrec() {}
-    public function prunerecs() {}
-    public function rpoints() {}
-    public function matchs() {}
-    public function acdl() {}
-    public function autotime() {}
-    public function disablerespawn() {}
-    public function forceshowopp() {}
-    public function scorepanel() {}
-    public function roundsfinish() {}
-    public function forceteam() {}
-    public function forcespec() {}
-    public function specfree() {}
-    public function panel() {}
-    public function style() {}
-    public function admpanel() {}
-    public function donpanel() {}
-    public function recpanel() {}
-    public function votepanel() {}
-    public function coppers() {}
-    public function pay() {}
-    public function relays() {}
-    public function server() {}
-    public function pm() {}
-    public function pmlog() {}
-    public function call() {}
-    public function unlock() {}
-    public function debug() {}
-    public function shutdown() {}
-    public function shutdownall() {}
+    public function helpall()
+    {
+    }
+    public function setservername()
+    {
+    }
+    public function setcomment()
+    {
+    }
+    public function setpwd()
+    {
+    }
+    public function setspecpwd()
+    {
+    }
+    public function setrefpwd()
+    {
+    }
+    public function setmaxplayers()
+    {
+    }
+    public function setmaxspecs()
+    {
+    }
+    public function setgamemode()
+    {
+    }
+    public function setrefmode()
+    {
+    }
+    public function next()
+    {
+    }
+    public function skip()
+    {
+    }
+    public function prev()
+    {
+    }
+    public function nextenv()
+    {
+    }
+    public function res()
+    {
+    }
+    public function replay()
+    {
+    }
+    public function djb()
+    {
+    }
+    public function cjb()
+    {
+    }
+    public function clearhist()
+    {
+    }
+    public function add()
+    {
+    }
+    public function addthis()
+    {
+    }
+    public function addlocal()
+    {
+    }
+    public function warn()
+    {
+    }
+    public function kick()
+    {
+    }
+    public function kickghost()
+    {
+    }
+    public function ban()
+    {
+    }
+    public function unban()
+    {
+    }
+    public function banip()
+    {
+    }
+    public function unbanip()
+    {
+    }
+    public function black()
+    {
+    }
+    public function unblack()
+    {
+    }
+    public function addguest()
+    {
+    }
+    public function removeguest()
+    {
+    }
+    public function pass()
+    {
+    }
+    public function can()
+    {
+    }
+    public function er()
+    {
+    }
+    public function players()
+    {
+    }
+    public function listbans()
+    {
+    }
+    public function listips()
+    {
+    }
+    public function listblacks()
+    {
+    }
+    public function listguests()
+    {
+    }
+    public function writeiplist()
+    {
+    }
+    public function readiplist()
+    {
+    }
+    public function writeblacklist()
+    {
+    }
+    public function readblacklist()
+    {
+    }
+    public function writeguestlist()
+    {
+    }
+    public function readguestlist()
+    {
+    }
+    public function cleanbanlist()
+    {
+    }
+    public function cleaniplist()
+    {
+    }
+    public function cleanblacklist()
+    {
+    }
+    public function cleanguestlist()
+    {
+    }
+    public function mergegbl()
+    {
+    }
+    public function access()
+    {
+    }
+    public function writetracklist()
+    {
+    }
+    public function readtracklist()
+    {
+    }
+    public function shuffle()
+    {
+    }
+    public function listdupes()
+    {
+    }
+    public function remove()
+    {
+    }
+    public function erase()
+    {
+    }
+    public function removethis()
+    {
+    }
+    public function erasethis()
+    {
+    }
+    public function mute()
+    {
+    }
+    public function unmute()
+    {
+    }
+    public function mutelist()
+    {
+    }
+    public function ignorelist()
+    {
+    }
+    public function cleanmutes()
+    {
+    }
+    public function addadmin()
+    {
+    }
+    public function removeadmin()
+    {
+    }
+    public function addop()
+    {
+    }
+    public function removeop()
+    {
+    }
+    public function listmasters()
+    {
+    }
+    public function listadmins()
+    {
+    }
+    public function listops()
+    {
+    }
+    public function adminability()
+    {
+    }
+    public function opability()
+    {
+    }
+    public function listabilities()
+    {
+    }
+    public function writeabilities()
+    {
+    }
+    public function readabilities()
+    {
+    }
+    public function wall()
+    {
+    }
+    public function delrec()
+    {
+    }
+    public function prunerecs()
+    {
+    }
+    public function rpoints()
+    {
+    }
+    public function matchs()
+    {
+    }
+    public function acdl()
+    {
+    }
+    public function autotime()
+    {
+    }
+    public function disablerespawn()
+    {
+    }
+    public function forceshowopp()
+    {
+    }
+    public function scorepanel()
+    {
+    }
+    public function roundsfinish()
+    {
+    }
+    public function forceteam()
+    {
+    }
+    public function forcespec()
+    {
+    }
+    public function specfree()
+    {
+    }
+    public function panel()
+    {
+    }
+    public function style()
+    {
+    }
+    public function admpanel()
+    {
+    }
+    public function donpanel()
+    {
+    }
+    public function recpanel()
+    {
+    }
+    public function votepanel()
+    {
+    }
+    public function coppers()
+    {
+    }
+    public function pay()
+    {
+    }
+    public function relays()
+    {
+    }
+    public function server()
+    {
+    }
+    public function pm()
+    {
+    }
+    public function pmlog()
+    {
+    }
+    public function call()
+    {
+    }
+    public function unlock()
+    {
+    }
+    public function debug()
+    {
+    }
+    public function shutdown()
+    {
+    }
+    public function shutdownall()
+    {
+    }
 }

@@ -121,7 +121,7 @@ class XmlArrayObject extends ArrayObject
     }
 
     /**
-     * Add data from XmlRpcParser
+     * Add data from XmlParser
      *
      * @param string $name The name of the attribute.
      * @param mixed $value The value of the attribute.
@@ -134,7 +134,7 @@ class XmlArrayObject extends ArrayObject
     }
 
     /**
-     * Retrieves the attributes from XmlRpcParser as XmlArrayObject
+     * Retrieves the attributes from XmlParser as XmlArrayObject
      *
      * @return mixed
      */
@@ -162,7 +162,7 @@ class XmlArrayObject extends ArrayObject
             if ($value instanceof self) {
                 $result[$key] = $value->toArray();
             } elseif (is_array($value)) {
-                $result[$key] = array_map(fn($item) => $item instanceof self ? $item->toArray() : $item, $value);
+                $result[$key] = array_map(fn ($item) => $item instanceof self ? $item->toArray() : $item, $value);
             } else {
                 $result[$key] = $value;
             }

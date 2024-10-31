@@ -10,7 +10,8 @@ class Rounds
         public int $roundsCount = 0,
         public array $roundTimes = [],
         public array $roundPbs = []
-    ) {}
+    ) {
+    }
 
     public function onSync(): void
     {

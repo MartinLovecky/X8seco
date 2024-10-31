@@ -94,8 +94,16 @@ class Checkpoints
         $this->laps_cpcount = $this->challenge->nbchecks ?? 0;
     }
 
-    public function cps() {}
-    public function cpsspec() {}
-    public function cptms() {}
-    public function sectms() {}
+    public function cps()
+    {
+    }
+    public function cpsspec()
+    {
+    }
+    public function cptms()
+    {
+    }
+    public function sectms()
+    {
+    }
 }

@@ -6,7 +6,7 @@ namespace Yuhzel\X8seco\Services;
 
 use CurlHandle;
 use Yuhzel\X8seco\Services\Basic;
-use Yuhzel\X8seco\Core\Xml\XmlRpcParser;
+use Yuhzel\X8seco\Core\Xml\{XmlRpcService, XmlArrayObject};
 
 class HttpClient
 {
@@ -27,7 +27,7 @@ class HttpClient
      */
     private string $cookieFile = '';
 
-    public function __construct(private XmlRpcParser $xmlRpcParser)
+    public function __construct(private XmlRpcService $xmlRpcService)
     {
         $this->cert = Basic::path() . 'app/cacert.pem';
         $this->ch = curl_init();
@@ -114,7 +114,7 @@ class HttpClient
 
     public function xmlRequest(string $endpoint, string $method, array $params = []): string|bool
     {
-        $payload = $this->xmlRpcParser->createXml($method, $params);
+        $payload = $this->xmlRpcService->createRequest($method, $params);
         // Set cURL options for the request
         curl_setopt($this->ch, CURLOPT_HTTPHEADER, [
             'Content-Type: text/xml',
@@ -125,17 +125,9 @@ class HttpClient
         return $this->post($endpoint);
     }
 
-    public function xmlResponse(string $response): ?array
+    public function xmlResponse(string $response): XmlArrayObject
     {
-        // Attempt to parse the XML response
-        $xml = simplexml_load_string($response);
-        if ($xml === false) {
-            Basic::console("Failed to parse XML response.");
-            return null; // or handle it as needed
-        }
-
-        // Convert XML to an associative array
-        return json_decode(json_encode($xml), true);
+        return $this->xmlRpcService->parseResponse($response);
     }
 
     public function close(): void

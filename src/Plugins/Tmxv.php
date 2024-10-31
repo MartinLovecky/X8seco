@@ -40,9 +40,15 @@ class Tmxv
     }
 
 
-    public function videos() {}
-    public function video() {}
-    public function gps() {}
+    public function videos()
+    {
+    }
+    public function video()
+    {
+    }
+    public function gps()
+    {
+    }
 
 
     private function onNewTrack(): void
@@ -87,6 +93,6 @@ class Tmxv
 
     private function sortVideosByPublishedDate(array &$videos): void
     {
-        usort($videos, fn($a, $b) => strtotime($b['PublishedAt']) - strtotime($a['PublishedAt']));
+        usort($videos, fn ($a, $b) => strtotime($b['PublishedAt']) - strtotime($a['PublishedAt']));
     }
 }

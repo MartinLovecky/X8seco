@@ -30,7 +30,7 @@ declare(strict_types=1);
         - Utilized Constructor Property Promotion (https://stitcher.io/blog/constructor-promotion-in-php-8)
         - Implemented League Container with Autowiring (https://container.thephpleague.com/4.x/)
         - Removed IXR_Base64, IXR_Date, IXR_Request, IXR_Value
-        - Replaced by XmlRpcParser and XmlArrayObject
+        - Replaced by XmlRpcService and XmlArrayObject
         - Introduced SocketConnection class with TCP support and custom functions
 
     Note: Much of the code is still based on Xymph's version. Thanks for the reference.
@@ -38,10 +38,9 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Core\Gbx;
 
-use Exception;
 use RuntimeException;
 use Yuhzel\X8seco\Core\Gbx\ErrorHandlingTrait;
-use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlRpcParser};
+use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlRpcService};
 use Yuhzel\X8seco\Services\{SocketConnection, Basic, Log};
 
 /**
@@ -90,11 +89,11 @@ class GbxClient
      * Constructor for IXR_Client_Gbx.
      *
      * @param SocketConnection $socketConnection The socket connection for communication.
-     * @param XmlRpcParser $xmlRpcParser The parser for XML-RPC data.
+     * @param XmlRpcService $xmlRpcService The parser for XML-RPC data.
      */
     public function __construct(
         private SocketConnection $socketConnection,
-        private XmlRpcParser $xmlRpcParser,
+        private XmlRpcService $xmlRpcService,
         private IxrError $ixrError,
     ) {
         $this->endian();
@@ -245,24 +244,16 @@ class GbxClient
     /**
      * Sends a query request to the GBX remote service and retrieves the result.
      *
-     * @param mixed ...$args Method name and arguments for the query.
-     * @return mixed The response from the GBX remote service.
-     * @throws Exception If no method name is provided.
+     *
+     * @return XmlArrayObject parsed values
      */
-    public function query(mixed ...$args): mixed
+    public function query(string $method, mixed ...$params): XmlArrayObject
     {
-        if (empty($args)) {
-            throw new Exception("At least one argument (method name) is required.");
-        }
-
-        $method = array_shift($args);
-        $params = $args;
-
         // generate xml request string for params
         if ($this->multi) {
-            $xmlString = $this->xmlRpcParser->createMultiXml($method, $params);
+            $xmlString = $this->xmlRpcService->createMultiRequest($method, $params);
         } else {
-            $xmlString = $this->xmlRpcParser->createXml($method, $params);
+            $xmlString = $this->xmlRpcService->createRequest($method, $params);
         }
         if (($size = strlen($xmlString)) > self::MAX_REQUEST_SIZE) {
             $this->handleError(-32300, "Transport error - request too large");
@@ -355,7 +346,7 @@ class GbxClient
             return new XmlArrayObject();
         }
 
-        $parsedResponse = $this->xmlRpcParser->parseResponse($contents);
+        $parsedResponse = $this->xmlRpcService->parseResponse($contents);
 
         return $parsedResponse;
     }

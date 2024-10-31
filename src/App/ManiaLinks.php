@@ -18,7 +18,8 @@ class ManiaLinks
         private PlayerList $playerList,
         private Client $client,
         private Fluent $fluent,
-    ) {}
+    ) {
+    }
 
     public function displayManialinkMulti(Player $player)
     {

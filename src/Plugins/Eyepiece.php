@@ -13,7 +13,8 @@ class Eyepiece
 
     public function __construct(
         private XmlParser $xmlParser
-    ) {}
+    ) {
+    }
 
     public function onSync()
     {

@@ -123,7 +123,13 @@ class Panels
     // }
 
 
-    public function donpanel() {}
-    public function recpanel() {}
-    public function votepanel() {}
+    public function donpanel()
+    {
+    }
+    public function recpanel()
+    {
+    }
+    public function votepanel()
+    {
+    }
 }

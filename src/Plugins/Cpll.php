@@ -18,7 +18,8 @@ class Cpll
     public function __construct(
         private Client $client,
         private Challenge $challenge
-    ) {}
+    ) {
+    }
 
     public function onNewChallenge(): void
     {

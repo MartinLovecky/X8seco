@@ -34,7 +34,8 @@ class LocalDatabase
         // private Player $player,
         private PlayerList $playerList,
         private Challenge $challenge,
-    ) {}
+    ) {
+    }
 
     public function onStartup(): void
     {
@@ -68,7 +69,9 @@ class LocalDatabase
         }
     }
 
-    public function playerExist() {}
+    public function playerExist()
+    {
+    }
 
     //REVIEW - SUS
     public function onSync(): void

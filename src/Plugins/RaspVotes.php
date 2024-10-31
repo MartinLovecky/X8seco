@@ -113,7 +113,8 @@ class RaspVotes
         private RaspType $raspType,
         private Player $player,
         private ManiaLinks $maniaLinks,
-    ) {}
+    ) {
+    }
 
     public function onSync(): void
     {

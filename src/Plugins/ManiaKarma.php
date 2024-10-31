@@ -18,7 +18,8 @@ class ManiaKarma
     public function __construct(
         private XmlParser $xmlParser,
         private HttpClient $httpClient,
-    ) {}
+    ) {
+    }
 
     public function onSync(): void
     {
