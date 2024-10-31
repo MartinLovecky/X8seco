@@ -6,9 +6,8 @@ namespace Yuhzel\X8seco\Plugins;
 
 use Yuhzel\X8seco\Core\Types\PlayerList;
 use Yuhzel\X8seco\Plugins\Checkpoints;
-use Yuhzel\X8seco\Services\Basic;
-use Yuhzel\X8seco\Services\HttpClient;
 use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlParser};
+use Yuhzel\X8seco\Services\{DedimaniaClient, Basic};
 
 class Dedimania
 {
@@ -26,33 +25,25 @@ class Dedimania
         'LimitRecs' => 10,
     ];
 
-    // how many seconds before retrying connection
-    public $dedi_timeout = 1800;  // 30 mins
-    // how many seconds before reannouncing server
-    public $dedi_refresh = 240;   // 4 mins
-    // minimum author & finish times that are still accepted
-    public $dedi_minauth = 8000;  // 8 secs
-    public $dedi_mintime = 6000;  // 6 secs
-    public $dedi_debug = 0;  //max debug level = 5:
     public string $mode = 'TA';
     public bool $recsValid = false;
     public array $bannedLogins = [];
-    private ?XmlArrayObject $dediDB = null;
+    private ?XmlArrayObject $dedi = null;
     private ?XmlArrayObject $masterServer = null;
     //private ?XmlArrayObject $messages = null;
 
     public function __construct(
+        private DedimaniaClient $dediamaniaClient,
         private XmlParser $xmlParser,
         // @phpstan-ignore-next-line
         private Checkpoints $checkpoints,
         private PlayerList $playerList,
-        private HttpClient $httpClient,
     ) {}
 
     public function onStartup(): void
     {
         $config = $this->xmlParser->parseXml('dedimania.xml');
-        $this->dediDB = $config->database;
+        $this->dedi = $config->database;
         $this->masterServer = $config->masterserver_account;
         $this->masterServer->login = $_ENV['dedi_username'];
         $this->masterServer->password = $_ENV['dedi_code'];
@@ -68,11 +59,9 @@ class Dedimania
         ) {
             trigger_error('Dedimania not configured! <masterserver_account> contains default or empty value(s)', E_USER_ERROR);
         }
-
         Basic::console('************* (Dedimania) *************');
         $this->dedimaniaLogin();
         Basic::console('------------- (Dedimania) -------------');
-        $dedi_lastsent = time();
     }
 
     public function onPlayerConnect(string $login)
@@ -85,42 +74,27 @@ class Dedimania
         // dd($this->dediDB);
     }
 
-    private function dedimaniaLogin(): bool
+    private function dedimaniaLogin(): void
     {
-        Basic::console('* Dataserver connection on http://dedimania.net ...');
-        Basic::console('* Try connection on http://dedimania.net/tmstats/?do=auth ...');
-
-        $endpoint = 'http://dedimania.net/tmstats/?do=auth';
-        $data = [
-            'log_login' => $this->masterServer->login,
-            'log_code' =>  $this->masterServer->password,
-            'connect' => 'Connect',
+        $params = [
+            'Game' => 'TMU',
+            'Login' => $this->masterServer->login,
+            'Password' => $this->masterServer->password,
+            'Tool' => 'Xaseco',
+            'Version' => '1.16',
+            'Nation' =>  $this->masterServer->nation,
+            'Packmask' => 'United'
         ];
-        $headers = [
-            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-            'Accept-Encoding: gzip, deflate',
-            'Accept-Language: en-US,en;q=0.8',
-            'Cache-Control: no-cache',
-            'Connection: keep-alive',
-            'Content-Type: application/x-www-form-urlencoded',
-            'Origin: http://dedimania.net',
-            'Pragma: no-cache',
-            'Referer: http://dedimania.net/tmstats/?do=auth',
-            'Sec-GPC: 1',
-            'Upgrade-Insecure-Requests: 1',
-            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-            'Cookie: punbb_cookie=a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%2215074862%22%3Bi%3A1%3Bs%3A32%3A%22f4e62b1ce858d19f07f7f503fcd0fe3c%22%3B%7D; PHPSESSID=o2qkg4bs7sgfha5n8i81ed5880'
-        ];
-        //login 
-        $response = $this->httpClient->post($endpoint, $data, $headers);
 
-        if ($response === false) {
-            Basic::console("Login to Dedimania failed check your .env and set #Dediamania.");
-            return false;
+        if (!$this->dediamaniaClient->connectionAlive('http://dedimania.net:8002/Dedimania')) {
+            $response = $this->dediamaniaClient->authenticate($params);
+            if ($response->array_key_exists('faultString')) {
+                Basic::console("    !!! \n !!! Error response: {$response['faultString']} \n  !!!");
+                return;
+            }
+            $this->dedi->db = $response;
+            Basic::console("* Connection and status ok! {$this->dedi->db->Status}");
         }
-
-        Basic::console("Login to Dedimania successful.");
-        return true;
     }
 
     private function dedimania_playerinfo(string $login): array

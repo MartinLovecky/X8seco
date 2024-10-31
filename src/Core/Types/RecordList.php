@@ -16,7 +16,8 @@ class RecordList
         public ArrayManipulator $am,
         public int $limit = 0,
         public array $records = [],
-    ) {}
+    ) {
+    }
 
     /**
      * Set the limit for the number of records.

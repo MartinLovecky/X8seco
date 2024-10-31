@@ -16,9 +16,15 @@ use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 /**
  * XmlParser class for parsing XML files into an XmlArrayObject.
  *
- * This class handles XML parsing and conversion of XML data into a structured
- * XmlArrayObject. It processes attributes and child nodes, converting data
- * types as necessary (e.g., booleans, numbers, DateTime).
+ * This class provides methods to load XML data from a file, process its structure,
+ * and convert it into a structured XmlArrayObject. It processes attributes and
+ * child nodes, and attempts to intelligently convert data types such as booleans,
+ * numbers, and DateTime formats.
+ *
+ * Note:
+ * - This parser does not handle deeply nested XML structures gracefully.
+ * - XML File must be in /app/xml folder
+ * - XML comments are ignored in parsing.
  *
  * @package Yuhzel\X8seco\Core
  * @author Yuhzel
@@ -26,21 +32,30 @@ use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 class XmlParser
 {
     /**
-     * Constructor to initialize XmlParser with an optional XML path.
+     * `/app/xml/`
      *
-     * @param string $xmlPath The path to the directory containing XML files. Defaults to an empty string.
+     * @var string
      */
-    public function __construct(public string $xmlPath = '')
+    public string $xmlPath = '';
+
+    /**
+     * Initializes the XmlParser instance, setting the XML file path.
+     */
+    public function __construct()
     {
         $this->xmlPath = Basic::path() . 'app' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR;
     }
 
     /**
-     * Parses an XML file and returns an XmlArrayObject.
+     * Parses an XML file into an XmlArrayObject.
+     *
+     * It only supports XML files in which the root node has elements or a single child node.
      *
      * @param string $fileName The name of the XML file to parse.
      *
      * @return XmlArrayObject The parsed XML data as an XmlArrayObject.
+     *
+     * @throws Exception If the XML file cannot be loaded.
      */
     public function parseXml(string $fileName): XmlArrayObject
     {

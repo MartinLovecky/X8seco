@@ -11,7 +11,7 @@ use Yuhzel\X8seco\Core\Types\Server;
 use Yuhzel\X8seco\Core\Xml\XmlParser;
 use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
-class Aseco
+class X8seco
 {
     public string $path = '';
     public bool $startup_phase = true;
@@ -26,11 +26,12 @@ class Aseco
     public ?XmlArrayObject $settings = null;
 
     public function __construct(
-        public Server $server,
-        private XmlParser $xmlParser,
+        private Player $player,
         private PluginManager $pluginManager,
-        private Player $player
-    ) {}
+        private Server $server,
+        private XmlParser $xmlParser,
+    ) {
+    }
 
     public function run()
     {
@@ -112,7 +113,7 @@ class Aseco
                 trigger_error('[' . $this->server->client->getErrorCode() . '] Authenticate - ' . $this->server->client->getErrorMessage(), E_USER_WARNING);
                 return false;
             }
-
+           
             $this->server->client->query('EnableCallbacks', true);
             $this->waitServerReady();
 
@@ -151,7 +152,7 @@ class Aseco
         $this->server->gameInfo->setGameInfo();
         $this->server->challenge->setChallangeInfo();
         $this->currstatus = $this->server->client->query('GetStatus')->Code;
-
+        
         $this->pluginManager->onSync();
 
         /*
@@ -160,7 +161,6 @@ class Aseco
             * function to filter instances of XmlArrayObject
         */
         $players = $this->server->client->query('GetPlayerList', 300, 0, 2);
-
         // Function to filter instances of XmlArrayObject
         $xmlArrayObjects = array_filter($players, function ($item) {
             return $item instanceof XmlArrayObject;
@@ -177,87 +177,64 @@ class Aseco
     private function playerConnect(XmlArrayObject $playerObject)
     {
         $playerd = $this->server->client->query('GetDetailedPlayerInfo', $playerObject->Login);
-        $ipaddr = preg_replace('/:\d+/', '', $playerd->IPAddress);
+        $version = str_replace(')', '', preg_replace('/.*\(/', '', $playerd->ClientVersion));
 
-        if (!$playerObject->Login || $playerObject->Login === '') {
-            $message = str_replace('{br}', "\n", Basic::getChatMessage('connect_error'));
-            $message = str_replace("\n", '', Basic::formatColors($message));
-            $this->server->client->query('ChatSendServerMessageToLogin', $message, $playerObject->Login);
-            $this->server->client->addCall('Kick', [
-                'login' => $playerObject->Login,
-                'manialink' => Basic::formatColors(Basic::getChatMessage('connect_dialog'))
-            ]);
-            Basic::console('GetPlayerInfo failed for ' . $playerObject->Login . ' -- notified & kicked');
-            return;
-        } elseif (!empty($this->settings->bannedips) && in_array($ipaddr, $this->settings->bannedips->toArray())) {
-            $message = str_replace('{br}', "\n", Basic::getChatMessage('banip_error'));
-            $message = Basic::formatColors($message);
-            $this->server->client->query('ChatSendServerMessageToLogin', str_replace("\n", "", $message), $playerObject->Login);
-            $this->server->client->addCall('Ban', [
-                'login' => $playerObject->Login,
-                'manialink' => Basic::formatColors(Basic::getChatMessage('banip_dialog'))
-            ]);
-            Basic::console('Player ' . $playerObject->Login . ' banned from ' . $ipaddr . ' -- notified & kicked');
-            return;
-        } else {
-            $version = str_replace(')', '', preg_replace('/.*\(/', '', $playerd->ClientVersion));
-            if ($version === '') {
-                $message = str_replace('{br}', "\n", Basic::getChatMessage('clent_error'));
-            }
+        if ($version === '') {
+            $message = str_replace('{br}', "\n", Basic::getChatMessage('clent_error'));
+        }
+        //SECTION - this can be improved
+        $this->player->setPlayer($playerd);
 
-            $this->player->setPlayer($playerd);
+        $this->player->panels['admin'] = $this->panels['admin'];
+        $this->player->panels['donate'] = $this->panels['donate'];
+        $this->player->panels['records'] = $this->panels['records'];
+        $this->player->panels['vote'] = $this->panels['vote'];
 
-            $this->player->panels['admin'] = $this->panels['admin'];
-            $this->player->panels['donate'] = $this->panels['donate'];
-            $this->player->panels['records'] = $this->panels['records'];
-            $this->player->panels['vote'] = $this->panels['vote'];
+        $this->server->players->addPlayer($this->player);
+        //!SECTION
+        Basic::console(
+            '<< player {1} joined the game [{2} : {3} : {4} : {5} : {6}]',
+            $this->player->pid,
+            $this->player->login,
+            $this->player->nickname,
+            $this->player->nation,
+            $this->player->ladderrank,
+            $this->player->ip
+        );
+        // version eh
+        preg_match('/\((.*?)\)/', $playerd->ClientVersion, $matches);
+        $version = $matches[1];
 
-            $this->server->players->addPlayer($this->player);
+        $message = Basic::formatText(
+            Basic::getChatMessage('welcome'),
+            Basic::stripColors($this->player->nickname),
+            $this->server->name,
+            $version
+        );
 
-            Basic::console(
-                '<< player {1} joined the game [{2} : {3} : {4} : {5} : {6}]',
-                $this->player->pid,
-                $this->player->login,
-                $this->player->nickname,
-                $this->player->nation,
-                $this->player->ladderrank,
-                $this->player->ip
+        $message = preg_replace('/XASECO.+' . $playerd->ClientVersion . '/', '$l[http://www.gamers.org/tmn/]$0$l', $message);
+        $message = str_replace('{br}', "\n", Basic::formatColors($message));
+
+        $this->server->client->query('ChatSendServerMessageToLogin', str_replace("\n", "", $message), $this->player->login);
+
+        $cur_record = $this->server->records->getRecord(0);
+        if ($cur_record !== null && $cur_record->score >  0) {
+            $message = Basic::formatText(
+                Basic::getChatMessage('record_current'),
+                Basic::stripColors($this->server->challenge->name),
+                Basic::formatTime($cur_record->score),
+                Basic::stripColors($cur_record->player->nickname)
             );
-            // version eh
-            preg_match('/\((.*?)\)/', $playerd->ClientVersion, $matches);
-            $version = $matches[1];
+        } else {
 
             $message = Basic::formatText(
-                Basic::getChatMessage('welcome'),
-                Basic::stripColors($this->player->nickname),
-                $this->server->name,
-                $version
+                Basic::getChatMessage('record_none'),
+                Basic::stripColors($this->server->challenge->name)
             );
-
-            $message = preg_replace('/XASECO.+' . $playerd->ClientVersion . '/', '$l[http://www.gamers.org/tmn/]$0$l', $message);
-            $message = str_replace('{br}', "\n", Basic::formatColors($message));
-
-            $this->server->client->query('ChatSendServerMessageToLogin', str_replace("\n", "", $message), $this->player->login);
-
-            $cur_record = $this->server->records->getRecord(0);
-            if ($cur_record !== null && $cur_record->score >  0) {
-                $message = Basic::formatText(
-                    Basic::getChatMessage('record_current'),
-                    Basic::stripColors($this->server->challenge->name),
-                    Basic::formatTime($cur_record->score),
-                    Basic::stripColors($cur_record->player->nickname)
-                );
-            } else {
-
-                $message = Basic::formatText(
-                    Basic::getChatMessage('record_none'),
-                    Basic::stripColors($this->server->challenge->name)
-                );
-                $chatCmd = $this->pluginManager->getPlugin('ChatCmd');
-                $chatCmd->trackrecs($playerObject->Login, 1);
-            }
+            $chatCmd = $this->pluginManager->getPlugin('ChatCmd');
+            $chatCmd->trackrecs($playerObject->Login, 1);
         }
-        // NOTE we should check if player exist in players table
+        //FIXME we should check if player exist in players table
         //TODO - onPlayerConnect onPlayerConnect2
         $this->pluginManager->onPlayerConnect($this->player->login);
     }
@@ -288,12 +265,12 @@ class Aseco
         );
         $this->server->client->query('ChatSendServerMessage', Basic::formatColors($startup_msg));
     }
-
+    //TODO -
     private function executeCallbacks()
     {
         dump("Callbacks:", $this->server->client->readCB());
     }
-
+    //TODO
     private function executeCalls()
     {
         return $this->server->client->multiQuery();

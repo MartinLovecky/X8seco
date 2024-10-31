@@ -30,7 +30,7 @@ declare(strict_types=1);
         - Utilized Constructor Property Promotion (https://stitcher.io/blog/constructor-promotion-in-php-8)
         - Implemented League Container with Autowiring (https://container.thephpleague.com/4.x/)
         - Removed IXR_Base64, IXR_Date, IXR_Request, IXR_Value
-        - Replaced by XmlRpcParser and XmlArrayObject
+        - Replaced by XmlRpcService and XmlArrayObject
         - Introduced SocketConnection class with TCP support and custom functions
 
     Note: Much of the code is still based on Xymph's version. Thanks for the reference.
@@ -38,10 +38,11 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Core\Gbx;
 
-use Exception;
 use RuntimeException;
+use Exception;
+
 use Yuhzel\X8seco\Core\Gbx\ErrorHandlingTrait;
-use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlRpcParser};
+use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlRpcService};
 use Yuhzel\X8seco\Services\{SocketConnection, Basic, Log};
 
 /**
@@ -90,11 +91,11 @@ class GbxClient
      * Constructor for IXR_Client_Gbx.
      *
      * @param SocketConnection $socketConnection The socket connection for communication.
-     * @param XmlRpcParser $xmlRpcParser The parser for XML-RPC data.
+     * @param XmlRpcService $xmlRpcService The parser for XML-RPC data.
      */
     public function __construct(
         private SocketConnection $socketConnection,
-        private XmlRpcParser $xmlRpcParser,
+        private XmlRpcService $xmlRpcService,
         private IxrError $ixrError,
     ) {
         $this->endian();
@@ -120,7 +121,7 @@ class GbxClient
         return count($this->calls) - 1;
     }
 
-    //TODO -
+    //TODO (yuhzel) pain
     public function multiQuery()
     {
         $this->multi = true;
@@ -135,13 +136,11 @@ class GbxClient
     public function readCB(int $timeout = 2000): bool
     {
         if (!$this->socketConnection->socket) {
-            $this->logError("transport error - client not initialized");
             throw new RuntimeException("transport error - client not initialized");
         }
 
         $somethingReceived = false;
         $contents = '';
-        $contentsLength = 0;
 
         $this->socketConnection->setStreamTimeout($timeout / 1000);  // Convert to seconds
 
@@ -158,7 +157,6 @@ class GbxClient
             // Read and unpack size and handle from the socket
             $contents = $this->readContents(8);
             if (!$contents || strlen($contents) < 8) {
-                $this->logError("transport error - cannot read size/handle");
                 throw new RuntimeException("transport error - cannot read size/handle");
             }
 
@@ -166,22 +164,18 @@ class GbxClient
             $recvHandle = unpack('Nsize/Nhandle', $contents)['handle'];
 
             if ($recvHandle == 0 || $size == 0) {
-                $this->logError("transport error - connection interrupted");
                 throw new RuntimeException("transport error - connection interrupted");
             }
             if ($size > 4096 * 1024) {
-                $this->logError("transport error - response too large");
                 throw new RuntimeException("transport error - response too large");
             }
 
             $contents = $this->readContents($size);
             if (!$contents || strlen($contents) < $size) {
-                $this->logError("transport error - failed to read full response");
                 throw new RuntimeException("transport error - failed to read full response");
             }
 
             if (($recvHandle & 0x80000000) == 0) {
-
                 $somethingReceived = true;
             }
 
@@ -215,8 +209,7 @@ class GbxClient
             : $this->bigEndianUnpack('Vsize', $header)['size'];
 
         if ($size > 64) {
-            $this->handleError(-32300, 'Transport error - wrong low-level protocol header');
-            return false;
+            $this->throwError(-32300, 'Transport error - wrong low-level protocol header');
         }
 
         $handshake = $this->socketConnection->fread($size);
@@ -226,8 +219,7 @@ class GbxClient
         } elseif ($handshake === 'GBXRemote 2') {
             $this->protocol = 2;
         } else {
-            $this->handleError(-32300, 'Transport error - wrong low-level protocol header');
-            return false;
+            $this->throwError(-32300, 'Transport error - wrong low-level protocol header');
         }
         return true;
     }
@@ -245,41 +237,37 @@ class GbxClient
     /**
      * Sends a query request to the GBX remote service and retrieves the result.
      *
-     * @param mixed ...$args Method name and arguments for the query.
-     * @return mixed The response from the GBX remote service.
-     * @throws Exception If no method name is provided.
+     *
+     * @return mixed parsed values
      */
-    public function query(mixed ...$args): mixed
+    public function query(string $method, mixed ...$params): mixed
     {
-        if (empty($args)) {
-            throw new Exception("At least one argument (method name) is required.");
-        }
-
-        $method = array_shift($args);
-        $params = $args;
-
         // generate xml request string for params
         if ($this->multi) {
-            $xmlString = $this->xmlRpcParser->createMultiXml($method, $params);
+            $xmlString = $this->xmlRpcService->createMultiRequest($method, $params);
         } else {
-            $xmlString = $this->xmlRpcParser->createXml($method, $params);
+            $xmlString = $this->xmlRpcService->createRequest($method, $params);
+            // DEBUG dump([$method => [
+            //     $xmlString,
+            //     $params
+            // ]]);
         }
         if (($size = strlen($xmlString)) > self::MAX_REQUEST_SIZE) {
-            $this->handleError(-32300, "Transport error - request too large");
-            return new XmlArrayObject();
+            $this->throwError(-32300, "Transport error - request too large");
         }
 
         if (!$this->sendRequest($xmlString)) {
-            $this->handleError(-32300, "Transport error - connection interrupted");
-            return new XmlArrayObject();
+            $this->throwError(-32300, "Transport error - connection interrupted");
         }
 
         $result = $this->getResult();
 
-        if (count($result) === 1) {
-            return $result['result'];
+        if ($result->array_key_exists('parsed')) {
+            return $result['parsed'];
+        } elseif ($result->array_key_exists('faultString')) {
+            $this->throwError($result->faultCode, "Fault string: {$result->faultString} from {$result->methodName}");
         }
-        return $result;
+        return $result['result'];
     }
 
     /**
@@ -317,16 +305,14 @@ class GbxClient
             if ($this->protocol === 1) {
                 $contents = $this->socketConnection->fread(4);
                 if (strlen($contents) === 0) {
-                    $this->handleError(-32300, 'Transport error - cannot read size');
-                    return new XmlArrayObject();
+                    $this->throwError(-32300, 'Transport error - cannot read size');
                 }
                 $size = $this->bigEndianUnpack('Vsize', $contents)['size'];
                 $recvHandle = $this->reqHandle;
             } elseif ($this->protocol === 2) {
                 $contents = $this->socketConnection->fread(8);
                 if (strlen($contents) === 0) {
-                    $this->handleError(-32300, 'Transport error - cannot read size/handle');
-                    return new XmlArrayObject();
+                    $this->throwError(-32300, 'Transport error - cannot read size/handle');
                 }
                 $result = unpack('Vsize/Vhandle', $contents);
                 $size = $result['size'];
@@ -334,28 +320,17 @@ class GbxClient
             }
 
             if ($recvHandle === 0 || $size === 0) {
-                $this->handleError(-32300, 'Transport error - connection interrupted');
-                return new XmlArrayObject();
+                $this->throwError(-32300, 'Transport error - connection interrupted');
             }
 
             if ($size > self::MAX_RESPONSE_SIZE) {
-                $this->handleError(-32300, "Transport error - response too large");
-                return new XmlArrayObject();
+                $this->throwError(-32300, "Transport error - response too large");
             }
 
             $contents = $this->readContents($size);
-            if (!$contents) {
-                return new XmlArrayObject();
-            }
         } while ($recvHandle !== $this->reqHandle);
 
-        if ($this->hasError()) {
-            Log::error($this->displayError());
-            Basic::console($this->displayError());
-            return new XmlArrayObject();
-        }
-
-        $parsedResponse = $this->xmlRpcParser->parseResponse($contents);
+        $parsedResponse = $this->xmlRpcService->parseResponse($contents);
 
         return $parsedResponse;
     }
@@ -376,17 +351,16 @@ class GbxClient
      * Reads the contents from the socket.
      *
      * @param int $size The number of bytes to read.
-     * @return string|null The contents read or null if an error occurred.
+     * @return string The contents read throw an error occurred.
      */
-    private function readContents(int $size): ?string
+    private function readContents(int $size): string
     {
         $contents = '';
         $this->socketConnection->setStreamTimeout(0.10);
         while (strlen($contents) < $size) {
             $chunk = $this->socketConnection->fread($size - strlen($contents));
             if ($chunk === false || $chunk === '') {
-                $this->handleError(-32300, 'Transport error - reading contents');
-                return null;
+                $this->throwError(-32300, 'Transport error - reading contents');
             }
             $contents .= $chunk;
         }
@@ -445,10 +419,12 @@ class GbxClient
      * @param string $message The error message.
      * @return void
      */
-    private function handleError(int $code, string $message): void
+    private function throwError(int $code, string $message): void
     {
         $error = new IxrError($code, $message);
         $this->setError($error);
+        Basic::console($this->displayError());
+        throw new Exception($this->error->getMessage(), $this->error->getCode());
     }
 
     private function logError(string $message): void

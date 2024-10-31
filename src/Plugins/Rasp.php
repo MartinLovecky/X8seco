@@ -58,9 +58,19 @@ class Rasp
         $this->typeRasp->event_onsync();
     }
 
-    public function rank() {}
-    public function top10() {}
-    public function top100() {}
-    public function topwins() {}
-    public function active() {}
+    public function rank()
+    {
+    }
+    public function top10()
+    {
+    }
+    public function top100()
+    {
+    }
+    public function topwins()
+    {
+    }
+    public function active()
+    {
+    }
 }

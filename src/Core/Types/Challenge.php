@@ -27,7 +27,8 @@ class Challenge
         private GbxClient $client,
         private RaspType $raspType
         //public $gbx = null,
-    ) {}
+    ) {
+    }
 
     public function __set(string $name, mixed $value): void
     {

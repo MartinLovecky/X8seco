@@ -16,7 +16,6 @@ use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
  */
 class Style
 {
-    public string $windowStyle = 'DarkBlur';
     public ?XmlArrayObject $style = null;
 
     public function __construct(
@@ -25,7 +24,7 @@ class Style
 
     public function onStartup(): void
     {
-        $styleFile = "styles/{$this->windowStyle}.xml";
+        $styleFile = "styles/{$_ENV['window_style']}.xml";
         Basic::console('Load default style [{1}]', $styleFile);
         $this->style = $this->xmlParser->parseXml($styleFile);
     }

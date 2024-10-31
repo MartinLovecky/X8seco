@@ -2,28 +2,20 @@
 
 declare(strict_types=1);
 
-/**
- * This version of the Aseco is an upgraded and modified version of the Xaseco from the Xymph
- * all original Authors metioned 
- * Due heavy changes many parts of code function diffrently 
- * I gave you permition to change anything and everything you want just
- * Please visit github for more information.
- * Created by Yuhzel member of AMP team
- */
-
 use Doctum\Doctum;
 use Dotenv\Dotenv;
 use Yuhzel\X8seco\Services\Log;
 
 require __DIR__ . '/vendor/autoload.php';
 
-// return new Doctum('E:\RPG Test\xaseco8\src\\');
+// return new Doctum('E:\RPG Test\x8seco\src\\');
 // frist do parse index.php 
 // next do  update index.php
 
 // Class container with auto-wire
 $container = new League\Container\Container();
 $container->delegate(new League\Container\ReflectionContainer(true));
+//NOTE: I decided to use constructor only for Class injection and not for https://php.watch/versions/8.0/constructor-property-promotion
 
 // Logger
 Log::init();
@@ -32,12 +24,7 @@ Log::init();
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
-$aseco = $container->get(\Yuhzel\X8seco\App\Aseco::class);
+$x8seco = $container->get(\Yuhzel\X8seco\App\X8seco::class);
 $fluent = $container->get(\Yuhzel\X8seco\Database\Fluent::class);
 
-echo $aseco->run();
-
-// vendor/bin/phpstan analyse src --memory-limit=256M
-// php-cs-fixer fix src
-// @phpstan-ignore-next-line
-// ...$args always result in an array
+echo $x8seco->run();

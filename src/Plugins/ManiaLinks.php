@@ -29,7 +29,9 @@ class ManiaLinks
 
     public $auto_scorepanel;
 
-    public function __construct(private GbxClient $client) {}
+    public function __construct(private GbxClient $client)
+    {
+    }
 
     public function onNewChallenge(): void
     {

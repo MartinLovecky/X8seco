@@ -43,23 +43,24 @@ class Player
 
     public function setPlayer(XmlArrayObject $playerd): void
     {
-        $this->pid = $playerd->PlayerId ?? $this->pid;
-        $this->login = $playerd->Login ?? $this->login;
-        $this->nickname = $playerd->NickName ?? $this->nickname;
-        $this->ipport = $playerd->IPAddress ?? $this->ipport;
-        $this->ip = preg_replace('/:\d+/', '', $playerd->IPAddress) ?? $this->ip;
-        $this->isspectator = $playerd->IsSpectator ?? $this->isspectator;
-        $this->isofficial = $playerd->IsInOfficialMode ?? $this->isofficial;
-        $this->teamname = $playerd->LadderStats->TeamName ?? $this->teamname;
-        $this->zone = strpos($playerd->Path, '|') ? substr($playerd->Path, 6) : $playerd->Path;
-        $this->nation = strpos($playerd->Path, '|') ? explode('|', $playerd->Path)[1] : $this->nation;
-        $this->ladderrank = $playerd->LadderStats->PlayerRankings[0]->Ranking ?? $this->ladderrank;
-        $this->ladderscore = round($playerd->LadderStats->PlayerRankings[0]->Score, 2);
-        $this->client = $playerd->ClientVersion ?? $this->client;
-        $this->rights = ($playerd->OnlineRights === 3);
-        $this->language = $playerd->Language ?? $this->language;
-        $this->avatar = $playerd->Avatar->FileName ?? $this->avatar;
-        $this->teamid = $playerd->TeamId ?? $this->teamid;
+
+        $this->pid = $playerd['PlayerId'] ?? $this->pid;
+        $this->login = $playerd['Login'] ?? $this->login;
+        $this->nickname = $playerd['NickName'] ?? $this->nickname;
+        $this->ipport = $playerd['IPAddress'] ?? $this->ipport;
+        $this->ip = preg_replace('/:\d+/', '', $playerd['IPAddress']) ?? $this->ip;
+        $this->isspectator = $playerd['IsSpectator'] ?? $this->isspectator;
+        $this->isofficial = $playerd['IsInOfficialMode'] ?? $this->isofficial;
+        $this->zone = strpos($playerd['Path'], '|') ? substr($playerd['Path'], 6) : $playerd['Path'];
+        $this->nation = strpos($playerd['Path'], '|') ? explode('|', $playerd['Path'])[1] : $this->nation;
+        //$this->teamname = $playerd['LadderStats->TeamName'] ?? $this->teamname;
+        //$this->ladderscore = round($playerd['LadderStats->PlayerRankings[0]->Score, 2);
+        preg_match('/\((.*?)\)/', $playerd['ClientVersion'], $matches);
+        $this->client = $matches[1];
+        $this->rights = ($playerd['OnlineRights'] === 3);
+        $this->language = $playerd['Language'] ?? $this->language;
+        $this->avatar = $playerd['Avatar']['FileName'] ?? $this->avatar;
+        $this->teamid = $playerd['TeamId'] ?? $this->teamid;
         $this->created = time();
     }
 

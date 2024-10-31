@@ -39,4 +39,6 @@ namespace Yuhzel\X8seco\Plugins;
  *
  * updated by Yuhzel 2024
  */
-class ManiaLive {}
+class ManiaLive
+{
+}

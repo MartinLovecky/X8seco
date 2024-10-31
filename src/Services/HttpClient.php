@@ -6,7 +6,6 @@ namespace Yuhzel\X8seco\Services;
 
 use CurlHandle;
 use Yuhzel\X8seco\Services\Basic;
-use Yuhzel\X8seco\Core\Xml\XmlRpcParser;
 
 class HttpClient
 {
@@ -17,7 +16,7 @@ class HttpClient
     /**
      * @var CurlHandle|null cURL handle.
      */
-    private ?CurlHandle $ch = null;
+    public ?CurlHandle $ch = null;
     /**
      * @var string Path to the certificate file.
      */
@@ -27,37 +26,48 @@ class HttpClient
      */
     private string $cookieFile = '';
 
-    public function __construct(private XmlRpcParser $xmlRpcParser)
+    public function __construct()
     {
         $this->cert = Basic::path() . 'app/cacert.pem';
         $this->ch = curl_init();
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_CAINFO, $this->cert);
-        curl_setopt($this->ch, CURLOPT_TIMEOUT, 5);
+        $this->setTimeout(10); // Default timeout
+        curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($this->ch, CURLOPT_COOKIEJAR, $this->cookieFile); // Save cookies
         curl_setopt($this->ch, CURLOPT_COOKIEFILE, $this->cookieFile); // Reuse cookies
-        curl_setopt($this->ch, CURLOPT_ENCODING, ''); // Automatically handle all encodingsw
+        curl_setopt($this->ch, CURLOPT_ENCODING, ''); // Automatically handle all encodings
+        curl_setopt($this->ch, CURLOPT_FORBID_REUSE, false); // Enable keep-alive
+        curl_setopt($this->ch, CURLOPT_TCP_KEEPALIVE, 1);   // Enable TCP keep-alive probes
+        curl_setopt($this->ch, CURLOPT_TCP_KEEPIDLE, 60);   // Start keep-alive probes after 60 seconds
+        curl_setopt($this->ch, CURLOPT_TCP_KEEPINTVL, 10);  // Send keep-alive probes every 10 seconds
+        curl_setopt($this->ch, CURLOPT_KEEP_SENDING_ON_ERROR, true);
     }
 
     private function request(
         string $method,
         string $endpoint,
-        array $params = [],
+        string|array $params = [],
         array $headers = []
     ): string|bool {
         $url = $this->baseUrl . $endpoint;
         $method = strtoupper($method);
 
+        // Handle GET requests with query parameters
         if ($method === 'GET' && !empty($params)) {
             $url .= '?' . http_build_query($params);
         }
 
         curl_setopt($this->ch, CURLOPT_URL, $url);
         curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, $method);
+
         // Handle POST, PUT, DELETE payload
-        if (in_array($method, ["POST", "PUT", 'DELETE'], true)) {
+        if ($method === "POST" && is_string($params)) {
+            curl_setopt($this->ch, CURLOPT_POSTFIELDS, $params);
+        } elseif (in_array($method, ["PUT", "DELETE"], true) && is_array($params)) {
             curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($params));
         }
+
         // Set custom headers if provided
         if (!empty($headers)) {
             curl_setopt($this->ch, CURLOPT_HTTPHEADER, $headers);
@@ -90,11 +100,12 @@ class HttpClient
 
     public function post(
         string $endpoint,
-        array $data = [],
+        string|array $data = [],
         array $headers = []
     ): string|bool {
         return $this->request('POST', $endpoint, $data, $headers);
     }
+
 
     public function put(
         string $endpoint,
@@ -112,30 +123,34 @@ class HttpClient
         return $this->request('DELETE', $endpoint, $data, $headers);
     }
 
-    public function xmlRequest(string $endpoint, string $method, array $params = []): string|bool
+    public function setTimeout(int $seconds): void
     {
-        $payload = $this->xmlRpcParser->createXml($method, $params);
-        // Set cURL options for the request
-        curl_setopt($this->ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: text/xml',
-            'Content-Length: ' . strlen($payload),
-        ]);
-        curl_setopt($this->ch, CURLOPT_POSTFIELDS, $payload);
-
-        return $this->post($endpoint);
+        curl_setopt($this->ch, CURLOPT_TIMEOUT, $seconds);
     }
 
-    public function xmlResponse(string $response): ?array
+    public function alive(string $endpoint = ''): bool
     {
-        // Attempt to parse the XML response
-        $xml = simplexml_load_string($response);
-        if ($xml === false) {
-            Basic::console("Failed to parse XML response.");
-            return null; // or handle it as needed
+        // Set the URL to the specified endpoint or default to base URL
+        $url = empty($endpoint) ? $this->baseUrl : $this->baseUrl . $endpoint;
+        curl_setopt($this->ch, CURLOPT_URL, $url);
+
+        // Set to only attempt a connection without fetching the body
+        curl_setopt($this->ch, CURLOPT_NOBODY, true);
+        curl_setopt($this->ch, CURLOPT_CONNECT_ONLY, true);
+
+        // Attempt the connection
+        $result = curl_exec($this->ch);
+
+        // Reset CURLOPT_NOBODY to avoid affecting subsequent requests
+        curl_setopt($this->ch, CURLOPT_NOBODY, false);
+
+        // Check for connection errors
+        if (curl_errno($this->ch)) {
+            Basic::console('Connection check error: ' . curl_error($this->ch));
+            return false;
         }
 
-        // Convert XML to an associative array
-        return json_decode(json_encode($xml), true);
+        return $result !== false;
     }
 
     public function close(): void

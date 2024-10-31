@@ -42,13 +42,13 @@ class FufiMenu
 
     public function __construct(private XmlParser $xmlParser) {}
 
-    public function onStartup()
+    public function onStartup(): void
     {
+        //onMenuLoaded
         $this->xmlData = $this->xmlParser->parseXml('fufi_menu_config.xml');
 
         $this->loadSettings();
         $this->loadStyles();
-        $this->loadEntries();
     }
 
     /**
@@ -144,8 +144,6 @@ class FufiMenu
      * - **Removed `eval()`**: The original method used `eval()` to dynamically access properties, which is
      *   considered unsafe and difficult to maintain. The new method accesses the XML data directly using array
      *   notation, making it safer and more readable.
-     * - **Switched to Array Notation**: The new method uses array access (`$this->xmlData['styles']`) instead of
-     *   `eval()` for fetching style attributes. This change simplifies the code and improves performance.
      * - **Added Default Values Handling**: The new method does not explicitly handle missing elements, but the
      *   code assumes that missing attributes will be handled gracefully by the way array elements are accessed.
      *
@@ -175,13 +173,5 @@ class FufiMenu
             $this->styles[$element]['style'] = $node['style'];
             $this->styles[$element]['substyle'] = $node['substyle'];
         }
-    }
-
-    private function loadEntries(): void
-    {
-        // foreach ($this->xmlData->entries->entry as $entry) {
-        //     dump($this->flattenArray($entry->toArray()));
-        // }
-        //dd(array_chunk($this->flattenArray($this->xmlData['entries']['entry']), 3));
     }
 }

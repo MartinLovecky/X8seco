@@ -37,19 +37,49 @@ class ChatDedimania
         ChatCommand::registerCommands($this->commands, self::PLUGIN_NAME);
     }
 
-    public function helpdedi() {}
-    public function dedihelp() {}
-    public function dedirecs() {}
-    public function dedinew() {}
-    public function dedilive() {}
-    public function dedipb() {}
-    public function dedifirst() {}
-    public function dedilast() {}
-    public function dedinext() {}
-    public function dedidiff() {}
-    public function dedirange() {}
-    public function dedicps() {}
-    public function dedistats() {}
-    public function dedicptms() {}
-    public function dedisectms() {}
+    public function helpdedi()
+    {
+    }
+    public function dedihelp()
+    {
+    }
+    public function dedirecs()
+    {
+    }
+    public function dedinew()
+    {
+    }
+    public function dedilive()
+    {
+    }
+    public function dedipb()
+    {
+    }
+    public function dedifirst()
+    {
+    }
+    public function dedilast()
+    {
+    }
+    public function dedinext()
+    {
+    }
+    public function dedidiff()
+    {
+    }
+    public function dedirange()
+    {
+    }
+    public function dedicps()
+    {
+    }
+    public function dedistats()
+    {
+    }
+    public function dedicptms()
+    {
+    }
+    public function dedisectms()
+    {
+    }
 }

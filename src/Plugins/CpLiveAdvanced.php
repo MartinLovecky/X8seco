@@ -9,8 +9,8 @@ use Yuhzel\X8seco\Core\Types\PlayerList;
 
 class CpLiveAdvanced
 {
-    //private int $numberCps = 0;
-    //private float $lastUpdate = 0;
+    private int $numberCps = 0;
+    private float $lastUpdate = 0;
     private array $list = [];
 
     public function __construct(
@@ -21,8 +21,8 @@ class CpLiveAdvanced
 
     public function onSync(): void
     {
-        //$this->getTrackInfo();
-        //$this->lastUpdate = $this->getMilliSeconds();
+        $this->getTrackInfo();
+        $this->lastUpdate = $this->getMilliSeconds();
     }
 
     public function onPlayerConnect(string $login)
@@ -39,7 +39,7 @@ class CpLiveAdvanced
     // @phpstan-ignore-next-line
     private function getTrackInfo(): void
     {
-        //$this->numberCps = $this->challenge->nbCheckpoints - 1;
+        $this->numberCps = $this->challenge->nbCheckpoints - 1;
     }
     // @phpstan-ignore-next-line
     private function getMilliSeconds(): float

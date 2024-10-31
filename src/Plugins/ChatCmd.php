@@ -73,23 +73,57 @@ class ChatCmd
         $this->maniaLinks->displayManialinkMulti($this->player);
     }
 
-    public function helpPall() {}
-    public function laston() {}
-    public function lastwin() {}
-    public function me() {}
-    public function wins() {}
-    public function song() {}
-    public function mod() {}
-    public function players() {}
-    public function ranks() {}
-    public function clans() {}
-    public function topclans() {}
-    public function recs() {}
-    public function best() {}
-    public function worst() {}
-    public function summary() {}
-    public function topsums() {}
-    public function toprecs() {}
+    public function helpPall()
+    {
+    }
+    public function laston()
+    {
+    }
+    public function lastwin()
+    {
+    }
+    public function me()
+    {
+    }
+    public function wins()
+    {
+    }
+    public function song()
+    {
+    }
+    public function mod()
+    {
+    }
+    public function players()
+    {
+    }
+    public function ranks()
+    {
+    }
+    public function clans()
+    {
+    }
+    public function topclans()
+    {
+    }
+    public function recs()
+    {
+    }
+    public function best()
+    {
+    }
+    public function worst()
+    {
+    }
+    public function summary()
+    {
+    }
+    public function topsums()
+    {
+    }
+    public function toprecs()
+    {
+    }
 
     public function trackrecs($login, int $mode)
     {
@@ -236,18 +270,46 @@ class ChatCmd
         );
     }
 
-    public function newrecs() {}
-    public function liverecs() {}
-    public function firstrec() {}
-    public function lastrec() {}
-    public function nextrec() {}
-    public function diffrec() {}
-    public function recrange() {}
-    public function server() {}
-    public function xaseco() {}
-    public function plugins() {}
-    public function nations() {}
-    public function stats() {}
-    public function statsall() {}
-    public function settings() {}
+    public function newrecs()
+    {
+    }
+    public function liverecs()
+    {
+    }
+    public function firstrec()
+    {
+    }
+    public function lastrec()
+    {
+    }
+    public function nextrec()
+    {
+    }
+    public function diffrec()
+    {
+    }
+    public function recrange()
+    {
+    }
+    public function server()
+    {
+    }
+    public function xaseco()
+    {
+    }
+    public function plugins()
+    {
+    }
+    public function nations()
+    {
+    }
+    public function stats()
+    {
+    }
+    public function statsall()
+    {
+    }
+    public function settings()
+    {
+    }
 }

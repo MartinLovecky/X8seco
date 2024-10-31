@@ -32,13 +32,13 @@ class Panels
     public function __construct()
     {
         $this->commands = [
-            ['donpanel',  [$this, 'donpanel'], 'Selects donate panel (see: /donpanel help)'],
-            ['recpanel', [$this, 'recpanel'], 'Selects records panel (see: /recpanel help)'],
-            ['votepanel',  [$this, 'votepanel'], 'Selects vote panel (see: /votepanel help)']
+            ['donpanel',  [$this, 'donpanel'],  'Selects donate panel (see: /donpanel help)'],
+            ['recpanel',  [$this, 'recpanel'],  'Selects records panel (see: /recpanel help)'],
+            ['votepanel', [$this, 'votepanel'], 'Selects vote panel (see: /votepanel help)']
         ];
     }
 
-    // BelowChat default
+    // load default panels set in .env
     public function onStartup(): void
     {
         ChatCommand::registerCommands($this->commands, self::PLUGIN_NAME);
@@ -72,15 +72,16 @@ class Panels
         }
     }
 
-    public function onSync(): void
-    {
-        $enabled = filter_var($_ENV['statsPanels'], FILTER_VALIDATE_BOOLEAN);
-        if ($enabled) {
-            $panelFile = 'panels/StatsUnited';
-            Basic::console('Load stats panel [{1}]', $panelFile);
-            $this->panels['statspanel'] = @file_get_contents($panelFile);
-        }
-    }
+    //NOTE - since stats_panels is disabled this function is useless 
+    // public function onSync(): void
+    // {
+    //     $enabled = filter_var($_ENV['stats_panels'], FILTER_VALIDATE_BOOLEAN);
+    //     if ($enabled) {
+    //         $panelFile = 'panels/StatsUnited';
+    //         Basic::console('Load stats panel [{1}]', $panelFile);
+    //         $this->panels['stats_panels'] = @file_get_contents($panelFile);
+    //     }
+    // }
 
     // public function onNewChallenge2($data)
     // {
@@ -123,7 +124,13 @@ class Panels
     // }
 
 
-    public function donpanel() {}
-    public function recpanel() {}
-    public function votepanel() {}
+    public function donpanel()
+    {
+    }
+    public function recpanel()
+    {
+    }
+    public function votepanel()
+    {
+    }
 }

@@ -12,9 +12,10 @@ use Yuhzel\X8seco\Services\Basic;
 
 class RaspVotes
 {
-    //TODO I have curently no clue how this is used or if used
-    /*
+    //TODO (yuhzel) I have curently no clue how this is used or if used
     private array $plrvotes = [];
+    private int $replays_counter = 0;
+    /*
     private int $replaysCounter = 0;
     private bool $auto_vote_starter = true;
     private bool $allow_spec_startvote = false;
@@ -113,11 +114,12 @@ class RaspVotes
         private RaspType $raspType,
         private Player $player,
         private ManiaLinks $maniaLinks,
-    ) {}
+    ) {
+    }
 
     public function onSync(): void
     {
-        $this->client->query('SetCallVoteRatios', -1);
+        $this->client->query('SetCallVoteRatios', [['Command' => '*', 'Ratio' => -1.0]]);
         $this->resetVotes();
     }
 

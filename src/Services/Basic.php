@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Services;
 
 use InvalidArgumentException;
+use stdClass;
 use Yuhzel\X8seco\Services\Log;
 
 class Basic
@@ -109,7 +110,7 @@ class Basic
     ];
 
     public static string $path = '';
-
+    public static string $method = '';
 
     public static function getChatMessage(string $message): ?string
     {

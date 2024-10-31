@@ -13,9 +13,6 @@ use Yuhzel\X8seco\Core\Types\{
     GameInfo
 };
 
-/**
- * @property null|string $name
- */
 class Server
 {
     public const string RACE  = 'race';
@@ -31,7 +28,7 @@ class Server
     public string $gamedir = '';
     public string $trackdir = '';
     public string $zone = '';
-    public int $timeout = 180;
+    public int $timeout = 80;
     public int $startTime = 0;
     public int $id = 0;
     public int $rights = 0;
@@ -40,6 +37,14 @@ class Server
     public array $mutelist = [];
     public string $gamestate = self::RACE;
     public string $packmask = 'Stadium';
+    public string $name = '';
+    public string $comment = '';
+    public int $currentMaxPlayers = 0;
+    public int $currentMaxSpectators = 0;
+    public int $currentLadderMode = 0;
+    public int $currentVehicleNetQuality = 0;
+    public int $currentCallVoteTimeOut = 0;
+
     private string $gamePath = '';
 
     public function __construct(
@@ -71,15 +76,19 @@ class Server
     public function setServerInfo(): void
     {
         $response = $this->client->query('GetDetailedPlayerInfo', $this->serverLogin);
-        $this->id = $response->PlayerId;
-        $this->nickname = $response->NickName;
-        $this->zone = mb_strlen($response->Path) > 5 ? substr($response->Path, 6) : substr($response->Path, 0);
-        $this->rights = $response->OnlineRights;
-        $this->laddermin = $this->client->query('GetLadderServerLimits')->LadderServerLimitMin;
-        $this->laddermax = $this->client->query('GetLadderServerLimits')->LadderServerLimitMax;
-        $this->packmask = $this->client->query('GetServerPackMask');
-        foreach ($this->client->query('GetServerOptions') as $key => $value) {
-            $this->__set(lcfirst($key), $value);
-        }
+        $this->id = $response['PlayerId'];
+        $this->nickname = $response['NickName'];
+        $this->zone = mb_strlen($response['Path']) > 5 ? substr($response['Path'], 6) : substr($response['Path'], 0);
+        $this->rights = $response['OnlineRights'];
+        $this->laddermin = $this->client->query('GetLadderServerLimits')['LadderServerLimitMin'];
+        $this->laddermax = $this->client->query('GetLadderServerLimits')['LadderServerLimitMax'];
+        $response = $this->client->query('GetServerOptions');
+        $this->name = $response['Name'];
+        $this->comment = $response['Comment'];
+        $this->currentMaxPlayers = $response['CurrentMaxPlayers'];  
+        $this->currentMaxSpectators = $response['CurrentMaxSpectators'];
+        $this->currentLadderMode = $response['CurrentLadderMode'];
+        $this->currentVehicleNetQuality = $response['CurrentVehicleNetQuality'];
+        $this->currentCallVoteTimeOut = $response['CurrentCallVoteTimeOut'];
     }
 }
