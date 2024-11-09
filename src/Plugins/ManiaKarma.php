@@ -48,7 +48,7 @@ class ManiaKarma
         //NOTE - We could modify XML RPC parser to handle this
         $responseData = null;
         //dthis->httpClient->xmlResponse($response);
-        //FIXME : Global karma is fucked use local one 
+        //FIXME : Global karma is fucked use local one
         if ($responseData) {
             $status = $responseData['status'];
             switch ($status) {

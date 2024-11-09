@@ -10,20 +10,13 @@ use DOMElement;
 use DOMDocument;
 use UnexpectedValueException;
 use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
-<<<<<<< HEAD
 use Yuhzel\X8seco\Services\Basic;
-
-class XmlRpcResponse
-{
-    public function __construct(private DOMDocument $doc) {}
-=======
 
 class XmlRpcResponse
 {
     public function __construct(private DOMDocument $doc)
     {
     }
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
 
     /**
      * Converts the XML-RPC response into a structured array or XmlArrayObject.
@@ -64,7 +57,6 @@ class XmlRpcResponse
     private function processFault(DOMElement $fault): XmlArrayObject
     {
         $faultObject = new XmlArrayObject();
-<<<<<<< HEAD
         $faultObject->methodName = Basic::$method; //NOTE - DEBUG INFO
 
         // if fault is inside struct
@@ -82,10 +74,6 @@ class XmlRpcResponse
 
         $faultObject->faultCode = (int) $fault->getElementsByTagName('faultCode')->item(0)->nodeValue;
         $faultObject->faultString = (string) $fault->getElementsByTagName('faultString')->item(0)->nodeValue;
-=======
-        $faultObject->faultCode = (int) ($fault->getElementsByTagName('faultCode')->item(0)->nodeValue ?? 0);
-        $faultObject->faultString = (string) ($fault->getElementsByTagName('faultString')->item(0)->nodeValue ?? '');
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
 
         return $faultObject;
     }
@@ -107,28 +95,11 @@ class XmlRpcResponse
 
             $valueElement = $param->getElementsByTagName('value')->item(0)?->firstChild;
             if ($valueElement instanceof DOMElement) {
-<<<<<<< HEAD
                 $result = $this->processValue($valueElement);
                 if ($result instanceof XmlArrayObject) {
                     $results->add('result', $result);
                 } else {
                     $results->add('parsed', $result);
-=======
-                //If the <value> is an array, process the array
-                if ($valueElement->nodeName === 'array') {
-                    $results['result'] = $this->processArray($valueElement);
-                    return $results;
-                }
-                //If the <value> is a struct, process the struct
-                elseif ($valueElement->nodeName === 'struct') {
-                    $results['result'] = $this->processStruct($valueElement);
-                    return $results;
-                }
-                //Otherwise, just process the value as a simple type (string, int, etc.)
-                else {
-                    $results['result'] = $this->processValue($valueElement);
-                    return $results;
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
                 }
             }
         }
@@ -156,19 +127,12 @@ class XmlRpcResponse
                 'double' => (float)$element->nodeValue,
                 'array' => $this->processArray($element),
                 'struct' => $this->processStruct($element),
-<<<<<<< HEAD
                 'fault' => $this->processStruct($element),
-=======
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
                 'nil' => null,
                 default => throw new UnexpectedValueException("Unknown type: {$element->tagName}"),
             };
         }
-<<<<<<< HEAD
         return new UnexpectedValueException("Unreachable");
-=======
-        return new UnexpectedValueException("IDK");
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
     }
 
     /**
@@ -181,24 +145,17 @@ class XmlRpcResponse
     {
         $array = [];
         $dataElements = $element->getElementsByTagName('data')->item(0);
-<<<<<<< HEAD
         $addedValues = [];
-=======
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
 
         if ($dataElements) {
             foreach ($dataElements->getElementsByTagName('value') as $valueElement) {
                 if ($valueElement instanceof DOMElement) {
                     // Process each value element and add it to the array
                     $parsedValue = $this->processValue($valueElement->firstChild);
-<<<<<<< HEAD
                     if (!in_array($parsedValue, $addedValues, true)) {
                         $array[] = $parsedValue;
                         $addedValues[] = $parsedValue;
                     }
-=======
-                    $array[] = $parsedValue;
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
                 }
             }
         }
@@ -215,11 +172,8 @@ class XmlRpcResponse
     private function processStruct(DOMElement $element): XmlArrayObject
     {
         $struct = new XmlArrayObject();
-<<<<<<< HEAD
         $addedKeys = [];
 
-=======
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
         foreach ($element->getElementsByTagName('member') as $memberElement) {
             if ($memberElement instanceof DOMElement) {
                 // Extract the <name> and the corresponding <value>
@@ -227,14 +181,10 @@ class XmlRpcResponse
                 $valueElement = $memberElement->getElementsByTagName('value')->item(0)?->firstChild;
                 // Ensure both name and value are valid
                 if ($name !== null && $valueElement instanceof DOMElement) {
-<<<<<<< HEAD
                     if (!in_array($name, $addedKeys, true)) {
                         $struct->$name = $this->processValue($valueElement);
                         $addedKeys[] = $name; // Mark this key as added
                     }
-=======
-                    $struct->$name = $this->processValue($valueElement);
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
                 }
             }
         }

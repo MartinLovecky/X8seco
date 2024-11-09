@@ -82,8 +82,8 @@ class PluginManager
         Log::error("Plugin {$pluginName} not found make sure it is in PluginManager constructor.");
         return null;
     }
-    
-    //NOTE (yuhzel): finish rasp prune 
+
+    //NOTE (yuhzel): finish rasp prune
     public function onStartup(): void
     {
         foreach (get_object_vars($this) as $plugin) {

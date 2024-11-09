@@ -85,7 +85,7 @@ class Server
         $response = $this->client->query('GetServerOptions');
         $this->name = $response['Name'];
         $this->comment = $response['Comment'];
-        $this->currentMaxPlayers = $response['CurrentMaxPlayers'];  
+        $this->currentMaxPlayers = $response['CurrentMaxPlayers'];
         $this->currentMaxSpectators = $response['CurrentMaxSpectators'];
         $this->currentLadderMode = $response['CurrentLadderMode'];
         $this->currentVehicleNetQuality = $response['CurrentVehicleNetQuality'];

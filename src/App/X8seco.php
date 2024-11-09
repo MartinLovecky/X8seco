@@ -113,7 +113,7 @@ class X8seco
                 trigger_error('[' . $this->server->client->getErrorCode() . '] Authenticate - ' . $this->server->client->getErrorMessage(), E_USER_WARNING);
                 return false;
             }
-           
+
             $this->server->client->query('EnableCallbacks', true);
             $this->waitServerReady();
 
@@ -152,7 +152,7 @@ class X8seco
         $this->server->gameInfo->setGameInfo();
         $this->server->challenge->setChallangeInfo();
         $this->currstatus = $this->server->client->query('GetStatus')->Code;
-        
+
         $this->pluginManager->onSync();
 
         /*
@@ -234,10 +234,6 @@ class X8seco
             $chatCmd = $this->pluginManager->getPlugin('ChatCmd');
             $chatCmd->trackrecs($playerObject->Login, 1);
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
         //FIXME we should check if player exist in players table
         //TODO - onPlayerConnect onPlayerConnect2
         $this->pluginManager->onPlayerConnect($this->player->login);

@@ -72,7 +72,7 @@ class Panels
         }
     }
 
-    //NOTE - since stats_panels is disabled this function is useless 
+    //NOTE - since stats_panels is disabled this function is useless
     // public function onSync(): void
     // {
     //     $enabled = filter_var($_ENV['stats_panels'], FILTER_VALIDATE_BOOLEAN);

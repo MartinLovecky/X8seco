@@ -11,11 +11,11 @@ use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
 class DedimaniaClient
 {
-
     public function __construct(
         private XmlRpcService $xmlRpcService,
         private HttpClient $httpClient,
-    ) {}
+    ) {
+    }
 
     public function authenticate(array $params): XmlArrayObject
     {

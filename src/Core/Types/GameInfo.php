@@ -14,13 +14,8 @@ class GameInfo
 
     public function __construct(
         private GbxClient $client,
-<<<<<<< HEAD
-    ) {}
-=======
-        private ?XmlArrayObject $data = null
     ) {
     }
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
 
     public function __get(string $name): mixed
     {

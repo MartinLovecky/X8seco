@@ -6,10 +6,6 @@ namespace Yuhzel\X8seco\Services;
 
 use CurlHandle;
 use Yuhzel\X8seco\Services\Basic;
-<<<<<<< HEAD
-=======
-use Yuhzel\X8seco\Core\Xml\{XmlRpcService, XmlArrayObject};
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
 
 class HttpClient
 {
@@ -30,11 +26,7 @@ class HttpClient
      */
     private string $cookieFile = '';
 
-<<<<<<< HEAD
     public function __construct()
-=======
-    public function __construct(private XmlRpcService $xmlRpcService)
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
     {
         $this->cert = Basic::path() . 'app/cacert.pem';
         $this->ch = curl_init();
@@ -133,7 +125,6 @@ class HttpClient
 
     public function setTimeout(int $seconds): void
     {
-<<<<<<< HEAD
         curl_setopt($this->ch, CURLOPT_TIMEOUT, $seconds);
     }
 
@@ -160,22 +151,6 @@ class HttpClient
         }
 
         return $result !== false;
-=======
-        $payload = $this->xmlRpcService->createRequest($method, $params);
-        // Set cURL options for the request
-        curl_setopt($this->ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: text/xml',
-            'Content-Length: ' . strlen($payload),
-        ]);
-        curl_setopt($this->ch, CURLOPT_POSTFIELDS, $payload);
-
-        return $this->post($endpoint);
-    }
-
-    public function xmlResponse(string $response): XmlArrayObject
-    {
-        return $this->xmlRpcService->parseResponse($response);
->>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
     }
 
     public function close(): void
