@@ -40,7 +40,9 @@ class FufiMenu
     // private string $caption = "   Menu";
     // private int $menutimeout = 13000;
 
-    public function __construct(private XmlParser $xmlParser) {}
+    public function __construct(private XmlParser $xmlParser)
+    {
+    }
 
     public function onStartup(): void
     {

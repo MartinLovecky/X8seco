@@ -10,8 +10,11 @@ use Yuhzel\X8seco\Core\Xml\{
     XmlArrayObject
 };
 
+<<<<<<< HEAD
 use Yuhzel\X8seco\Services\Basic;
 
+=======
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
 /**
  * Class XmlRpcService
  *
@@ -21,14 +24,20 @@ use Yuhzel\X8seco\Services\Basic;
  */
 class XmlRpcService
 {
+<<<<<<< HEAD
 
     public string $path = '';
 
+=======
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
     public function __construct(
         private XmlRpcRequest $request,
         private XmlRpcResponse $response,
     ) {
+<<<<<<< HEAD
         $this->path = Basic::path() . 'app' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . 'dedimania';
+=======
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
     }
 
     /**
@@ -52,13 +61,18 @@ class XmlRpcService
      */
     public function createMultiRequest(string $methodName, array $calls): string|false
     {
+<<<<<<< HEAD
         return false; //return $this->request->createMultiXml($methodName, $calls);
+=======
+        return $this->request->createMultiXml($methodName, $calls);
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
     }
 
     /**
      * Parse the XML-RPC response into a structured format.
      *
      * @param string $xml
+<<<<<<< HEAD
      * @return mixed
      */
     public function parseResponse(string $xml): mixed
@@ -74,4 +88,12 @@ class XmlRpcService
 
         return array_values($xmlArrayObjects);
     }
+=======
+     * @return XmlArrayObject
+     */
+    public function parseResponse(string $xml): XmlArrayObject
+    {
+        return $this->response->parseResponse($xml);
+    }
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
 }

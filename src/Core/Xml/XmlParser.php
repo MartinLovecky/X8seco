@@ -31,7 +31,10 @@ use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
  */
 class XmlParser
 {
+    private string $xmlPath = '';
+
     /**
+<<<<<<< HEAD
      * `/app/xml/`
      *
      * @var string
@@ -41,6 +44,12 @@ class XmlParser
     /**
      * Initializes the XmlParser instance, setting the XML file path.
      */
+=======
+     * Initializes the XmlParser instance, setting the XML file path.
+     *
+     * The XML file path is constructed as `/app/xml/`
+     */
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
     public function __construct()
     {
         $this->xmlPath = Basic::path() . 'app' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR;

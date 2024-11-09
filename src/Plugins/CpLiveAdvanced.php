@@ -17,7 +17,8 @@ class CpLiveAdvanced
         // @phpstan-ignore-next-line
         private Challenge $challenge,
         private PlayerList $playerList
-    ) {}
+    ) {
+    }
 
     public function onSync(): void
     {
@@ -47,5 +48,7 @@ class CpLiveAdvanced
         return microtime(true) * 1000;
     }
     // @phpstan-ignore-next-line
-    private function managePlayerConnect() {}
+    private function managePlayerConnect()
+    {
+    }
 }

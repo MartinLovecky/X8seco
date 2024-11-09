@@ -162,7 +162,7 @@ class X8seco
         */
         $players = $this->server->client->query('GetPlayerList', 300, 0, 2);
         // Function to filter instances of XmlArrayObject
-        $xmlArrayObjects = array_filter($players, function ($item) {
+        $xmlArrayObjects = array_filter($players->toArray(), function ($item) {
             return $item instanceof XmlArrayObject;
         });
         // The filtered XmlArrayObject instances as an array
@@ -234,6 +234,10 @@ class X8seco
             $chatCmd = $this->pluginManager->getPlugin('ChatCmd');
             $chatCmd->trackrecs($playerObject->Login, 1);
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
         //FIXME we should check if player exist in players table
         //TODO - onPlayerConnect onPlayerConnect2
         $this->pluginManager->onPlayerConnect($this->player->login);

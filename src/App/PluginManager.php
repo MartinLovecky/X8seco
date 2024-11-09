@@ -62,7 +62,8 @@ class PluginManager
         public Nickname $nickname,
         public RaspJukebox $raspJukebox,
         public RaspVotes $raspVotes,
-    ) {}
+    ) {
+    }
 
     /**
      * Any plugin dependency will resolve automaticly

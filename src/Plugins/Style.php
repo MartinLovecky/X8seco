@@ -20,7 +20,8 @@ class Style
 
     public function __construct(
         private XmlParser $xmlParser
-    ) {}
+    ) {
+    }
 
     public function onStartup(): void
     {

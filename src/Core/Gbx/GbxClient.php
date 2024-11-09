@@ -238,19 +238,28 @@ class GbxClient
      * Sends a query request to the GBX remote service and retrieves the result.
      *
      *
+<<<<<<< HEAD
      * @return mixed parsed values
      */
     public function query(string $method, mixed ...$params): mixed
+=======
+     * @return XmlArrayObject parsed values
+     */
+    public function query(string $method, mixed ...$params): XmlArrayObject
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
     {
         // generate xml request string for params
         if ($this->multi) {
             $xmlString = $this->xmlRpcService->createMultiRequest($method, $params);
         } else {
             $xmlString = $this->xmlRpcService->createRequest($method, $params);
+<<<<<<< HEAD
             // DEBUG dump([$method => [
             //     $xmlString,
             //     $params
             // ]]);
+=======
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
         }
         if (($size = strlen($xmlString)) > self::MAX_REQUEST_SIZE) {
             $this->throwError(-32300, "Transport error - request too large");
@@ -330,6 +339,15 @@ class GbxClient
             $contents = $this->readContents($size);
         } while ($recvHandle !== $this->reqHandle);
 
+<<<<<<< HEAD
+=======
+        if ($this->hasError()) {
+            Log::error($this->displayError());
+            Basic::console($this->displayError());
+            return new XmlArrayObject();
+        }
+
+>>>>>>> 321574d744f9007dec5eb4c240b049727c0fa8e8
         $parsedResponse = $this->xmlRpcService->parseResponse($contents);
 
         return $parsedResponse;
