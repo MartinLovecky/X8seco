@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Plugins;
 
 use Yuhzel\X8seco\App\ManiaLinks;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Core\Types\Challenge;
 use Yuhzel\X8seco\Core\Types\ChatCommand;
 use Yuhzel\X8seco\Core\Types\Player;
@@ -158,14 +158,14 @@ class ChatCmd
         $sec = $sec ?? 0;
         $hun = $hun ?? 0;
         $timing = $this->getTimingMessage($mode);
-        $name = '$l[' . $this->challenge->tmx->pageurl . ']' . Basic::stripColors($this->challenge->name) . '$l';
+        $name = '$l[' . $this->challenge->tmx->pageurl . ']' . Aseco::stripColors($this->challenge->name) . '$l';
         $message = $this->getFinalMessage($totalNew, $name, $timing, $sec, $hun, $records);
 
         if ($login) {
             $message = str_replace('{#server}>> ', '{#server}> ', $message); // Adjust message for player-specific message
-            $this->client->query('ChatSendServerMessageToLogin', Basic::formatColors($message), $login);
+            $this->client->query('ChatSendServerMessageToLogin', Aseco::formatColors($message), $login);
         } else {
-            $this->client->query('ChatSendServerMessage', Basic::formatColors($message));
+            $this->client->query('ChatSendServerMessage', Aseco::formatColors($message));
         }
     }
 
@@ -180,29 +180,29 @@ class ChatCmd
         $recordMsg = null;
 
         if ($record->new) {
-            $recordMsg = Basic::formatText(
-                Basic::getChatMessage('ranking_record_new_on'),
+            $recordMsg = Aseco::formatText(
+                Aseco::getChatMessage('ranking_record_new_on'),
                 $index + 1,
-                Basic::stripColors($record->player->nickname),
-                Basic::formatTime($record->score)
+                Aseco::stripColors($record->player->nickname),
+                Aseco::formatTime($record->score)
             );
         } elseif (in_array($record->player->login, $players)) {
-            $recordMsg = Basic::formatText(
-                Basic::getChatMessage('ranking_record_on'),
+            $recordMsg = Aseco::formatText(
+                Aseco::getChatMessage('ranking_record_on'),
                 $index + 1,
-                Basic::stripColors($record->player->nickname),
-                Basic::formatTime($record->score)
+                Aseco::stripColors($record->player->nickname),
+                Aseco::formatTime($record->score)
             );
 
             if ($mode === 0 && !$isLastRecord) {
                 return null; // Skip non-last records in mode 0
             }
         } else {
-            $recordMsg = Basic::formatText(
-                Basic::getChatMessage('ranking_record'),
+            $recordMsg = Aseco::formatText(
+                Aseco::getChatMessage('ranking_record'),
                 $index + 1,
-                Basic::stripColors($record->player->nickname),
-                Basic::formatTime($record->score)
+                Aseco::stripColors($record->player->nickname),
+                Aseco::formatTime($record->score)
             );
 
             if (
@@ -238,8 +238,8 @@ class ChatCmd
         string $records
     ): string {
         if ($totalNew > 0) {
-            return Basic::formatText(
-                Basic::getChatMessage('ranking_new'),
+            return Aseco::formatText(
+                Aseco::getChatMessage('ranking_new'),
                 $name,
                 $timing,
                 $totalNew
@@ -247,8 +247,8 @@ class ChatCmd
         }
 
         if ($totalNew === 0 && $records !== '$n') {
-            return Basic::formatText(
-                Basic::getChatMessage('ranking_range'),
+            return Aseco::formatText(
+                Aseco::getChatMessage('ranking_range'),
                 $name,
                 $timing,
                 sprintf("%d.%02d", $sec, $hun)
@@ -256,15 +256,15 @@ class ChatCmd
         }
 
         if ($totalNew === 0 && $records === '$n') {
-            return Basic::formatText(
-                Basic::getChatMessage('ranking_nonew'),
+            return Aseco::formatText(
+                Aseco::getChatMessage('ranking_nonew'),
                 $name,
                 $timing
             );
         }
 
-        return Basic::formatText(
-            Basic::getChatMessage('ranking_none'),
+        return Aseco::formatText(
+            Aseco::getChatMessage('ranking_none'),
             $name,
             $timing
         );

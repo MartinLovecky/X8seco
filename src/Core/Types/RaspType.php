@@ -6,7 +6,7 @@ namespace Yuhzel\X8seco\Core\Types;
 
 use Exception;
 use Yuhzel\X8seco\Database\Fluent;
-use Yuhzel\X8seco\Services\{Log, Basic};
+use Yuhzel\X8seco\Services\{Log, Aseco};
 use Yuhzel\X8seco\Core\Xml\{XmlParser, XmlArrayObject};
 
 class RaspType
@@ -103,7 +103,7 @@ class RaspType
         private Fluent $fluent,
         private XmlParser $xmlParser
     ) {
-        $this->gamePath = Basic::path(3);
+        $this->gamePath = Aseco::path(3);
         $this->gamedir = "{$this->gamePath}GameData/";
         $this->trackdir = "{$this->gamePath}GameData/Tracks/";
     }
@@ -111,9 +111,9 @@ class RaspType
     public function start(): void
     {
         $this->messages = $this->xmlParser->parseXml('rasp.xml')->messages;
-        Basic::console('[RASP] Checking database structure...');
+        Aseco::console('[RASP] Checking database structure...');
         $this->checkTables();
-        Basic::console('[RASP] ...Structure OK!');
+        Aseco::console('[RASP] ...Structure OK!');
         $this->cleanData();
     }
 
@@ -152,24 +152,24 @@ class RaspType
         }
         if (!file_exists($this->trackdir . $tmxdir)) {
             if (!mkdir($this->trackdir . $tmxdir)) {
-                Basic::console('{RASP_ERROR} TMX Directory (' . $this->trackdir . $tmxdir . ') cannot be created');
+                Aseco::console('{RASP_ERROR} TMX Directory (' . $this->trackdir . $tmxdir . ') cannot be created');
             }
         }
 
         if (!is_writeable($this->trackdir . $tmxdir)) {
-            Basic::console('{RASP_ERROR} TMX Directory (' . $this->trackdir . $tmxdir . ') cannot be written to');
+            Aseco::console('{RASP_ERROR} TMX Directory (' . $this->trackdir . $tmxdir . ') cannot be written to');
         }
 
         if ($this->feature_tmxadd) {
             if (!file_exists($this->trackdir . $this->tmxtmpdir)) {
                 if (!mkdir($this->trackdir . $this->tmxtmpdir)) {
-                    Basic::console('{RASP_ERROR} TMXtmp Directory (' . $this->trackdir . $this->tmxtmpdir . ') cannot be created');
+                    Aseco::console('{RASP_ERROR} TMXtmp Directory (' . $this->trackdir . $this->tmxtmpdir . ') cannot be created');
                     $this->feature_tmxadd = false;
                 }
             }
 
             if (!is_writeable($this->trackdir . $this->tmxtmpdir)) {
-                Basic::console('{RASP_ERROR} TMXtmp Directory (' . $this->trackdir . $this->tmxtmpdir . ') cannot be written to');
+                Aseco::console('{RASP_ERROR} TMXtmp Directory (' . $this->trackdir . $this->tmxtmpdir . ') cannot be written to');
                 $this->feature_tmxadd = false;
             }
         }
@@ -185,11 +185,11 @@ class RaspType
                 // Create table if they dont exist
                 if ($this->fluent->execSQLFile($table)) {
                     if (!$this->fluent->validStructure($table)) {
-                        Basic::console('ERROR 1 RaspType');
+                        Aseco::console('ERROR 1 RaspType');
                     }
                 } else {
                     if (!$this->fluent->validStructure($table)) {
-                        Basic::console('ERROR 2 RaspType');
+                        Aseco::console('ERROR 2 RaspType');
                     }
                 }
             } catch (Exception $e) {
@@ -201,7 +201,7 @@ class RaspType
     private function cleanData(): void
     {
         if (!$this->prune) {
-            Basic::console('[RASP] Cleaning up unused data');
+            Aseco::console('[RASP] Cleaning up unused data');
 
             $challenges = $this->fluent->query->deleteFrom('challenges')->where('Uid', '')->execute();
             $players = $this->fluent->query->deleteFrom('players')->where('Login', '')->execute();
@@ -220,7 +220,7 @@ class RaspType
                 ->fetchAll();
 
             if (!empty($recordsToDelete)) {
-                Basic::console('[RASP] ...Deleting records... ');
+                Aseco::console('[RASP] ...Deleting records... ');
                 $placeholders = implode(',', array_fill(0, count($recordsToDelete), '?'));
                 $this->fluent->query->deleteFrom('records')->where("ChallengeId IN ($placeholders)", $recordsToDelete)->execute();
             }
@@ -233,7 +233,7 @@ class RaspType
                 ->fetch('p.PlayerId');
 
             if (!empty($playerRecordsToDelete)) {
-                Basic::console('[RASP] ...Deleting records for deleted players');
+                Aseco::console('[RASP] ...Deleting records for deleted players');
                 $placeholders = implode(',', array_fill(0, count($playerRecordsToDelete), '?'));
                 $this->fluent->query->deleteFrom('records')->where("PlayerId IN ($placeholders)", $playerRecordsToDelete)->execute();
             }
@@ -245,7 +245,7 @@ class RaspType
                 ->where('c.Uid IS NULL')
                 ->fetch('r.challengeID');
             if (!empty($rsTimesToDelete)) {
-                Basic::console('[RASP] ...Deleting rs_times for deleted challenges');
+                Aseco::console('[RASP] ...Deleting rs_times for deleted challenges');
                 $placeholders = implode(',', array_fill(0, count($rsTimesToDelete), '?'));
                 $this->fluent->query->deleteFrom('rs_times')->where("challengeID IN ($placeholders)", $rsTimesToDelete)->execute();
             }
@@ -257,7 +257,7 @@ class RaspType
                 ->where('p.playerID IS NULL')
                 ->fetch('r.playerID');
             if ($rsPlayerTimesToDelete) {
-                Basic::console('[RASP] ...Deleting rs_times for deleted players');
+                Aseco::console('[RASP] ...Deleting rs_times for deleted players');
                 $placeholders = implode(',', array_fill(0, count($rsPlayerTimesToDelete), '?'));
                 $this->fluent->query->deleteFrom('rs_times')->where("playerID IN ($placeholders)", $rsPlayerTimesToDelete)->execute();
             }

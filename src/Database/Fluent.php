@@ -7,7 +7,7 @@ namespace Yuhzel\X8seco\Database;
 use PDO;
 use PDOException;
 use Envms\FluentPDO\Query;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Services\Log;
 
 /**
@@ -46,7 +46,7 @@ class Fluent
      */
     public function __construct()
     {
-        $this->dir = Basic::path();
+        $this->dir = Aseco::path();
         $charset = !empty($_ENV['db_charset']) ? ";charset={$_ENV['db_charset']}" : ';';
 
         try {
@@ -58,11 +58,11 @@ class Fluent
         } catch (PDOException $e) {
             $code = $e->getCode();
             if ($code === 2002) {
-                Basic::console("Database connection failed: " . $e->getMessage());
+                Aseco::console("Database connection failed: " . $e->getMessage());
                 Log::error("Database connection failed: " . $e->getMessage());
                 exit;
             }
-            Basic::console("Database connection failed: " . $e->getMessage());
+            Aseco::console("Database connection failed: " . $e->getMessage());
             Log::error("Database connection failed: " . $e->getMessage());
             throw new PDOException("Database connection failed.");
         } finally {

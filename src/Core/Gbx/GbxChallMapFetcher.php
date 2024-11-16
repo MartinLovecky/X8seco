@@ -11,7 +11,6 @@ class GbxChallMapFetcher extends GbxBaseFetcher
     public const int IMAGE_FLIP_HORIZONTAL = 1;
     public const int IMAGE_FLIP_VERTICAL   = 2;
     public const int IMAGE_FLIP_BOTH       = 3;
-    public bool $tnImage = false;
     public int $headerVersn = 0;
     public int $bronzeTime = 0;
     public int $silverTime = 0;
@@ -54,19 +53,27 @@ class GbxChallMapFetcher extends GbxBaseFetcher
     public string $thumbnail = '';
     public string $comment = '';
     public int $headerEnd = 0;
+    public bool $tnImage = false;
+    public bool $debug = false;
 
-    public function __construct(
-        bool $parsexml = false,
-        bool $tnimage = false,
-        bool $debug = false
-    ) {
-        $this->parseXml = $parsexml;
-        $this->tnImage = $tnimage;
-        if ($debug) {
-            $this->enableDebug();
-        }
-
+    public function __construct()
+    {
         $this->setError('GBX map error: ');
+    }
+
+    public function setXml(bool $set): void
+    {
+        $this->parseXml = $set;
+    }
+
+    public function setImage(bool $set): void
+    {
+        $this->tnImage = $set;
+    }
+
+    public function setDebug(bool $set): void
+    {
+        $this->debug = $set;
     }
 
     public function processFile(string $filename): void
@@ -87,7 +94,7 @@ class GbxChallMapFetcher extends GbxBaseFetcher
         string|int $uid,
         bool $records = false
     ): TmxInfoFetcher {
-        return new TmxInfoFetcher('TMF', $uid, $records);
+        return new TmxInfoFetcher('TMNF', $uid, $records);
     }
 
     private function processGBX(): void

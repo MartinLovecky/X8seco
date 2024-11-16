@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\App;
 
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\App\PluginManager;
 use Yuhzel\X8seco\Core\Types\Player;
 use Yuhzel\X8seco\Core\Types\Server;
@@ -35,23 +35,23 @@ class X8seco
 
     public function run()
     {
-        $config = Basic::path() . "app/xml/config.xml";
-        Basic::console('[X8seco] Load settings from [{1}]', $config);
+        $config = Aseco::path() . "app/xml/config.xml";
+        Aseco::console('[X8seco] Load settings from [{1}]', $config);
         $this->loadSettings();
 
-        Basic::console('[X8seco] Load admin/ops lists [{1}]', $this->settings->adminops_file);
+        Aseco::console('[X8seco] Load admin/ops lists [{1}]', $this->settings->adminops_file);
         $this->readLists();
 
-        Basic::console('[X8seco] Load banned IPs list [{1}]', $this->settings->bannedips_file);
+        Aseco::console('[X8seco] Load banned IPs list [{1}]', $this->settings->bannedips_file);
         $this->readIPs();
 
         if (!$this->connect()) {
             trigger_error('Connection could not be established!', E_USER_ERROR);
         }
-        Basic::console('Connection established successfully!');
+        Aseco::console('Connection established successfully!');
 
         if (!empty($this->settings->lock_password->storage)) {
-            Basic::console("[X8seco] Locked admin commands & features with password '{1}'", $this->settings->lock_password);
+            Aseco::console("[X8seco] Locked admin commands & features with password '{1}'", $this->settings->lock_password);
         }
 
         $this->pluginManager->onStartup();
@@ -91,7 +91,7 @@ class X8seco
     private function connect(): bool
     {
         if ($this->server->ip && $this->server->port && $this->server->login && $this->server->pass) {
-            Basic::console(
+            Aseco::console(
                 'Try to connect to TM dedicated server on {1}:{2} timeout {3}s',
                 $this->server->ip,
                 $this->server->port,
@@ -103,7 +103,7 @@ class X8seco
                 return false;
             }
 
-            Basic::console(
+            Aseco::console(
                 "Try to authenticate with login '{1}' and password '{2}'",
                 $this->server->login,
                 $this->server->pass
@@ -127,15 +127,15 @@ class X8seco
     {
         $status = $this->server->client->query('GetStatus');
         if ($status->Code != 4) {
-            Basic::console("Waiting for dedicated server to reach status 'Running - Play'...");
-            Basic::console('Status: ' . $status->Name);
+            Aseco::console("Waiting for dedicated server to reach status 'Running - Play'...");
+            Aseco::console('Status: ' . $status->Name);
             $timeout = 0;
             $laststatus = $status->Name;
             while ($status->Code != 4) {
                 sleep(1);
                 $status = $this->server->client->query('GetStatus');
                 if ($laststatus != $status->Name) {
-                    Basic::console('Status: ' . $status->Name);
+                    Aseco::console('Status: ' . $status->Name);
                     $laststatus = $status->Name;
                 }
                 if (isset($this->server->timeout) && $timeout++ > $this->server->timeout) {
@@ -162,7 +162,7 @@ class X8seco
         */
         $players = $this->server->client->query('GetPlayerList', 300, 0, 2);
         // Function to filter instances of XmlArrayObject
-        $xmlArrayObjects = array_filter($players->toArray(), function ($item) {
+        $xmlArrayObjects = array_filter($players, function ($item) {
             return $item instanceof XmlArrayObject;
         });
         // The filtered XmlArrayObject instances as an array
@@ -180,7 +180,7 @@ class X8seco
         $version = str_replace(')', '', preg_replace('/.*\(/', '', $playerd->ClientVersion));
 
         if ($version === '') {
-            $message = str_replace('{br}', "\n", Basic::getChatMessage('clent_error'));
+            $message = str_replace('{br}', "\n", Aseco::getChatMessage('clent_error'));
         }
         //SECTION - this can be improved
         $this->player->setPlayer($playerd);
@@ -192,7 +192,7 @@ class X8seco
 
         $this->server->players->addPlayer($this->player);
         //!SECTION
-        Basic::console(
+        Aseco::console(
             '<< player {1} joined the game [{2} : {3} : {4} : {5} : {6}]',
             $this->player->pid,
             $this->player->login,
@@ -205,31 +205,31 @@ class X8seco
         preg_match('/\((.*?)\)/', $playerd->ClientVersion, $matches);
         $version = $matches[1];
 
-        $message = Basic::formatText(
-            Basic::getChatMessage('welcome'),
-            Basic::stripColors($this->player->nickname),
+        $message = Aseco::formatText(
+            Aseco::getChatMessage('welcome'),
+            Aseco::stripColors($this->player->nickname),
             $this->server->name,
             $version
         );
 
         $message = preg_replace('/XASECO.+' . $playerd->ClientVersion . '/', '$l[http://www.gamers.org/tmn/]$0$l', $message);
-        $message = str_replace('{br}', "\n", Basic::formatColors($message));
+        $message = str_replace('{br}', "\n", Aseco::formatColors($message));
 
         $this->server->client->query('ChatSendServerMessageToLogin', str_replace("\n", "", $message), $this->player->login);
 
         $cur_record = $this->server->records->getRecord(0);
         if ($cur_record !== null && $cur_record->score >  0) {
-            $message = Basic::formatText(
-                Basic::getChatMessage('record_current'),
-                Basic::stripColors($this->server->challenge->name),
-                Basic::formatTime($cur_record->score),
-                Basic::stripColors($cur_record->player->nickname)
+            $message = Aseco::formatText(
+                Aseco::getChatMessage('record_current'),
+                Aseco::stripColors($this->server->challenge->name),
+                Aseco::formatTime($cur_record->score),
+                Aseco::stripColors($cur_record->player->nickname)
             );
         } else {
 
-            $message = Basic::formatText(
-                Basic::getChatMessage('record_none'),
-                Basic::stripColors($this->server->challenge->name)
+            $message = Aseco::formatText(
+                Aseco::getChatMessage('record_none'),
+                Aseco::stripColors($this->server->challenge->name)
             );
             $chatCmd = $this->pluginManager->getPlugin('ChatCmd');
             $chatCmd->trackrecs($playerObject->Login, 1);
@@ -241,29 +241,29 @@ class X8seco
 
     private function sendHeader(): void
     {
-        Basic::console('###############################################################################');
-        Basic::console('  XASECO v 2.11.26 running on {1}:{2}', $this->server->ip, $this->server->port);
-        Basic::console('  Name   : {1} - {2}', Basic::stripColors($this->server->name, false), $this->server->serverLogin);
-        Basic::console(
+        Aseco::console('###############################################################################');
+        Aseco::console('  XASECO v 2.11.26 running on {1}:{2}', $this->server->ip, $this->server->port);
+        Aseco::console('  Name   : {1} - {2}', Aseco::stripColors($this->server->name, false), $this->server->serverLogin);
+        Aseco::console(
             '  Game   : {1} {2} - {3} - {4}',
             $this->server->game,
             'United',
             $this->server->packmask,
             'TimeAttack'
         );
-        Basic::console('  Version: {1} / {2}', $this->server->version, $this->server->build);
-        Basic::console('  Authors: Florian Schnell & Assembler Maniac');
-        Basic::console('  Re-Authored: Xymph');
-        Basic::console('  Remake: Yuhzel');
-        Basic::console('###############################################################################');
+        Aseco::console('  Version: {1} / {2}', $this->server->version, $this->server->build);
+        Aseco::console('  Authors: Florian Schnell & Assembler Maniac');
+        Aseco::console('  Re-Authored: Xymph');
+        Aseco::console('  Remake: Yuhzel');
+        Aseco::console('###############################################################################');
 
-        $startup_msg = Basic::formatText(
-            Basic::getChatMessage('startup'),
+        $startup_msg = Aseco::formatText(
+            Aseco::getChatMessage('startup'),
             '2.11.26',
             $this->server->ip,
             $this->server->port
         );
-        $this->server->client->query('ChatSendServerMessage', Basic::formatColors($startup_msg));
+        $this->server->client->query('ChatSendServerMessage', Aseco::formatColors($startup_msg));
     }
     //TODO -
     private function executeCallbacks()

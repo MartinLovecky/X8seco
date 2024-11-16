@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Core\Types;
 
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 class ChatCommand
 {
@@ -25,7 +25,7 @@ class ChatCommand
                     'plugin' => $plugin,
                 ];
             } else {
-                Basic::console("Invalid callback for command: {$name} in {$plugin}");
+                Aseco::console("Invalid callback for command: {$name} in {$plugin}");
             }
         }
     }

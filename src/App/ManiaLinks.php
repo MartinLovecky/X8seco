@@ -6,7 +6,7 @@ namespace Yuhzel\X8seco\App;
 
 use Yuhzel\X8seco\Core\Gbx\GbxClient as Client;
 use Yuhzel\X8seco\Database\Fluent;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Core\Types\PlayerList;
 use Yuhzel\X8seco\Core\Types\Player;
 
@@ -43,14 +43,14 @@ class ManiaLinks
                 return;
             case -5:
                 // log clicked command
-                Basic::console('player {1} clicked command "/active "', $player->login);
+                Aseco::console('player {1} clicked command "/active "', $player->login);
                 // /stats field Time Played
                 $this->command['author'] = $player;
                 $this->chatActive();
                 return;
             case -6:
                 // log clicked command
-                Basic::console('player {1} clicked command "/top100 "', $player->login);
+                Aseco::console('player {1} clicked command "/top100 "', $player->login);
                 // /stats field Server Rank
                 $command['author'] = $player;
                 $this->chatTop100();
@@ -79,7 +79,7 @@ class ManiaLinks
             // Add header
             $xml .= '<line>';
             $xml .= '<cell bgcolor="' . $spc . '" width="' . ($widths[0] - 0.12) . '">';
-            $xml .= '<text> $o' . htmlspecialchars(Basic::validateUTF8($header)) . '</text></cell>';
+            $xml .= '<text> $o' . htmlspecialchars(Aseco::validateUTF8($header)) . '</text></cell>';
             $xml .= '<cell bgcolor="' . $spc . '" width="0.12">';
             $xml .= '<text halign="right">$n(' . $ptr . '/' . $tot . ')</text></cell>';
             $xml .= '</line>' . "\n";
@@ -100,16 +100,16 @@ class ManiaLinks
                         foreach ($line as $i => $value) {
                             $xml .= '<cell bgcolor="' . $bgd . '" width="' . $widths[$i + 1] . '">';
                             if (is_array($value)) {
-                                $xml .= '<text action="' . htmlspecialchars($value[1]) . '">  $o' . htmlspecialchars(Basic::validateUTF8($value[0])) . '</text>';
+                                $xml .= '<text action="' . htmlspecialchars($value[1]) . '">  $o' . htmlspecialchars(Aseco::validateUTF8($value[0])) . '</text>';
                             } else {
-                                $xml .= '<text>  $o' . htmlspecialchars(Basic::validateUTF8($value)) . '</text>';
+                                $xml .= '<text>  $o' . htmlspecialchars(Aseco::validateUTF8($value)) . '</text>';
                             }
                             $xml .= '</cell>';
                         }
                     } else {
                         // Handle the multiple messages case
                         $xml .= '<cell bgcolor="' . $bgd . '" width="' . $widths[0] . '">';
-                        $xml .= '<text>  $o' . htmlspecialchars(Basic::validateUTF8($line)) . '</text></cell>';
+                        $xml .= '<text>  $o' . htmlspecialchars(Aseco::validateUTF8($line)) . '</text></cell>';
                     }
                 } else {
                     // Handle the case when line is empty or not a string
@@ -170,7 +170,7 @@ class ManiaLinks
             'SendDisplayManialinkPageToLogin',
             [
                 'login' => $player->login,
-                'manialink' => Basic::formatColors($xml),
+                'manialink' => Aseco::formatColors($xml),
                 'duration' => 0,
                 'display' => false
             ]
@@ -231,7 +231,7 @@ class ManiaLinks
             $active[] = [
                 str_pad((string)$i, 2, '0', STR_PAD_LEFT) . '.', // Player rank
                 $bgn . $nick, // Player nickname
-                Basic::formatTimeH($row['TimePlayed'] * 1000, false) // Formatted time played
+                Aseco::formatTimeH($row['TimePlayed'] * 1000, false) // Formatted time played
             ];
             $i++; // Increment player ranking
 

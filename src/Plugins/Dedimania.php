@@ -7,7 +7,7 @@ namespace Yuhzel\X8seco\Plugins;
 use Yuhzel\X8seco\Core\Types\PlayerList;
 use Yuhzel\X8seco\Plugins\Checkpoints;
 use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlParser};
-use Yuhzel\X8seco\Services\{DedimaniaClient, Basic};
+use Yuhzel\X8seco\Services\{DedimaniaClient, Aseco};
 
 class Dedimania
 {
@@ -60,9 +60,9 @@ class Dedimania
         ) {
             trigger_error('Dedimania not configured! <masterserver_account> contains default or empty value(s)', E_USER_ERROR);
         }
-        Basic::console('************* (Dedimania) *************');
+        Aseco::console('************* (Dedimania) *************');
         $this->dedimaniaLogin();
-        Basic::console('------------- (Dedimania) -------------');
+        Aseco::console('------------- (Dedimania) -------------');
     }
 
     public function onPlayerConnect(string $login)
@@ -90,11 +90,11 @@ class Dedimania
         if (!$this->dediamaniaClient->connectionAlive('http://dedimania.net:8002/Dedimania')) {
             $response = $this->dediamaniaClient->authenticate($params);
             if ($response->array_key_exists('faultString')) {
-                Basic::console("    !!! \n !!! Error response: {$response['faultString']} \n  !!!");
+                Aseco::console("    !!! \n !!! Error response: {$response['faultString']} \n  !!!");
                 return;
             }
             $this->dedi->db = $response;
-            Basic::console("* Connection and status ok! {$this->dedi->db->Status}");
+            Aseco::console("* Connection and status ok! {$this->dedi->db->Status}");
         }
     }
 

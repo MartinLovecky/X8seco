@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Core\Types;
 
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Core\Gbx\GbxClient as Client;
 use Yuhzel\X8seco\Core\Types\{
     Challenge,
@@ -55,7 +55,7 @@ class Server
         public Client $client,
     ) {
         $this->startTime = time();
-        $this->gamePath = Basic::path(3);
+        $this->gamePath = Aseco::path(3);
         $this->gamedir = "{$this->gamePath}GameData/";
         $this->trackdir = "{$this->gamePath}GameData/Tracks/";
         $this->login = $_ENV['admin_login'];

@@ -43,7 +43,7 @@ use Exception;
 
 use Yuhzel\X8seco\Core\Gbx\ErrorHandlingTrait;
 use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlRpcService};
-use Yuhzel\X8seco\Services\{SocketConnection, Basic, Log};
+use Yuhzel\X8seco\Services\{SocketConnection, Aseco, Log};
 
 /**
  * IXR_Client_Gbx class for interacting with GBX remote services.
@@ -423,7 +423,7 @@ class GbxClient
     {
         $error = new IxrError($code, $message);
         $this->setError($error);
-        Basic::console($this->displayError());
+        Aseco::console($this->displayError());
         throw new Exception($this->error->getMessage(), $this->error->getCode());
     }
 

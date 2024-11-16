@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\App;
 
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Services\Log;
 use Yuhzel\X8seco\Plugins\{
     Tmxv,
@@ -78,7 +78,7 @@ class PluginManager
             return $this->{$plugin};
         }
 
-        Basic::console("Plugin {$pluginName} not found make sure it is in PluginManager constructor.");
+        Aseco::console("Plugin {$pluginName} not found make sure it is in PluginManager constructor.");
         Log::error("Plugin {$pluginName} not found make sure it is in PluginManager constructor.");
         return null;
     }
@@ -92,7 +92,7 @@ class PluginManager
             }
         }
     }
-
+    //TODO - maniaKarma -> currentMapInfo
     public function onSync(): void
     {
         foreach (get_object_vars($this) as $plugin) {

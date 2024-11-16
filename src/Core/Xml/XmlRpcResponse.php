@@ -10,7 +10,7 @@ use DOMElement;
 use DOMDocument;
 use UnexpectedValueException;
 use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 class XmlRpcResponse
 {
@@ -57,7 +57,7 @@ class XmlRpcResponse
     private function processFault(DOMElement $fault): XmlArrayObject
     {
         $faultObject = new XmlArrayObject();
-        $faultObject->methodName = Basic::$method; //NOTE - DEBUG INFO
+        $faultObject->methodName = Aseco::$method; //NOTE - DEBUG INFO
 
         // if fault is inside struct
         $struct = $fault->getElementsByTagName('struct')->item(0);

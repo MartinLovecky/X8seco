@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Core\Gbx;
 
+use Yuhzel\X8seco\Services\Aseco;
+use Yuhzel\X8seco\Services\HttpClient;
+
 class TmxInfoFetcher
 {
     public string $section = '';
@@ -44,12 +47,9 @@ class TmxInfoFetcher
         $this->section = $game;
         $this->records = $records;
         $this->prefix = match ($game) {
-            'TMO' => 'original',
-            'TMS' => 'sunrise',
-            'TMN' => 'nations',
             'TMU' => 'united',
             'TMNF' => 'tmnforever',
-            default => '',
+            default => 'tmnforever',
         };
 
         if (preg_match('/^\w{24,27}$/', (string)$id)) {
@@ -61,56 +61,51 @@ class TmxInfoFetcher
         }
     }
 
+    private function fetchApiData(string $action, array $params): ?string
+    {
+        $httpClient = new HttpClient();
+        $httpClient->baseUrl = "http://{$this->prefix}.tm-exchange.com";
+        $endpoint = '/apiget.aspx';
+        $params['action'] = $action;
+        $response = $httpClient->get($endpoint, $params);
+        if ($response === false) {
+            $this->handleError("Connection or response error on {$httpClient->baseUrl}{$endpoint}");
+            return null;
+        }
+
+        if (strpos($response, chr(27)) !== false) {
+            $this->handleError("Cannot decode data for action: {$action}");
+            return null;
+        }
+
+        return $response;
+    }
+
+    private function handleError(string $message): void
+    {
+        $this->error = $message;
+        Aseco::console($this->error);
+    }
+
     private function getData(bool $isUid): void
     {
-        $url = 'http://' . $this->prefix . '.tm-exchange.com/apiget.aspx?action=apitrackinfo&' . ($isUid ? 'u' : '') . 'id=' . ($isUid ? $this->uid : $this->id);
-        $file = $this->getFile($url);
+        $params = [
+            $isUid ? 'uid' : 'id' => $isUid ? $this->uid : $this->id,
+        ];
 
-        if ($file === false) {
-            $this->error = 'Connection or response error on ' . $url;
+        $response = $this->fetchApiData('apitrackinfo', $params);
+        
+        if ($response === null) {
             return;
         }
 
-        if (strpos($file, chr(27)) !== false) {
-            $this->error = 'Cannot decode main track info';
-            return;
-        }
-
-        $fields = explode(chr(9), $file);
-
+        $fields = explode(chr(9), $response);
         $this->populateFields($fields, $isUid);
         $this->fetchMiscTrackInfo();
 
         if ($this->records) {
             $this->fetchTrackRecords();
         }
-    }
-
-    private function getFile(string $url): string|false
-    {
-        $urlComponents = parse_url($url);
-        $port = $urlComponents['port'] ?? 80;
-        $query = $urlComponents['query'] ?? '';
-
-        $fp = @fsockopen($urlComponents['host'], $port, $errno, $errstr, 4);
-        if (!$fp) {
-            return false;
-        }
-
-        fwrite($fp, 'GET ' . $urlComponents['path'] . ($query ? "?$query" : '') . " HTTP/1.0\r\n" .
-            'Host: ' . $urlComponents['host'] . "\r\n" .
-            'User-Agent: TMXInfoFetcher (' . PHP_OS . ")\r\n\r\n");
-        stream_set_timeout($fp, 2);
-        $response = stream_get_contents($fp);
-        fclose($fp);
-
-        if ($response === false || substr($response, 9, 3) !== '200') {
-            return false;
-        }
-
-        $page = explode("\r\n\r\n", $response, 2);
-
-        return trim($page[1] ?? '');
     }
 
     private function populateFields(array $fields, bool $isUid): void
@@ -149,33 +144,31 @@ class TmxInfoFetcher
 
     private function fetchMiscTrackInfo(): void
     {
-        $url = "http://{$this->prefix}.tm-exchange.com/apiget.aspx?action=apisearch&trackid={$this->id}";
-        $file = $this->getFile($url);
+        $response = $this->fetchApiData('apisearch', ['trackid' => $this->id]);
 
-        if ($file === false || strpos($file, chr(27)) !== false) {
+        if ($response === false || strpos($response, chr(27)) !== false) {
             return;
         }
 
-        $fields = explode(chr(9), $file);
-        $this->awards   = $this->numeric($fields[12]);
+        $fields = explode(chr(9), $response);
+        $this->awards = $this->numeric($fields[12]);
         $this->comments = $this->numeric($fields[13]);
         $this->replayid = $this->numeric($fields[16]);
 
         if ($this->replayid > 0) {
-            $this->replayurl = "http://{$this->prefix}tm-exchange.com/get.aspx?action=recordgbx&id={$this->replayid}";
+            $this->replayurl = "http://{$this->prefix}.tm-exchange.com/get.aspx?action=recordgbx&id={$this->replayid}";
         }
     }
 
     private function fetchTrackRecords(): void
     {
-        $url = "http://{$this->prefix}.tm-exchange.com/apiget.aspx?action=apitrackrecords&id={$this->id}";
-        $file = $this->getFile($url);
+        $response = $this->fetchApiData('apitrackrecords', ['id' => $this->id]);
 
-        if ($file === false) {
+        if ($response === null) {
             return;
         }
 
-        $lines = explode("\r\n", $file);
+        $lines = explode("\r\n", $response);
 
         foreach (array_slice($lines, 0, 10) as $index => $line) {
             if ($line === '') {

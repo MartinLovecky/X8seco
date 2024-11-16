@@ -6,7 +6,7 @@ namespace Yuhzel\X8seco\Plugins;
 
 use Exception;
 use Yuhzel\X8seco\Database\Fluent;
-use Yuhzel\X8seco\Services\{Log, Basic};
+use Yuhzel\X8seco\Services\{Log, Aseco};
 use Yuhzel\X8seco\Core\Types\{Challenge, PlayerList};
 
 /**
@@ -56,11 +56,11 @@ class LocalDatabase
                 // Create table if they dont exist
                 if ($this->fluent->execSQLFile($table)) {
                     if (!$this->fluent->validStructure($table)) {
-                        Basic::console('ERROR 1 LocalDatabase');
+                        Aseco::console('ERROR 1 LocalDatabase');
                     }
                 } else {
                     if (!$this->fluent->validStructure($table)) {
-                        Basic::console('ERROR 2 LocalDatabase');
+                        Aseco::console('ERROR 2 LocalDatabase');
                     }
                 }
             } catch (Exception $e) {
@@ -269,7 +269,7 @@ class LocalDatabase
     //     //ANCHOR - holy fuck
     //     $checkpoints = null;  // from plugin.checkpoints.php
     //     $login = $finish_item->player->login;
-    //     $nickname = Basic::stripColors($finish_item->player->nickname);
+    //     $nickname = Aseco::stripColors($finish_item->player->nickname);
     //     // reset lap 'Finish' flag & add checkpoints
     //     $finish_item->new = false;
     //     $finish_item->checks = $checkpoints[$login]->curr_cps ?? [];
@@ -294,7 +294,7 @@ class LocalDatabase
     //             }
 
     //             $finish_time = $finish_item->score;
-    //             $finish_time = Basic::formatTime($finish_time);
+    //             $finish_time = Aseco::formatTime($finish_time);
 
     //             // player has a record in topXX already
     //             if ($cur_rank != -1) {
@@ -312,7 +312,7 @@ class LocalDatabase
     //                 // player moved up in LR list
     //                 if ($cur_rank > $i) {
     //                     $this->recordList->moveRecord($cur_rank, $i);
-    //                     $message = Basic::formatText(
+    //                     $message = Aseco::formatText(
     //                         $this->ldb_settings['messages']['RECORD_NEW_RANK'][0],
     //                         $nickname,
     //                         $i + 1,
@@ -328,7 +328,7 @@ class LocalDatabase
     //                 } else {
     //                     // do a player equaled his/her record message
     //                     if ($diff == 0) {
-    //                         $message = Basic::formatText(
+    //                         $message = Aseco::formatText(
     //                             $this->ldb_settings['messages']['RECORD_EQUAL'][0],
     //                             $nickname,
     //                             $cur_rank + 1,
@@ -336,7 +336,7 @@ class LocalDatabase
     //                             $finish_time
     //                         );
     //                     } else {
-    //                         $message = Basic::formatText(
+    //                         $message = Aseco::formatText(
     //                             $this->ldb_settings['messages']['RECORD_NEW'][0],
     //                             $nickname,
     //                             $i + 1,
@@ -363,7 +363,7 @@ class LocalDatabase
     //                 $finish_item->new = true;
     //                 $this->recordList->addRecord($finish_item, $i);
 
-    //                 $message = Basic::formatText(
+    //                 $message = Aseco::formatText(
     //                     $this->ldb_settings['messages']['RECORD_FIRST'][0],
     //                     $nickname,
     //                     $i + 1,
@@ -380,7 +380,7 @@ class LocalDatabase
     //                 $this->ldb_insert_record($finish_item);
 
     //                 if ($i == 0) {
-    //                     $this->maniaLinks->setRecordsPanel('local', Basic::formatTime($finish_item->score));
+    //                     $this->maniaLinks->setRecordsPanel('local', Aseco::formatTime($finish_item->score));
     //                 }
 
     //                 $this->panels->onNewChallenge2(null);

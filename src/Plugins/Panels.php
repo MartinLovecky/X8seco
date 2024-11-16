@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Plugins;
 
 use Yuhzel\X8seco\Core\Types\ChatCommand;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 /**
  * Panels plugin (TMF).
@@ -43,32 +43,32 @@ class Panels
     {
         ChatCommand::registerCommands($this->commands, self::PLUGIN_NAME);
         // admin panel
-        $panelFile = Basic::path() . "app/xml/panels/{$_ENV['admin_panel']}.xml";
-        Basic::console('Load default admin panel [{1}]', $panelFile);
+        $panelFile = Aseco::path() . "app/xml/panels/{$_ENV['admin_panel']}.xml";
+        Aseco::console('Load default admin panel [{1}]', $panelFile);
 
         if (!$this->panels['admin'] = @file_get_contents($panelFile)) {
-            Basic::console('Could not read admin panel file ' . $panelFile . ' !', E_USER_ERROR);
+            Aseco::console('Could not read admin panel file ' . $panelFile . ' !', E_USER_ERROR);
         }
         // donate Panel
-        $panelFile = Basic::path() . "app/xml/panels/{$_ENV['donate_panel']}.xml";
-        Basic::console('Load default admin panel [{1}]', $panelFile);
+        $panelFile = Aseco::path() . "app/xml/panels/{$_ENV['donate_panel']}.xml";
+        Aseco::console('Load default admin panel [{1}]', $panelFile);
 
         if (!$this->panels['donate'] = @file_get_contents($panelFile)) {
-            Basic::console('Could not read donate panel file ' . $panelFile . ' !', E_USER_ERROR);
+            Aseco::console('Could not read donate panel file ' . $panelFile . ' !', E_USER_ERROR);
         }
         // records panel
-        $panelFile = Basic::path() . "app/xml/panels/{$_ENV['records_panel']}.xml";
-        Basic::console('Load default admin panel [{1}]', $panelFile);
+        $panelFile = Aseco::path() . "app/xml/panels/{$_ENV['records_panel']}.xml";
+        Aseco::console('Load default admin panel [{1}]', $panelFile);
 
         if (!$this->panels['records'] = @file_get_contents($panelFile)) {
-            Basic::console('Could not read records panel file ' . $panelFile . ' !', E_USER_ERROR);
+            Aseco::console('Could not read records panel file ' . $panelFile . ' !', E_USER_ERROR);
         }
         // vote panel
-        $panelFile = Basic::path() . "app/xml/panels/{$_ENV['vote_panel']}.xml";
-        Basic::console('Load default admin panel [{1}]', $panelFile);
+        $panelFile = Aseco::path() . "app/xml/panels/{$_ENV['vote_panel']}.xml";
+        Aseco::console('Load default admin panel [{1}]', $panelFile);
 
         if (!$this->panels['vote'] = @file_get_contents($panelFile)) {
-            Basic::console('Could not read vote panel file ' . $panelFile . ' !', E_USER_ERROR);
+            Aseco::console('Could not read vote panel file ' . $panelFile . ' !', E_USER_ERROR);
         }
     }
 
@@ -78,7 +78,7 @@ class Panels
     //     $enabled = filter_var($_ENV['stats_panels'], FILTER_VALIDATE_BOOLEAN);
     //     if ($enabled) {
     //         $panelFile = 'panels/StatsUnited';
-    //         Basic::console('Load stats panel [{1}]', $panelFile);
+    //         Aseco::console('Load stats panel [{1}]', $panelFile);
     //         $this->panels['stats_panels'] = @file_get_contents($panelFile);
     //     }
     // }
@@ -102,7 +102,7 @@ class Panels
     // {
     //     if ($player->panels['records'] != '') {
     //         if ($pb != 0) {
-    //             $pb =  Basic::formatTime($pb);
+    //             $pb =  Aseco::formatTime($pb);
     //         } else {
     //             $pb =  '--.--';
     //         }

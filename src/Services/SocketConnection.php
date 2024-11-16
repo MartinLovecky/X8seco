@@ -36,7 +36,7 @@ class SocketConnection
 
         if (!$this->socket) {
             $this->logError("SocketConnection failed");
-            Basic::console("SocketConnection failed: {$this->errorMessage} ({$this->errorCode})");
+            Aseco::console("SocketConnection failed: {$this->errorMessage} ({$this->errorCode})");
             throw new Exception("SocketConnection failed: {$this->errorMessage} ({$this->errorCode})");
         }
     }

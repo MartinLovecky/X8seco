@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Services\HttpClient;
 use Yuhzel\X8seco\Core\Types\Challenge;
 use Yuhzel\X8seco\Core\Types\ChatCommand;
@@ -21,7 +21,7 @@ class Tmxv
         private HttpClient $httpClient,
         private Challenge $challenge
     ) {
-        // $this->CERT_PATH = Basic::path() . 'app/cacert.pem';
+        // $this->CERT_PATH = Aseco::path() . 'app/cacert.pem';
         $this->commands = [
             ['videos',  [$this, 'videos'], 'Sets up the tmx videos command environment'],
             ['video',  [$this, 'video'], 'Gives latest video in chat'],
@@ -31,7 +31,7 @@ class Tmxv
 
     public function onStartup(): void
     {
-        Basic::console('Plugin TMX Video initialized.');
+        Aseco::console('Plugin TMX Video initialized.');
         ChatCommand::registerCommands($this->commands, self::PLUGIN_NAME);
     }
 
@@ -61,7 +61,7 @@ class Tmxv
 
     private function loadVideos(int $tmxid): void
     {
-        Basic::console('Requesting videos for track with TMX ID ' . $tmxid);
+        Aseco::console('Requesting videos for track with TMX ID ' . $tmxid);
 
         $this->httpClient->baseUrl = self::API_URL;
         $output = $this->httpClient->get('videos', [
@@ -70,14 +70,14 @@ class Tmxv
         ]);
 
         if ($output === false) {
-            Basic::console('Failed to fetch videos from ' . self::API_URL);
+            Aseco::console('Failed to fetch videos from ' . self::API_URL);
             $this->videos = [];
             return;
         }
 
         $result = json_decode($output, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            Basic::console('Failed to parse JSON response: ' . json_last_error_msg());
+            Aseco::console('Failed to parse JSON response: ' . json_last_error_msg());
             $this->videos = [];
             return;
         }
@@ -89,7 +89,7 @@ class Tmxv
             $this->videos = [];
         }
 
-        Basic::console('Found ' . count($this->videos) . ' videos for track with TMX ID ' . $tmxid);
+        Aseco::console('Found ' . count($this->videos) . ' videos for track with TMX ID ' . $tmxid);
     }
 
     private function sortVideosByPublishedDate(array &$videos): void

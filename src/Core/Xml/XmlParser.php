@@ -10,7 +10,7 @@ use Exception;
 use DOMElement;
 use DOMDocument;
 use DOMNodeList;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
 /**
@@ -31,8 +31,6 @@ use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
  */
 class XmlParser
 {
-    private string $xmlPath = '';
-
     /**
      * `/app/xml/`
      *
@@ -45,7 +43,7 @@ class XmlParser
      */
     public function __construct()
     {
-        $this->xmlPath = Basic::path() . 'app' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR;
+        $this->xmlPath = Aseco::path() . 'app' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR;
     }
 
     /**

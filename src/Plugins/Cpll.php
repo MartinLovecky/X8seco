@@ -6,7 +6,7 @@ namespace Yuhzel\X8seco\Plugins;
 
 use Yuhzel\X8seco\Core\Gbx\GbxClient as Client;
 use Yuhzel\X8seco\Core\Types\Challenge;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 class Cpll
 {
@@ -30,7 +30,7 @@ class Cpll
     public function onPlayerConnect(string $login): void
     {
         $message = '{#server}>> {#message}This server is running CPLL, use {#highlite}/cp {#message}and {#highlite}/mycp {#message}to view current standings';
-        $this->client->query('ChatSendServerMessageToLogin', Basic::formatColors($message), $login);
+        $this->client->query('ChatSendServerMessageToLogin', Aseco::formatColors($message), $login);
     }
 
     private function cpllReset(): void

@@ -10,7 +10,7 @@ use Exception;
 use Yuhzel\X8seco\Core\Gbx\GbxClient;
 use Yuhzel\X8seco\Database\Fluent;
 use Yuhzel\X8seco\Services\Log;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Core\Xml\XmlParser;
 use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
@@ -54,11 +54,11 @@ use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 //                 // Create table if they dont exist
 //                 if ($this->fluent->execSQLFile($table)) {
 //                     if (!$this->fluent->validStructure($table)) {
-//                         Basic::console('ERROR 1 MatchSave');
+//                         Aseco::console('ERROR 1 MatchSave');
 //                     }
 //                 } else {
 //                     if (!$this->fluent->validStructure($table)) {
-//                         Basic::console('ERROR 2 MatchSave');
+//                         Aseco::console('ERROR 2 MatchSave');
 //                     }
 //                 }
 //             } catch (Exception $e) {

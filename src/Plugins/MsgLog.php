@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 class MsgLog
 {
@@ -25,7 +25,7 @@ class MsgLog
                 if (count($this->msgbuf) >= $this->msglen) {
                     array_shift($this->msgbuf);
                 }
-                $this->msgbuf[] = Basic::formatColors($line);
+                $this->msgbuf[] = Aseco::formatColors($line);
             }
         }
 

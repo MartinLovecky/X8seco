@@ -35,13 +35,14 @@ class RaspJukebox
 
     public function onSync(): void
     {
-        $filePath = $this->raspType->trackdir . $_ENV['trackhistFile'];
+        $filePath = $this->raspType->trackdir . $_ENV['tracklist_file'];
         if (!is_readable($filePath)) {
             throw new RuntimeException("Failed to open track history file: {$filePath}");
         }
 
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        $this->buffer = array_slice(array_filter($lines), -$this->bufferSize);
+        $this->buffer = array_slice($lines, -$this->bufferSize);
+        array_pop($this->buffer);
     }
 
     public function list()

@@ -8,13 +8,18 @@ use Yuhzel\X8seco\App\ManiaLinks;
 use Yuhzel\X8seco\Core\Gbx\GbxClient as Client;
 use Yuhzel\X8seco\Core\Types\Player;
 use Yuhzel\X8seco\Core\Types\RaspType;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 class RaspVotes
 {
     //TODO (yuhzel) I have curently no clue how this is used or if used
     private array $plrvotes = [];
+    private array $chatvote = [];
     private int $replays_counter = 0;
+    private int $num_laddervotes = 0;
+    private int $num_replayvotes = 0;
+    private int $num_skipvotes = 0;
+    private bool $disable_while_sb = true;
     /*
     private int $replaysCounter = 0;
     private bool $auto_vote_starter = true;
@@ -104,10 +109,6 @@ class RaspVotes
     // percentage of TA time limit _after_ which /skip is disabled
     private float $ta_skip_max   = 1.0;
     */
-    //private int $num_laddervotes = 0;
-    //private int $num_replayvotes = 0;
-    //private int $num_skipvotes = 0;
-    //private bool $disable_while_sb = true;
 
     public function __construct(
         private Client $client,
@@ -123,19 +124,22 @@ class RaspVotes
         $this->resetVotes();
     }
 
-    private function resetVotes(array $chatvote = []): void
+    private function resetVotes(): void
     {
-        if (!empty($chatvote)) {
-            Basic::console(
+        if (!empty($this->chatvote)) {
+            Aseco::console(
                 'Vote by {1} to {2} reset!',
                 $this->player->login, // $chatvote['login'],
                 'End this Round' // $chatvote['desc']
             );
 
             $message = $this->raspType->messages->vote_cancel;
-            $this->client->query('ChatSendServerMessage', Basic::formatColors($message));
-            $chatvote = [];
+            $this->client->query('ChatSendServerMessage', Aseco::formatColors($message));
             $this->maniaLinks->allVotepanelsOff();
         }
+
+        $this->num_laddervotes = 0;
+        $this->num_replayvotes = 0;
+        $this->num_skipvotes = 0;
     }
 }

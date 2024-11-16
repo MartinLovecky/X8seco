@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Services;
 
 use CurlHandle;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 class HttpClient
 {
@@ -28,7 +28,7 @@ class HttpClient
 
     public function __construct()
     {
-        $this->cert = Basic::path() . 'app/cacert.pem';
+        $this->cert = Aseco::path() . 'app/cacert.pem';
         $this->ch = curl_init();
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_CAINFO, $this->cert);
@@ -76,14 +76,14 @@ class HttpClient
         $response = curl_exec($this->ch);
 
         if (curl_errno($this->ch)) {
-            Basic::console('cURL error: ' . curl_error($this->ch));
+            Aseco::console('cURL error: ' . curl_error($this->ch));
             return false;
         }
 
         $httpCode = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
 
         if ($httpCode !== 200) {
-            Basic::console('HTTP error: ' . $httpCode);
+            Aseco::console('HTTP error: ' . $httpCode);
             return false;
         }
 
@@ -146,7 +146,7 @@ class HttpClient
 
         // Check for connection errors
         if (curl_errno($this->ch)) {
-            Basic::console('Connection check error: ' . curl_error($this->ch));
+            Aseco::console('Connection check error: ' . curl_error($this->ch));
             return false;
         }
 

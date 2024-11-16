@@ -10,7 +10,7 @@ use Yuhzel\X8seco\Core\Xml\{
     XmlArrayObject
 };
 
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 /**
  * Class XmlRpcService
@@ -27,7 +27,7 @@ class XmlRpcService
         private XmlRpcRequest $request,
         private XmlRpcResponse $response,
     ) {
-        $this->path = Basic::path() . 'app' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . 'dedimania';
+        $this->path = Aseco::path() . 'app' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . 'dedimania';
     }
 
     /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Core\Xml\XmlParser;
 use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
@@ -26,7 +26,7 @@ class Style
     public function onStartup(): void
     {
         $styleFile = "styles/{$_ENV['window_style']}.xml";
-        Basic::console('Load default style [{1}]', $styleFile);
+        Aseco::console('Load default style [{1}]', $styleFile);
         $this->style = $this->xmlParser->parseXml($styleFile);
     }
 }

@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Services;
 
 use InvalidArgumentException;
-use stdClass;
 use Yuhzel\X8seco\Services\Log;
 
-class Basic
+class Aseco
 {
     public static array $colors = [
         'Welcome ' => '$f00',
@@ -108,7 +107,7 @@ class Basic
         "united_only" => "{#server}> {#error}This requires a TM United Forever {1}!",
         "forever_only" => "{#server}> {#error}Command only available on TM Forever!"
     ];
-
+    public static bool $startupPhase = false;
     public static string $path = '';
     public static string $method = '';
 

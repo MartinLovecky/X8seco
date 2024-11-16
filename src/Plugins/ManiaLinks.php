@@ -6,7 +6,7 @@ namespace Yuhzel\X8seco\Plugins;
 
 use RuntimeException;
 use Yuhzel\X8seco\Core\Gbx\GbxClient;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 class ManiaLinks
 {
@@ -68,7 +68,7 @@ class ManiaLinks
 
     private function getCustomUIBlock(): string
     {
-        $templatePath = Basic::path() . 'app/xml/maniaTemplates/costum/custom_ui.xml';
+        $templatePath = Aseco::path() . 'app/xml/maniaTemplates/costum/custom_ui.xml';
         $template = @file_get_contents($templatePath);
 
         if (!$template) {
@@ -77,7 +77,7 @@ class ManiaLinks
 
         foreach ($this->ml_custom_ui as $key => $value) {
             $placeholder = '%' . $key . '%';
-            $replacement = Basic::bool2text($value);
+            $replacement = Aseco::bool2text($value);
             $template = str_replace($placeholder, $replacement, $template);
         }
 

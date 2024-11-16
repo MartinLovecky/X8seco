@@ -7,7 +7,7 @@ namespace Yuhzel\X8seco\Core\Xml;
 use DOMDocument;
 use DOMElement;
 use UnexpectedValueException;
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 
 class XmlRpcRequest
 {
@@ -20,7 +20,7 @@ class XmlRpcRequest
      */
     public function createXml(string $methodName, mixed $args): string|false
     {
-        Basic::$method = $methodName; //NOTE - sets method info for debug
+        Aseco::$method = $methodName; //NOTE - sets method info for debug
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
         $methodCall = $dom->createElement('methodCall');

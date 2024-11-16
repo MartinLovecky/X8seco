@@ -24,9 +24,9 @@ class Challenge
     public ?TmxInfoFetcher $tmx = null;
 
     public function __construct(
+        public GbxChallMapFetcher $gbx,
         private GbxClient $client,
-        private RaspType $raspType
-        //public $gbx = null,
+        private RaspType $raspType,
     ) {
     }
 
@@ -48,9 +48,9 @@ class Challenge
             $this->__set(lcfirst($challengekey), $challengeValue);
         }
 
-        $gbxChallMapFetcher = new GbxChallMapFetcher(true);
-        $gbxChallMapFetcher->processFile($this->raspType->trackdir . $this->fileName);
+        $this->gbx->setXml(true);
+        $this->gbx->processFile($this->raspType->trackdir . $this->fileName);
         // Retrieve TMX data based on the processed track info
-        $this->tmx = $gbxChallMapFetcher->findTMXdata($gbxChallMapFetcher->uid, true);
+        $this->tmx = $this->gbx->findTMXdata($this->gbx->uid, true);
     }
 }

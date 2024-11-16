@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Plugins;
 
-use Yuhzel\X8seco\Services\Basic;
+use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Database\Fluent;
 use Yuhzel\X8seco\Core\Types\ChatCommand;
 use Yuhzel\X8seco\Core\Types\RaspType;
@@ -40,7 +40,7 @@ class Rasp
         $this->typeRasp->start();
 
         if (!$this->typeRasp->prune) {
-            Basic::console('[RASP] Pruning records/rs_times for deleted tracks');
+            Aseco::console('[RASP] Pruning records/rs_times for deleted tracks');
             $this->typeRasp->getChallenges();
             $track = $this->typeRasp->challenge;
 

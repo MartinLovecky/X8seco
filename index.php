@@ -10,7 +10,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 // return new Doctum('E:\RPG Test\x8seco\src\\');
 // frist do parse index.php 
-// next do  update index.php
+// next do  update index.php //FIXME - TMX need be fixed
 
 // Class container with auto-wire
 $container = new League\Container\Container();

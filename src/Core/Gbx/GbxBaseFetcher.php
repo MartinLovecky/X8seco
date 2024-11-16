@@ -48,11 +48,6 @@ class GbxBaseFetcher
         $this->clearLookbacks();
     }
 
-    protected function enableDebug(): void
-    {
-        $this->debug = true;
-    }
-
     protected function disableDebug(): void
     {
         $this->debug = false;

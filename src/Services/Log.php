@@ -20,7 +20,7 @@ class Log
             return;
         }
 
-        $path = Basic::path() . '/app/logs/log.log';
+        $path = Aseco::path() . '/app/logs/log.log';
         self::$logger = new Logger('app_logger');
         self::$logger->pushHandler(new RotatingFileHandler($path, 7, Level::Debug));
         self::$logger->pushProcessor(new IntrospectionProcessor(Level::Debug));
