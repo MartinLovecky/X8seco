@@ -27,8 +27,7 @@ class Checkpoints
 
     public function __construct(
         private Challenge $challenge,
-        private RecordList $recordList,
-        private LocalDatabase $localDatabase
+        private RecordList $recordList
     ) {
         $this->commands = [
             ['cps',  [$this, 'cps'], 'Sets local record checkpoints tracking'],
@@ -43,9 +42,9 @@ class Checkpoints
         ChatCommand::registerCommands($this->commands, self::PLUGIN_NAME);
     }
 
-    public function onPlayerConnect(string $login)
+    public function onPlayerConnect(string $login): void
     {
-        $cps = $this->localDatabase->getCPS();
+        $cps = $this->challenge->nbCheckpoints;
         $this->loclrec = $cps;
         $this->dedirec = $cps;
         $this->checkpoints[$login] = $this;

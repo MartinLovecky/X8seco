@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Services;
 
 use CurlHandle;
+use Monolog\Logger;
 use Yuhzel\X8seco\Services\Aseco;
 
 class HttpClient
 {
     /**
-     * @var string Base URL for the HTTP client.
-     */
-    public string $baseUrl = '';
-    /**
      * @var CurlHandle|null cURL handle.
      */
-    public ?CurlHandle $ch = null;
+    private ?CurlHandle $ch = null;
+
+    private Logger $httpLoger;
+
     /**
      * @var string Path to the certificate file.
      */
@@ -28,7 +28,10 @@ class HttpClient
 
     public function __construct()
     {
+        Log::init('http_client_logger', 'httpclient');
         $this->cert = Aseco::path() . 'app/cacert.pem';
+        $this->cookieFile = Aseco::path() . 'app/cookies.txt';
+        $this->httpLoger = Log::getLogger('http_client_logger');
         $this->ch = curl_init();
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_CAINFO, $this->cert);
@@ -50,15 +53,13 @@ class HttpClient
         string|array $params = [],
         array $headers = []
     ): string|bool {
-        $url = $this->baseUrl . $endpoint;
-        $method = strtoupper($method);
 
         // Handle GET requests with query parameters
         if ($method === 'GET' && !empty($params)) {
-            $url .= '?' . http_build_query($params);
+            $endpoint .= '?' . http_build_query($params);
         }
 
-        curl_setopt($this->ch, CURLOPT_URL, $url);
+        curl_setopt($this->ch, CURLOPT_URL, $endpoint);
         curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, $method);
 
         // Handle POST, PUT, DELETE payload
@@ -76,14 +77,16 @@ class HttpClient
         $response = curl_exec($this->ch);
 
         if (curl_errno($this->ch)) {
-            Aseco::console('cURL error: ' . curl_error($this->ch));
+            Aseco::console($endpoint .'curl error'. curl_error($this->ch));
+            $this->httpLoger->warning($endpoint .'curl error'. curl_error($this->ch));
             return false;
         }
 
         $httpCode = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
 
         if ($httpCode !== 200) {
-            Aseco::console('HTTP error: ' . $httpCode);
+            Aseco::console($endpoint . 'HTTP error: ' . $httpCode);
+            $this->httpLoger->warning($endpoint . 'HTTP error: ' . $httpCode);
             return false;
         }
 
@@ -130,9 +133,7 @@ class HttpClient
 
     public function alive(string $endpoint = ''): bool
     {
-        // Set the URL to the specified endpoint or default to base URL
-        $url = empty($endpoint) ? $this->baseUrl : $this->baseUrl . $endpoint;
-        curl_setopt($this->ch, CURLOPT_URL, $url);
+        curl_setopt($this->ch, CURLOPT_URL, $endpoint);
 
         // Set to only attempt a connection without fetching the body
         curl_setopt($this->ch, CURLOPT_NOBODY, true);

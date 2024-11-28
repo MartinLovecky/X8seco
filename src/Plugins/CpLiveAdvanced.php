@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Plugins;
 
+use Yuhzel\X8seco\Core\Gbx\GbxClient;
 use Yuhzel\X8seco\Core\Types\Challenge;
 use Yuhzel\X8seco\Core\Types\PlayerList;
 
@@ -14,7 +15,7 @@ class CpLiveAdvanced
     private array $list = [];
 
     public function __construct(
-        // @phpstan-ignore-next-line
+        private GbxClient $client,
         private Challenge $challenge,
         private PlayerList $playerList
     ) {
@@ -33,10 +34,32 @@ class CpLiveAdvanced
             if (!$spectator) {
                 $this->list = $this->playerList->players;
             }
-            if (empty($this->list)) {
-            }
         }
+        if(empty($this->list))
+        {
+            usort($this->list, [$this, "compareCpNumbers"]);
+            $this->list = array_slice($this->list, 0, 12);
+        }
+        $this->bindToggleKey($login);
     }
+
+    public function compareCpNumbers($a, $b): int
+    {
+		if ($a["CPNumber"] == $b["CPNumber"]) {
+			return 0;
+		}
+	
+		return ($a["CPNumber"] > $b["CPNumber"]) ? -1 : 1;
+	}
+
+    private function bindToggleKey(string $login): void
+    {
+        $xml = '<manialink id="1928380">';
+        $xml .= '<quad action="01928390" actionkey="1" sizen="0 0"  posn="70 70 1"/>';
+		$xml .= '</manialink>';
+        $this->client->addCall("SendDisplayManialinkPageToLogin", [$login, $xml, 0, false]);
+    }
+
     // @phpstan-ignore-next-line
     private function getTrackInfo(): void
     {

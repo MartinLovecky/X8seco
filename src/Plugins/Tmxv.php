@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Plugins;
 
 use Yuhzel\X8seco\Services\Aseco;
-use Yuhzel\X8seco\Services\HttpClient;
 use Yuhzel\X8seco\Core\Types\Challenge;
 use Yuhzel\X8seco\Core\Types\ChatCommand;
+use Yuhzel\X8seco\Services\HttpClient;
 
 class Tmxv
 {
     private const PLUGIN_NAME = 'Tmxv';
-    private const API_URL = 'https://tmnf.exchange/api/';
+    private const API_URL = 'https://tmnf.exchange/api/videos';
     //private string $CERT_PATH = '';
     private array $videos = [];
     private array $commands = [];
 
     public function __construct(
-        private HttpClient $httpClient,
         private Challenge $challenge
     ) {
         // $this->CERT_PATH = Aseco::path() . 'app/cacert.pem';
@@ -41,15 +40,9 @@ class Tmxv
     }
 
 
-    public function videos()
-    {
-    }
-    public function video()
-    {
-    }
-    public function gps()
-    {
-    }
+    public function videos() {}
+    public function video() {}
+    public function gps() {}
 
 
     private function onNewTrack(): void
@@ -63,30 +56,24 @@ class Tmxv
     {
         Aseco::console('Requesting videos for track with TMX ID ' . $tmxid);
 
-        $this->httpClient->baseUrl = self::API_URL;
-        $output = $this->httpClient->get('videos', [
-            'fields' => 'LinkId,Title,PublishedAt',
-            'trackid' => $tmxid
-        ]);
-
-        if ($output === false) {
-            Aseco::console('Failed to fetch videos from ' . self::API_URL);
-            $this->videos = [];
-            return;
-        }
+        $httpClient = new HttpClient();
+        $output = $httpClient->get(
+            self::API_URL,
+            [
+                'fields' => 'LinkId,Title,PublishedAt',
+                'trackid' => $tmxid
+            ]
+        );
 
         $result = json_decode($output, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             Aseco::console('Failed to parse JSON response: ' . json_last_error_msg());
-            $this->videos = [];
             return;
         }
 
         if (isset($result['Results']) && count($result['Results']) > 0) {
             $this->videos = $result['Results'];
             $this->sortVideosByPublishedDate($this->videos);
-        } else {
-            $this->videos = [];
         }
 
         Aseco::console('Found ' . count($this->videos) . ' videos for track with TMX ID ' . $tmxid);
@@ -94,6 +81,6 @@ class Tmxv
 
     private function sortVideosByPublishedDate(array &$videos): void
     {
-        usort($videos, fn ($a, $b) => strtotime($b['PublishedAt']) - strtotime($a['PublishedAt']));
+        usort($videos, fn($a, $b) => strtotime($b['PublishedAt']) - strtotime($a['PublishedAt']));
     }
 }

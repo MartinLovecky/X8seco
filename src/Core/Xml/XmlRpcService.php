@@ -58,19 +58,10 @@ class XmlRpcService
      * Parse the XML-RPC response into a structured format.
      *
      * @param string $xml
-     * @return mixed
+     * @return XmlArrayObject
      */
-    public function parseResponse(string $xml): mixed
+    public function parseResponse(string $xml): XmlArrayObject
     {
         return $this->response->parseResponse($xml);
-    }
-
-    public function filterParsedResponse(array $response): array
-    {
-        $xmlArrayObjects = array_filter($response, function ($item) {
-            return $item instanceof XmlArrayObject;
-        });
-
-        return array_values($xmlArrayObjects);
     }
 }

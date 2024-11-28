@@ -6,6 +6,7 @@ namespace Yuhzel\X8seco\Services;
 
 use InvalidArgumentException;
 use Yuhzel\X8seco\Services\Log;
+use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 
 class Aseco
 {
@@ -297,5 +298,14 @@ class Aseco
         $n = "(25[0-5]|2[0-4]\d|[01]?\d\d|\d)";
         return (preg_match("/(\/{$n}\\.{$n}\\.{$n}\\.{$n}:\d+)$/", $login) ||
             preg_match("/(_{$n}\\.{$n}\\.{$n}\\.{$n}_\d+)$/", $login));
+    }
+
+    public static function filterResponse(array $response): array
+    {
+        $xmlArrayObjects = array_filter($response, function ($item) {
+            return $item instanceof XmlArrayObject;
+        });
+
+        return array_values($xmlArrayObjects);
     }
 }

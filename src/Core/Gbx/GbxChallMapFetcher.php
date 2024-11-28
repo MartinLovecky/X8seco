@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Core\Gbx;
 
-use Yuhzel\X8seco\Core\Gbx\{GbxBaseFetcher, TmxInfoFetcher};
+use Yuhzel\X8seco\Core\Gbx\GbxBaseFetcher;
 
 class GbxChallMapFetcher extends GbxBaseFetcher
 {
@@ -88,13 +88,6 @@ class GbxChallMapFetcher extends GbxBaseFetcher
         $this->storeGBXdata($gbxdata);
 
         $this->processGBX();
-    }
-
-    public function findTMXdata(
-        string|int $uid,
-        bool $records = false
-    ): TmxInfoFetcher {
-        return new TmxInfoFetcher('TMNF', $uid, $records);
     }
 
     private function processGBX(): void

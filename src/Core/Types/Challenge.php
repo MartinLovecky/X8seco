@@ -4,31 +4,39 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\Core\Types;
 
-use Yuhzel\X8seco\Core\Gbx\GbxClient;
-use Yuhzel\X8seco\Core\Types\RaspType;
-use Yuhzel\X8seco\Core\Gbx\TmxInfoFetcher;
-use Yuhzel\X8seco\Core\Gbx\GbxChallMapFetcher;
+use Yuhzel\X8seco\Services\Aseco;
+use Yuhzel\X8seco\Core\Gbx\{GbxClient, GbxChallMapFetcher, TmxInfoFetcher};
 
 /**
  * Class Challenge
  * Represents a TrackMania challenge, storing information about the track.
  * These properites created with __set
- * @property null|int $nbchecks
- * @property null|int $nbCheckpoints
- * @property null|string $name
- * @property null|string $fileName
+ * @property string $uId
+ * @property string $name
+ * @property string $fileName
+ * @property string $author
+ * @property string $environnement
+ * @property string $mood
+ * @property int $bronzeTime
+ * @property int $silverTime
+ * @property int $goldTime
+ * @property int $authorTime
+ * @property int $copperPrice
+ * @property bool $lapRace
+ * @property int $nbLaps
+ * @property int $nbCheckpoints
  * @package Yuhzel\X8seco\Core\Types
  */
 class Challenge
 {
-    public ?TmxInfoFetcher $tmx = null;
+    public int $id = 0;
+    private string $trackDir = 'GameData/Tracks/';
 
     public function __construct(
         public GbxChallMapFetcher $gbx,
+        public TmxInfoFetcher $tmx,
         private GbxClient $client,
-        private RaspType $raspType,
-    ) {
-    }
+    ) {}
 
     public function __set(string $name, mixed $value): void
     {
@@ -40,7 +48,6 @@ class Challenge
         return $this->$name ?? null;
     }
 
-
     public function setChallangeInfo(): void
     {
         // Set each challenge property via __set() magic method
@@ -49,8 +56,8 @@ class Challenge
         }
 
         $this->gbx->setXml(true);
-        $this->gbx->processFile($this->raspType->trackdir . $this->fileName);
-        // Retrieve TMX data based on the processed track info
-        $this->tmx = $this->gbx->findTMXdata($this->gbx->uid, true);
+        $this->gbx->processFile(Aseco::path(3) . $this->trackDir . $this->fileName);
+        $this->tmx->setData($this->gbx->uid, true);
+        $this->id = $this->tmx->id ?? $this->id;
     }
 }

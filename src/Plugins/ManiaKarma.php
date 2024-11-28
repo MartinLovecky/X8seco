@@ -6,9 +6,9 @@ namespace Yuhzel\X8seco\Plugins;
 
 use RuntimeException;
 use Yuhzel\X8seco\Core\Gbx\GbxClient;
-use Yuhzel\X8seco\Core\Types\{Player, PlayerList, Challenge};
 use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlParser};
-use Yuhzel\X8seco\Services\{HttpClient, Aseco};
+use Yuhzel\X8seco\Core\Types\{Player, PlayerList, Challenge};
+use Yuhzel\X8seco\Services\Aseco;
 
 class ManiaKarma
 {
@@ -17,7 +17,6 @@ class ManiaKarma
 
     public function __construct(
         private XmlParser $xmlParser,
-        private HttpClient $httpClient,
         private Challenge $challenge,
         private GbxClient $client,
         private PlayerList $playerList
@@ -37,19 +36,19 @@ class ManiaKarma
         Aseco::console(" => Trying to authenticate with central database {$this->config->urls->api_auth}");
 
         // http://worldwide.mania-karma.com/api/tmforever-trackmania-v4.php?Action=Auth&login=%s&name=%s&game=%s&zone=%s&nation=%s
-        $this->httpClient->baseUrl = "http://worldwide.mania-karma.com/api/";
-        $response = $this->httpClient->get("tmforever-trackmania-v4.php", [
-            'Action' => 'Auth',
-            'login'  => urlencode($this->config->login),
-            'name'   => base64_encode($_ENV['server_name']),
-            'game'   => urlencode('TMF'),
-            'zone'   => urlencode('World'),
-            'nation' => urlencode($this->config->nation)
-        ]);
+        //$this->httpClient->baseUrl = "http://worldwide.mania-karma.com/api/";
+        // $response = $this->httpClient->get("tmforever-trackmania-v4.php", [
+        //     'Action' => 'Auth',
+        //     'login'  => urlencode($this->config->login),
+        //     'name'   => base64_encode($_ENV['server_name']),
+        //     'game'   => urlencode('TMF'),
+        //     'zone'   => urlencode('World'),
+        //     'nation' => urlencode($this->config->nation)
+        // ]);
 
         //NOTE - We could modify XML RPC parser to handle this
         $responseData = null;
-        //dthis->httpClient->xmlResponse($response);
+        //$this->httpClient->xmlResponse($response);
         //FIXME : Global karma is fucked use local one
         if ($responseData) {
             $status = $responseData['status'];
@@ -72,7 +71,7 @@ class ManiaKarma
 
         $this->config->templates = $this->loadTeamplates();
         $this->config->currentMap  = $this->currentMapInfo();
-        dd($this->challenge->tmx);
+
         //TODO (yuhzel) Aseco::startup -> true when startup
         if (Aseco::$startupPhase) {
             $this->setEmptyKarma();
@@ -80,7 +79,7 @@ class ManiaKarma
             $this->karma['name']           = $this->config->currentMap['name'];
             $this->karma['author']         = $this->config['CurrentMap']['author'];
             $this->karma['env']            = $this->config['CurrentMap']['environment'];
-            $this->karma['tmx']            = $this->challenge->tmx->id;
+            $this->karma['tmx']            = $this->challenge->id;
             $this->karma['new']['players'] = [];
         }
 

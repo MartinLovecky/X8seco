@@ -27,7 +27,7 @@ use Yuhzel\X8seco\Plugins\{
     ChatDedimania,
     ChatCmd,
     Rounds,
-    Eyepiece,
+    //Eyepiece,
     Checkpoints,
     Cpll,
     Dedimania,
@@ -53,7 +53,7 @@ class PluginManager
         public FlexiTime $flexiTime,
         public ChatDedimania $chatDedimania,
         public Rounds $rounds,
-        public Eyepiece $eyepiece,
+        //public Eyepiece $eyepiece,
         public Checkpoints $checkpoints,
         public Cpll $cpll,
         public Dedimania $dedimania,
@@ -92,7 +92,8 @@ class PluginManager
             }
         }
     }
-    //TODO - maniaKarma -> currentMapInfo
+
+    //TODO (yuhzel): Eyepiece
     public function onSync(): void
     {
         foreach (get_object_vars($this) as $plugin) {
@@ -102,7 +103,7 @@ class PluginManager
         }
     }
 
-    public function onPlayerConnect(string $login)
+    public function onPlayerConnect(string $login): void
     {
         foreach (get_object_vars($this) as $plugin) {
             if (method_exists($plugin, 'onPlayerConnect')) {

@@ -10,13 +10,13 @@ use Yuhzel\X8seco\Services\HttpClient;
 class TmxInfoFetcher
 {
     public string $section = '';
-    public string $prefix = '';
-    public string|int $uid = 0;
-    public string|int $id = 0;
+    public string $prefix = 'tmnforever';
+    public string $uid = '';
+    public int $id = 0;
     public bool $records = false;
     public string $error = '';
     public string $name = '';
-    public string|int $userid = 0;
+    public int $userid = 0;
     public string $author = '';
     public string $uploaded = '';
     public string $updated = '';
@@ -28,50 +28,37 @@ class TmxInfoFetcher
     public string $routes = '';
     public string $length = '';
     public string $diffic = '';
-    public string $lbrating = '';
-    public int $awards = 0;
-    public int $comments = 0;
+    public int $lbrating = 0;
+    public mixed $awards = null;
+    public mixed $comments = null;
     public bool $custimg = false;
     public string $game = '';
     public string $acomment = '';
     public string $pageurl = '';
-    public string|int $replayid = 0;
+    public int $replayid = 0;
     public string $replayurl  = '';
     public string $imageurl = '';
     public string $thumburl = '';
     public string $dloadurl = '';
     public array $recordlist = [];
 
-    public function __construct(string $game, string|int $id, bool $records)
-    {
-        $this->section = $game;
-        $this->records = $records;
-        $this->prefix = match ($game) {
-            'TMU' => 'united',
-            'TMNF' => 'tmnforever',
-            default => 'tmnforever',
-        };
 
-        if (preg_match('/^\w{24,27}$/', (string)$id)) {
-            $this->uid = $id;
-            $this->getData(true);
-        } elseif (is_numeric($id) && (int)$id > 0) {
-            $this->id = (int)$id;
-            $this->getData(false);
-        }
+    public function setData(string $uid, bool $records): void
+    {
+        $this->uid = $uid;
+        $this->records = $records;
+        $this->getData(true);
     }
 
     private function fetchApiData(string $action, array $params): ?string
     {
+        $endpoint = "http://{$this->prefix}.tm-exchange.com/apiget.aspx";
+
         $httpClient = new HttpClient();
-        $httpClient->baseUrl = "http://{$this->prefix}.tm-exchange.com";
-        $endpoint = '/apiget.aspx';
+
         $params['action'] = $action;
+
         $response = $httpClient->get($endpoint, $params);
-        if ($response === false) {
-            $this->handleError("Connection or response error on {$httpClient->baseUrl}{$endpoint}");
-            return null;
-        }
 
         if (strpos($response, chr(27)) !== false) {
             $this->handleError("Cannot decode data for action: {$action}");
@@ -94,7 +81,7 @@ class TmxInfoFetcher
         ];
 
         $response = $this->fetchApiData('apitrackinfo', $params);
-        
+
         if ($response === null) {
             return;
         }
@@ -110,6 +97,8 @@ class TmxInfoFetcher
 
     private function populateFields(array $fields, bool $isUid): void
     {
+        $fields = $this->convertFields($fields);
+
         if ($isUid) {
             [
                 $this->id,
@@ -118,7 +107,7 @@ class TmxInfoFetcher
                 $this->author,
                 $this->uploaded,
                 $this->updated,
-                $visible,
+                $this->visible,
                 $this->type,
                 $this->envir,
                 $this->mood,
@@ -131,9 +120,6 @@ class TmxInfoFetcher
                 $comment
             ] = $fields;
 
-            $this->id = $this->numeric($this->id);
-            $this->userid = $this->numeric($this->userid);
-            $this->visible = filter_var($visible, FILTER_VALIDATE_BOOLEAN);
             $this->acomment = $this->formatComment($comment);
             $this->pageurl  = "http://{$this->prefix}.tm-exchange.com/main.aspx?action=trackshow&id={$this->id}";
             $this->imageurl = "http://{$this->prefix}.tm-exchange.com/get.aspx?action=trackscreen&id={$this->id}";
@@ -151,9 +137,11 @@ class TmxInfoFetcher
         }
 
         $fields = explode(chr(9), $response);
-        $this->awards = $this->numeric($fields[12]);
-        $this->comments = $this->numeric($fields[13]);
-        $this->replayid = $this->numeric($fields[16]);
+        $fields = $this->convertFields($fields);
+
+        $this->awards = $fields[12];
+        $this->comments = $fields[13];
+        $this->replayid = $fields[16];
 
         if ($this->replayid > 0) {
             $this->replayurl = "http://{$this->prefix}.tm-exchange.com/get.aspx?action=recordgbx&id={$this->replayid}";
@@ -176,25 +164,34 @@ class TmxInfoFetcher
             }
 
             $fields = explode(chr(9), $line);
+            $fields = $this->convertFields($fields);
+
             $this->recordlist[$index] = [
-                'replayid'  => $this->numeric($fields[0]),
-                'userid'    => $this->numeric($fields[1]),
+                'replayid'  => $fields[0],
+                'userid'    => $fields[1],
                 'name'      => $fields[2] ?? '',
-                'time'      => $this->numeric($fields[3]),
+                'time'      => $fields[3],
                 'replayat'  => $fields[4] ?? '',
                 'trackat'   => $fields[5] ?? '',
-                'approved'  => filter_var($fields[6], FILTER_VALIDATE_BOOLEAN),
-                'score'     => $this->numeric($fields[7]),
-                'expires'   => filter_var($fields[8], FILTER_VALIDATE_BOOLEAN),
-                'lockspan'  => filter_var($fields[9], FILTER_VALIDATE_BOOLEAN),
+                'approved'  => $fields[6],
+                'score'     => $fields[7],
+                'expires'   => $fields[8],
+                'lockspan'  => $fields[9],
                 'replayurl' => "http://{$this->prefix}.tm-exchange.com/get.aspx?action=recordgbx&id={$fields[0]}",
             ];
         }
     }
 
-    private function numeric(mixed $value): mixed
+    private function convertFields(mixed $fields): array
     {
-        return is_numeric($value) ? (int)$value : $value;
+        return array_map(function ($value) {
+            if ($value === "1" || $value === "0") {
+                return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            } elseif (is_numeric($value) && ctype_digit($value)) {
+                return (int) $value;
+            }
+            return $value;
+        }, $fields);
     }
 
     private function formatComment(string $comment): string

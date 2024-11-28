@@ -12,40 +12,57 @@ use Monolog\Processor\IntrospectionProcessor;
 
 class Log
 {
-    private static ?Logger $logger = null;
+    private static string $channelName = 'app_logger';
+    private static array $loggers = [];
 
-    public static function init(): void
+    public static function init(string $logChannelName, string $fileName, bool $setAsDefault = false): void
     {
-        if (self::$logger !== null) {
+        if (isset(self::$loggers[$logChannelName])) {
             return;
         }
 
-        $path = Aseco::path() . '/app/logs/log.log';
-        self::$logger = new Logger('app_logger');
-        self::$logger->pushHandler(new RotatingFileHandler($path, 7, Level::Debug));
-        self::$logger->pushProcessor(new IntrospectionProcessor(Level::Debug));
+        $path = Aseco::path() . "/app/logs/{$fileName}.log";
+        $logger = new Logger($logChannelName);
+        $logger->pushHandler(new RotatingFileHandler($path, 7, Level::Debug));
+        $logger->pushProcessor(new IntrospectionProcessor(Level::Debug));
+        self::$loggers[$logChannelName] = $logger;
+
+        if ($setAsDefault) {
+            self::$channelName = $logChannelName;
+        }
     }
 
-    private static function getLogger(): Logger
+    public static function getLogger(string $logChannelName): Logger
     {
-        if (self::$logger === null) {
-            throw new LogicException('Logger not initialized.');
+        if (!isset(self::$loggers[$logChannelName])) {
+            throw new LogicException("Logger for channel '{$logChannelName}' not initialized.");
         }
-        return self::$logger;
+
+        return self::$loggers[$logChannelName];
     }
 
     public static function info(string $message, array $context = []): void
     {
-        self::getLogger()->info($message, $context);
+        self::getLogger(self::$channelName)->info($message, $context);
     }
 
     public static function error(string $message, array $context = []): void
     {
-        self::getLogger()->error($message, $context);
+        self::getLogger(self::$channelName)->error($message, $context);
     }
 
     public static function warning(string $message, array $context = []): void
     {
-        self::getLogger()->warning($message, $context);
+        self::getLogger(self::$channelName)->warning($message, $context);
+    }
+
+    public static function debug(string $message, array $context = []): void
+    {
+        self::getLogger(self::$channelName)->debug($message, $context);
+    }
+
+    public static function critical(string $message, array $context = []): void
+    {
+        self::getLogger(self::$channelName)->critical($message, $context);
     }
 }

@@ -33,13 +33,12 @@ class Dedimania
     //private ?XmlArrayObject $messages = null;
 
     public function __construct(
-        private DedimaniaClient $dediamaniaClient,
+        private DedimaniaClient $dedimaniaClient,
         private XmlParser $xmlParser,
         // @phpstan-ignore-next-line
         private Checkpoints $checkpoints,
         private PlayerList $playerList,
-    ) {
-    }
+    ) {}
 
     public function onStartup(): void
     {
@@ -67,7 +66,28 @@ class Dedimania
 
     public function onPlayerConnect(string $login)
     {
-        $pinfo = $this->dedimania_playerinfo($login);
+
+        $player = $this->playerList->getPlayer($login);
+        $response = $this->dedimaniaClient->request(
+            'playerArrive',
+            [
+                'Game' => 'TMU',
+                'Login' => $this->masterServer->login,
+                'Password' => $this->masterServer->password,
+                'Tool' => 'Xaseco',
+                'Version' => '1.16',
+                'Nation' => $this->masterServer->nation,
+                'Packmask' => 'United',
+                'Method' => 'dedimania.PlayerArrive',
+                'Nickname' => $player->nickname,
+                'TeamName' => $player->teamname,
+                'LadderRanking' => $player->ladderrank,
+                'IsSpec' => $player->isspectator,
+                'IsOff' => $player->isofficial
+            ]
+        );
+        dd($response);
+        // $callback = $this->dedimaniaPlayerconnect($response, $login);
     }
 
     public function onNewChallenge()
@@ -77,38 +97,26 @@ class Dedimania
 
     private function dedimaniaLogin(): void
     {
-        $params = [
-            'Game' => 'TMU',
-            'Login' => $this->masterServer->login,
-            'Password' => $this->masterServer->password,
-            'Tool' => 'Xaseco',
-            'Version' => '1.16',
-            'Nation' =>  $this->masterServer->nation,
-            'Packmask' => 'United'
-        ];
+        $response = $this->dedimaniaClient->request(
+            'authenticate',
+            [
+                'Game' => 'TMU',
+                'Login' => $this->masterServer->login,
+                'Password' => $this->masterServer->password,
+                'Tool' => 'Xaseco',
+                'Version' => '1.16',
+                'Nation' =>  $this->masterServer->nation,
+                'Packmask' => 'United'
+            ]
+        );
 
-        if (!$this->dediamaniaClient->connectionAlive('http://dedimania.net:8002/Dedimania')) {
-            $response = $this->dediamaniaClient->authenticate($params);
-            if ($response->array_key_exists('faultString')) {
-                Aseco::console("    !!! \n !!! Error response: {$response['faultString']} \n  !!!");
-                return;
-            }
-            $this->dedi->db = $response;
-            Aseco::console("* Connection and status ok! {$this->dedi->db->Status}");
+        if ($response->array_key_exists('faultString')) {
+            Aseco::console("    !!! \n !!! Error response: {$response['faultString']} \n  !!!");
+            return;
         }
+        $this->dedi->db = $response;
+        Aseco::console("* Connection and status ok! {$this->dedi->db->Status}");
     }
 
-    private function dedimania_playerinfo(string $login): array
-    {
-        $player = $this->playerList->getPlayer($login);
-        return [
-            'Login' => $player->login,
-            'Nation' => $player->nation,
-            'TeamName' => $player->teamname,
-            'TeamId' => $player->teamid,
-            'IsSpec' => $player->isspectator,
-            'Ranking' => $player->ladderrank,
-            'IsOff' => $player->isofficial
-        ];
-    }
+    private function dedimaniaPlayerconnect($response, string $login) {}
 }

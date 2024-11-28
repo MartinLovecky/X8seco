@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Yuhzel\X8seco\App;
 
-use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\App\PluginManager;
-use Yuhzel\X8seco\Core\Types\Player;
-use Yuhzel\X8seco\Core\Types\Server;
-use Yuhzel\X8seco\Core\Xml\XmlParser;
-use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Services\Aseco;
+use Yuhzel\X8seco\Core\Types\{Player, Server};
+use Yuhzel\X8seco\Core\Xml\{XmlArrayObject, XmlParser};
 
 class X8seco
 {
@@ -147,26 +145,16 @@ class X8seco
 
     private function serverSync()
     {
+
         $this->server->client->query('SendHideManialinkPage');
         $this->server->setServerInfo();
         $this->server->gameInfo->setGameInfo();
         $this->server->challenge->setChallangeInfo();
         $this->currstatus = $this->server->client->query('GetStatus')->Code;
-
         $this->pluginManager->onSync();
-
-        /*
-            * This query is bit retarded and we need do bit extra work
-            * if there will be another shit like this refactor
-            * function to filter instances of XmlArrayObject
-        */
         $players = $this->server->client->query('GetPlayerList', 300, 0, 2);
-        // Function to filter instances of XmlArrayObject
-        $xmlArrayObjects = array_filter($players, function ($item) {
-            return $item instanceof XmlArrayObject;
-        });
-        // The filtered XmlArrayObject instances as an array
-        $players = array_values($xmlArrayObjects);
+        $players = Aseco::filterResponse($players);
+
         if (!empty($players)) {
             foreach ($players as $player) {
                 $this->playerConnect($player);
@@ -184,12 +172,10 @@ class X8seco
         }
         //SECTION - this can be improved
         $this->player->setPlayer($playerd);
-
         $this->player->panels['admin'] = $this->panels['admin'];
         $this->player->panels['donate'] = $this->panels['donate'];
         $this->player->panels['records'] = $this->panels['records'];
         $this->player->panels['vote'] = $this->panels['vote'];
-
         $this->server->players->addPlayer($this->player);
         //!SECTION
         Aseco::console(
@@ -217,23 +203,26 @@ class X8seco
 
         $this->server->client->query('ChatSendServerMessageToLogin', str_replace("\n", "", $message), $this->player->login);
 
-        $cur_record = $this->server->records->getRecord(0);
-        if ($cur_record !== null && $cur_record->score >  0) {
-            $message = Aseco::formatText(
-                Aseco::getChatMessage('record_current'),
-                Aseco::stripColors($this->server->challenge->name),
-                Aseco::formatTime($cur_record->score),
-                Aseco::stripColors($cur_record->player->nickname)
-            );
-        } else {
-
-            $message = Aseco::formatText(
-                Aseco::getChatMessage('record_none'),
-                Aseco::stripColors($this->server->challenge->name)
-            );
+        //$cur_record = $this->server->records->getRecord(0);
+        // if ($cur_record !== null && $cur_record->score > 0) {
+        //     $message = Aseco::formatText(
+        //         Aseco::getChatMessage('record_current'),
+        //         Aseco::stripColors($this->server->challenge->name),
+        //         Aseco::formatTime($cur_record->score),
+        //         Aseco::stripColors($cur_record->player->nickname)
+        //     );
+        // } else {
+        //     $message = Aseco::formatText(
+        //         Aseco::getChatMessage('record_none'),
+        //         Aseco::stripColors($this->server->challenge->name)
+        //     );
+        // query('ChatSendServerMessageToLogin', Aseco::formatColors($message), $this->player->login);
+        // }
+        if($this->settings->show_recs_before === 2){
             $chatCmd = $this->pluginManager->getPlugin('ChatCmd');
-            $chatCmd->trackrecs($playerObject->Login, 1);
+            $chatCmd->trackrecs($this->player->login, 1);
         }
+        //dd($this->settings);
         //FIXME we should check if player exist in players table
         //TODO - onPlayerConnect onPlayerConnect2
         $this->pluginManager->onPlayerConnect($this->player->login);

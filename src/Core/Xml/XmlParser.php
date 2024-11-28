@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Core\Xml;
 
 use DOMNode;
-use DateTime;
-use Exception;
 use DOMElement;
 use DOMDocument;
 use DOMNodeList;
+use DateTime;
 use Yuhzel\X8seco\Services\Aseco;
 use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Exceptions\XmlParserException;
 
-/**
+/*
  * XmlParser class for parsing XML files into an XmlArrayObject.
  *
  * This class provides methods to load XML data from a file, process its structure,
@@ -29,6 +29,7 @@ use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
  * @package Yuhzel\X8seco\Core
  * @author Yuhzel
  */
+
 class XmlParser
 {
     /**
@@ -39,9 +40,16 @@ class XmlParser
     public string $xmlPath = '';
 
     /**
+     * Xml cache
+     *
+     * @var array
+     */
+    private static array $cache = [];
+
+    /**
      * Initializes the XmlParser instance, setting the XML file path.
      */
-    public function __construct()
+    public function __construct(private DOMDocument $dom)
     {
         $this->xmlPath = Aseco::path() . 'app' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR;
     }
@@ -59,13 +67,23 @@ class XmlParser
      */
     public function parseXml(string $fileName): XmlArrayObject
     {
-        $dom = new DOMDocument();
-        $dom->load($this->xmlPath . $fileName);
-        $root = $dom->documentElement;
-        if ($root->childNodes->length === 1 && $root->firstChild->nodeType == XML_ELEMENT_NODE) {
-            return $this->parseNode($root->firstChild);
+        $filePath = $this->xmlPath . $fileName;
+
+        if (!$this->canLoadFile($filePath)) {
+            throw new XmlParserException("The file '{$fileName}' cannot be loaded. It may not exist in {$filePath}.");
         }
-        return $this->parseNode($root);
+
+        if (isset(self::$cache[$filePath])) {
+            return self::$cache[$filePath];
+        }
+
+        $this->dom->load($filePath);
+        $root = $this->dom->documentElement;
+        $parsed = $this->parseNode($root);
+
+        self::$cache[$filePath] = $parsed;
+
+        return $parsed;
     }
 
     /**
@@ -126,10 +144,9 @@ class XmlParser
 
                     // Handle multiple nodes with the same tag name
                     if (isset($dataObject[$tag])) {
-                        if (!is_array($dataObject[$tag])) {
-                            $dataObject[$tag] = [$dataObject[$tag]];
-                        }
-                        $dataObject[$tag][] = $value;
+                        $dataObject[$tag] = is_array($dataObject[$tag])
+                            ? [...$dataObject[$tag], $value]
+                            : [$dataObject[$tag], $value];
                     } else {
                         $dataObject[$tag] = $value;
                     }
@@ -182,11 +199,15 @@ class XmlParser
      */
     private function isDateTimeString(string $value): bool
     {
-        try {
-            new DateTime($value);
-            return true;
-        } catch (Exception $e) {
+        $pattern = '/^\d{4}-\d{2}-\d{2}(?:[ T]\d{2}:\d{2}:\d{2})?$/';
+        return preg_match($pattern, $value) === 1;
+    }
+
+    private function canLoadFile(string $filePath): bool
+    {
+        if (!file_exists($filePath) ||  !is_readable($filePath)) {
             return false;
         }
+        return true;
     }
 }

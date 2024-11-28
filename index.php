@@ -10,7 +10,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 // return new Doctum('E:\RPG Test\x8seco\src\\');
 // frist do parse index.php 
-// next do  update index.php //FIXME - TMX need be fixed
+// next do  update index.php
 
 // Class container with auto-wire
 $container = new League\Container\Container();
@@ -18,7 +18,7 @@ $container->delegate(new League\Container\ReflectionContainer(true));
 //NOTE: I decided to use constructor only for Class injection and not for https://php.watch/versions/8.0/constructor-property-promotion
 
 // Logger
-Log::init();
+Log::init('app_logger', 'general');
 
 // Load environment variables. safe is better for noobs
 $dotenv = Dotenv::createImmutable(__DIR__);

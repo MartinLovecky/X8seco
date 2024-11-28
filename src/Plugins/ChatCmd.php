@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Plugins;
 
 use Yuhzel\X8seco\App\ManiaLinks;
-use Yuhzel\X8seco\Services\Aseco;
-use Yuhzel\X8seco\Core\Types\Challenge;
-use Yuhzel\X8seco\Core\Types\ChatCommand;
-use Yuhzel\X8seco\Core\Types\Player;
-use Yuhzel\X8seco\Core\Types\PlayerList;
-use Yuhzel\X8seco\Core\Types\RecordList;
 use Yuhzel\X8seco\Core\Gbx\GbxClient as Client;
+use Yuhzel\X8seco\Services\Aseco;
+use Yuhzel\X8seco\Core\Types\{
+    Challenge, 
+    ChatCommand,
+    Player,
+    PlayerList,
+    RecordList
+};
 
 class ChatCmd
 {
@@ -125,7 +127,7 @@ class ChatCmd
     {
     }
 
-    public function trackrecs($login, int $mode)
+    public function trackrecs(string $login, int $mode): void
     {
         $records = '$n';  // Use narrow font
         $totalNew = 0;

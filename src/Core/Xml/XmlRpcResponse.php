@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Yuhzel\X8seco\Core\Xml;
 
 use DOMNode;
-use Exception;
 use DOMElement;
 use DOMDocument;
-use UnexpectedValueException;
-use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
 use Yuhzel\X8seco\Services\Aseco;
+use Yuhzel\X8seco\Core\Xml\XmlArrayObject;
+use Yuhzel\X8seco\Exceptions\XmlParserException;
 
 class XmlRpcResponse
 {
@@ -26,13 +25,13 @@ class XmlRpcResponse
     public function parseResponse(string $xml): XmlArrayObject
     {
         if (!$this->doc->loadXML($xml)) {
-            throw new Exception('Failed to load XML');
+            throw new XmlParserException('Failed to load XML');
         }
 
         $root = $this->doc->documentElement;
 
         if (!$root instanceof DOMElement) {
-            throw new Exception('Invalid XML structure');
+            throw new XmlParserException('Invalid XML structure');
         }
 
         $fault = $root->getElementsByTagName('fault')->item(0);
@@ -45,7 +44,7 @@ class XmlRpcResponse
             return $this->processParams($params);
         }
 
-        throw new Exception('No valid response found');
+        throw new XmlParserException('No valid response found');
     }
 
     /**
@@ -129,10 +128,10 @@ class XmlRpcResponse
                 'struct' => $this->processStruct($element),
                 'fault' => $this->processStruct($element),
                 'nil' => null,
-                default => throw new UnexpectedValueException("Unknown type: {$element->tagName}"),
+                default => throw new XmlParserException("Unknown type: {$element->tagName}"),
             };
         }
-        return new UnexpectedValueException("Unreachable");
+        return new XmlParserException("Unreachable");
     }
 
     /**
